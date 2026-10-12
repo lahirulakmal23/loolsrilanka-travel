@@ -50,6 +50,36 @@ function ls_seed_inner_pages() {
     ls_seed_field( 'it_single_cta_text', 'Every itinerary on this site is a starting point — tell us what matters to you and we\'ll rebuild it around that.', $o );
     ls_seed_field( 'it_single_cta_btn', ls_seed_link( '/tailor-made-2/', 'Start a Custom Itinerary' ), $o );
 
+    ls_seed_field( 'dt_list_heading', 'Short on time? See more of Sri Lanka in a day.', $o );
+    ls_seed_field( 'dt_list_text', 'Full-day trips to the island\'s great sites — perfect as add-ons to a longer stay or a stopover between flights.', $o );
+    ls_seed_field( 'dt_list_image', ls_seed_attachment( '2024/11/Sigiriya-Rock-Fortres.jpg' ), $o );
+    ls_seed_field( 'dt_list_all', 'All Tours', $o );
+    ls_seed_field( 'dt_book_btn', 'Book', $o );
+    ls_seed_field( 'dt_good_for_label', 'Good for:', $o );
+    ls_seed_field( 'dt_book_heading', 'Request a Day Tour Booking', $o );
+    ls_seed_field( 'dt_book_text', 'Tell us the date and how many travellers — we\'ll confirm availability and pricing within one business day.', $o );
+    ls_seed_field( 'dt_selected_label', 'Selected tour:', $o );
+    ls_seed_field( 'dt_book_note', 'No payment required to request · Reply within 1 business day', $o );
+    ls_seed_field( 'dt_steps_heading', 'What happens next', $o );
+    ls_seed_field( 'dt_steps', ls_seed_rows( 'dt_steps', array(
+        array( 'text' => 'We confirm availability for your date' ),
+        array( 'text' => 'You get a firm price and pickup time' ),
+        array( 'text' => 'You confirm, and we pick you up on the day' ),
+    ) ), $o );
+    ls_seed_field( 'dt_wa_text', 'Need it faster? Book via WhatsApp', $o );
+    ls_seed_field( 'dt_combo_heading', 'Combine two or three day tours into a mini-itinerary', $o );
+    ls_seed_field( 'dt_combo_text', 'Tell us your base city and free days — we\'ll stitch together the best day trips around your schedule.', $o );
+    ls_seed_field( 'dt_combo_btn', ls_seed_link( '/contact-us/', 'Ask About Combos' ), $o );
+    ls_seed_field( 'dt_view_btn', 'View Tour', $o );
+    ls_seed_field( 'dt_overview_label', 'Overview', $o );
+    ls_seed_field( 'dt_highlights_heading', 'Highlights', $o );
+    ls_seed_field( 'dt_schedule_heading', 'Hour-by-hour schedule', $o );
+    ls_seed_field( 'dt_itinerary_heading', 'The day', $o );
+    ls_seed_field( 'dt_meeting_heading', 'Meeting point & pickup', $o );
+    ls_seed_field( 'dt_tips_heading', 'Good to know', $o );
+    ls_seed_field( 'dt_faq_heading', 'Frequently asked', $o );
+    ls_seed_field( 'dt_related_heading', 'Other day tours you might like', $o );
+
     ls_seed_field( 'ds_list_heading', 'Where you\'ll actually go', $o );
     ls_seed_field( 'ds_list_text', (string) get_field( 'destination_page_content', $o ), $o );
     ls_seed_field( 'ds_list_all', 'All Regions', $o );
@@ -101,6 +131,63 @@ function ls_seed_inner_pages() {
         ls_seed_field( 'fq_cta_heading', 'Ready to start planning?', $id );
         ls_seed_field( 'fq_cta_text', 'Tell us your dates and interests and we\'ll draft an itinerary for you.', $id );
         ls_seed_field( 'fq_cta_btn', ls_seed_link( '/tailor-made-2/', 'Plan My Trip' ), $id );
+    }
+
+    /* Gallery -------------------------------------------------------------- */
+
+    $gallery = get_page_by_path( 'gallery' );
+    if ( ! $gallery ) {
+        $new_id  = wp_insert_post( array(
+            'post_type'   => 'page',
+            'post_title'  => 'Gallery',
+            'post_name'   => 'gallery',
+            'post_status' => 'publish',
+        ) );
+        $gallery = $new_id && ! is_wp_error( $new_id ) ? get_post( $new_id ) : null;
+    }
+    if ( $gallery ) {
+        $id = $gallery->ID;
+        if ( ! get_page_template_slug( $id ) ) {
+            update_post_meta( $id, '_wp_page_template', 'page-gallery.php' );
+        }
+        if ( ! has_post_thumbnail( $id ) && ( $banner = ls_seed_attachment( '2024/12/Galle-scaled.jpg' ) ) ) {
+            set_post_thumbnail( $id, $banner );
+        }
+
+        ls_seed_field( 'gl_hero_heading', 'Our Gallery', $id );
+        ls_seed_field( 'gl_hero_text', 'Explore the beauty of Sri Lanka through our lens.', $id );
+        ls_seed_field( 'gl_per_page', 8, $id );
+        ls_seed_field( 'gl_categories', "Beaches\nMountains\nCulture\nWildlife\nCities", $id );
+        ls_seed_field( 'gl_all_label', 'All', $id );
+        ls_seed_field( 'gl_search_label', 'Search gallery…', $id );
+        ls_seed_field( 'gl_empty_text', 'No photos match your search.', $id );
+
+        $photos = array();
+        foreach ( array(
+            array( '2025/02/Sigiriya-Home-01.jpg', 'Sigiriya', 'Culture' ),
+            array( '2025/02/Ella-Home.jpg', 'Ella', 'Mountains' ),
+            array( '2025/02/Mirissa-Home-01.jpg', 'Mirissa', 'Beaches' ),
+            array( '2025/02/Yala-Home-02.jpg', 'Yala', 'Wildlife' ),
+            array( '2025/02/Kandy-Home-01.jpg', 'Kandy', 'Culture' ),
+            array( '2024/12/Arugambay-copy-scaled.jpg', 'Arugam Bay', 'Beaches' ),
+            array( '2024/12/Galle-scaled.jpg', 'Galle', 'Cities' ),
+            array( '2024/12/Hatton-scaled.jpg', 'Hatton', 'Mountains' ),
+            array( '2024/11/Dambulla-Cave-Temple-Sri-Lanka.jpg', 'Dambulla', 'Culture' ),
+            array( '2024/12/Leopard-Sri-Lanka-scaled.jpg', 'Yala', 'Wildlife' ),
+            array( '2024/12/Trincomalee-Cover-scaled.jpg', 'Trincomalee', 'Beaches' ),
+            array( '2024/12/COlombo-scaled.jpg', 'Colombo', 'Cities' ),
+            array( '2024/12/Nuwaraeliya-copy-scaled.jpg', 'Nuwara Eliya', 'Mountains' ),
+        ) as $photo ) {
+            if ( $image = ls_seed_attachment( $photo[0] ) ) {
+                $photos[] = array( 'image' => $image, 'place' => $photo[1], 'category' => $photo[2] );
+            }
+        }
+        if ( $photos ) {
+            ls_seed_field( 'gl_photos', ls_seed_rows( 'gl_photos', $photos ), $id );
+        }
+
+        ls_seed_field( 'gl_share_heading', 'Share Your Memories', $id );
+        ls_seed_field( 'gl_share_text', 'Tag us @looksrilanka and be part of our travel community.', $id );
     }
 
     /* Destinations: region for the filter ------------------------------ */

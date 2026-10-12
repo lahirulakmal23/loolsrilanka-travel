@@ -265,6 +265,81 @@ function ls_gallery_items( $post_id ) {
 }
 
 /**
+ * One photo for the photo grid (template-parts/photo-grid.php).
+ * ratio = width / height, kept within limits so rows stay even.
+ */
+function ls_photo_item( $id, $place = '', $category = '', $url = '', $caption = '' ) {
+    $meta     = $id ? wp_get_attachment_metadata( $id ) : array();
+    $ratio    = ! empty( $meta['width'] ) && ! empty( $meta['height'] ) ? $meta['width'] / $meta['height'] : 1.4;
+    $category = trim( (string) $category );
+    return array(
+        'id'       => (int) $id,
+        'url'      => $id ? wp_get_attachment_url( $id ) : $url,
+        'place'    => trim( (string) $place ),
+        'category' => $category,
+        'slug'     => sanitize_title( $category ),
+        'caption'  => trim( (string) $caption ),
+        'ratio'    => max( .7, min( 1.8, $ratio ) ),
+    );
+}
+
+/**
+ * Photos on the Gallery page ("gl_photos" rows). Defaults to the page with the slug "gallery".
+ */
+function ls_gallery_page_photos( $page_id = 0 ) {
+    if ( ! $page_id ) {
+        $page    = get_page_by_path( 'gallery' );
+        $page_id = $page ? $page->ID : 0;
+    }
+    $photos = array();
+    foreach ( $page_id ? (array) ls_get( 'gl_photos', $page_id ) : array() as $row ) {
+        if ( ! empty( $row['image'] ) && ls_image_ok( $row['image'] ) ) {
+            $photos[] = ls_photo_item( (int) $row['image'], $row['place'] ?? '', $row['category'] ?? '' );
+        }
+    }
+    return $photos;
+}
+
+// Place name reduced to letters, so "Nuwara Eliya" and "Nuwaraeliya" compare equal.
+function ls_place_key( $text ) {
+    return preg_replace( '/[^a-z]/', '', strtolower( remove_accents( wp_strip_all_tags( (string) $text ) ) ) );
+}
+
+/**
+ * Photos for a destination: its own gallery first, then the Gallery page
+ * photos whose place matches its name ("Yala" matches "Yala - Tissamaharama").
+ * $skip is an attachment ID to leave out (the hero photo).
+ */
+function ls_destination_photos( $post_id, $skip = 0 ) {
+    $name   = ls_place_key( get_the_title( $post_id ) );
+    $seen   = $skip ? array( (int) $skip => true ) : array();
+    $photos = array();
+
+    foreach ( ls_gallery_items( $post_id ) as $item ) {
+        $id = (int) $item['id'];
+        if ( $id && isset( $seen[ $id ] ) ) {
+            continue;
+        }
+        $seen[ $id ] = true;
+        $photos[]    = ls_photo_item( $id, '', '', $item['url'], $item['caption'] );
+    }
+
+    if ( strlen( $name ) >= 3 ) {
+        foreach ( ls_gallery_page_photos() as $photo ) {
+            $place = ls_place_key( $photo['place'] );
+            if ( strlen( $place ) < 3 || isset( $seen[ $photo['id'] ] ) ) {
+                continue;
+            }
+            if ( 0 === strpos( $name, $place ) || 0 === strpos( $place, $name ) ) {
+                $seen[ $photo['id'] ] = true;
+                $photos[]             = $photo;
+            }
+        }
+    }
+    return $photos;
+}
+
+/**
  * Route line for a tour. Uses the "Route" field, or builds one from the
  * itinerary day titles ("Negombo - Kandy" → Negombo → Kandy).
  */

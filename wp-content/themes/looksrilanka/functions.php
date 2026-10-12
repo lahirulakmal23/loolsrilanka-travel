@@ -6,7 +6,7 @@
  * Content is edited through ACF fields (inc/acf-fields*.php).
  */
 
-define( 'LS_VERSION', '2.4.0' );
+define( 'LS_VERSION', '2.6.2' );
 
 require get_template_directory() . '/inc/helpers.php';
 require get_template_directory() . '/inc/acf-fields.php';
@@ -33,33 +33,20 @@ function ls_setup() {
 add_action( 'after_setup_theme', 'ls_setup' );
 
 /**
- * Day Tours are no longer offered. The post type and its category are
- * registered by Custom Post Type UI, so they are removed again here; the
- * existing day tour posts stay in the database untouched.
+ * Day tours (post type and category registered by Custom Post Type UI).
+ * The listing is the "Day Tours" page (page-day-tours.php), so the post type
+ * archive and category archives send visitors there.
  */
-add_action( 'init', function () {
-    if ( post_type_exists( 'day-tour' ) ) {
-        unregister_post_type( 'day-tour' );
-    }
-    if ( taxonomy_exists( 'day-tour-category' ) ) {
-        unregister_taxonomy( 'day-tour-category' );
-    }
-}, 100 );
+function ls_day_tours_url() {
+    $page = get_page_by_path( 'day-tours' );
+    return $page ? get_permalink( $page ) : '';
+}
 
-// Old day tour links go to the itineraries page instead of a 404.
 add_action( 'template_redirect', function () {
-    $path = trim( (string) wp_parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH ), '/' );
-    if ( preg_match( '#^day-tour(-category)?(/|$)#', $path ) ) {
-        wp_safe_redirect( get_post_type_archive_link( 'tour' ), 301 );
+    if ( ( is_post_type_archive( 'day-tour' ) || is_tax( 'day-tour-category' ) ) && ( $url = ls_day_tours_url() ) ) {
+        wp_safe_redirect( $url, 301 );
         exit;
     }
-} );
-
-// Hide any menu item that still points to day tours.
-add_filter( 'wp_nav_menu_objects', function ( $items ) {
-    return array_filter( $items, function ( $item ) {
-        return ! preg_match( '#/day-tour(-category)?(/|$)#', (string) wp_parse_url( $item->url, PHP_URL_PATH ) );
-    } );
 } );
 
 
@@ -89,14 +76,16 @@ function ls_enqueue_assets() {
     wp_enqueue_style( 'aos', $uri . '/assets/css/vendors/aos.min.css', array(), null );
     wp_enqueue_script( 'aos', $uri . '/assets/js/vendors/aos.js', array(), null, true );
 
-    wp_enqueue_style( 'ls-style', $uri . '/assets/css/ls.css', array( 'aos' ), LS_VERSION );
-    wp_enqueue_script( 'ls-script', $uri . '/assets/js/ls.js', array( 'aos' ), LS_VERSION, true );
-
-    // Photo lightbox on pages with galleries.
-    if ( is_singular( array( 'tour', 'destination', 'escapades' ) ) ) {
+    // Photo lightbox on pages with galleries. Loaded before ls.js, which starts it.
+    $script_deps = array( 'aos' );
+    if ( is_singular( array( 'tour', 'day-tour', 'destination', 'escapades' ) ) || is_page_template( 'page-gallery.php' ) ) {
         wp_enqueue_style( 'glightbox', $uri . '/assets/css/vendors/glightbox.min.css', array(), null );
         wp_enqueue_script( 'glightbox', $uri . '/assets/js/vendors/glightbox.min.js', array(), null, true );
+        $script_deps[] = 'glightbox';
     }
+
+    wp_enqueue_style( 'ls-style', $uri . '/assets/css/ls.css', array( 'aos' ), LS_VERSION );
+    wp_enqueue_script( 'ls-script', $uri . '/assets/js/ls.js', $script_deps, LS_VERSION, true );
 }
 add_action( 'wp_enqueue_scripts', 'ls_enqueue_assets' );
 

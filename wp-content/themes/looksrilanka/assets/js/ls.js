@@ -138,9 +138,106 @@
                 b.setAttribute('aria-pressed', String(b === btn));
             });
             grid.querySelectorAll('[data-region]').forEach(function (card) {
-                card.hidden = region !== 'all' && card.getAttribute('data-region') !== region;
+                // A card can list several space-separated regions / categories.
+                var own = ' ' + card.getAttribute('data-region') + ' ';
+                card.hidden = region !== 'all' && own.indexOf(' ' + region + ' ') === -1;
             });
         });
+    });
+
+    // Gallery page: category filter, search and paging. The lightbox only
+    // steps through the photos that match the current filter.
+    document.querySelectorAll('[data-ls-gallery]').forEach(function (gallery) {
+        var items = Array.prototype.slice.call(gallery.querySelectorAll('.ls-gl-item'));
+        var search = gallery.querySelector('.ls-gl-search input');
+        var empty = gallery.querySelector('.ls-gl-empty');
+        var pager = gallery.querySelector('.ls-gl-pages');
+        var perPage = parseInt(gallery.getAttribute('data-per-page'), 10) || 8;
+        var category = 'all';
+        var page = 1;
+        var matches = items;
+
+        function pageButton(label, target, ariaLabel, current) {
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'page-numbers' + (current ? ' current' : '');
+            btn.innerHTML = label;
+            btn.disabled = target < 1 || target > Math.ceil(matches.length / perPage);
+            if (ariaLabel) btn.setAttribute('aria-label', ariaLabel);
+            if (current) btn.setAttribute('aria-current', 'page');
+            btn.addEventListener('click', function () {
+                page = target;
+                render();
+                var top = gallery.getBoundingClientRect().top;
+                if (top < 0) gallery.scrollIntoView({ behavior: 'smooth' });
+            });
+            return btn;
+        }
+
+        function render() {
+            var term = search ? search.value.trim().toLowerCase() : '';
+            matches = items.filter(function (item) {
+                return (category === 'all' || item.getAttribute('data-cat') === category) &&
+                    (!term || item.getAttribute('data-search').indexOf(term) !== -1);
+            });
+            var pages = Math.max(1, Math.ceil(matches.length / perPage));
+            page = Math.min(page, pages);
+
+            items.forEach(function (item) { item.hidden = true; });
+            matches.slice((page - 1) * perPage, page * perPage).forEach(function (item) { item.hidden = false; });
+            if (empty) empty.hidden = matches.length > 0;
+
+            if (!pager) return;
+            var links = pager.querySelector('.nav-links');
+            links.innerHTML = '';
+            pager.hidden = pages < 2;
+            if (pages < 2) return;
+            links.appendChild(pageButton('&lsaquo;', page - 1, 'Previous page'));
+            for (var i = 1; i <= pages; i++) {
+                links.appendChild(pageButton(String(i), i, 'Page ' + i, i === page));
+            }
+            links.appendChild(pageButton('&rsaquo;', page + 1, 'Next page'));
+        }
+
+        var bar = gallery.querySelector('.ls-gl-filters');
+        if (bar) {
+            bar.addEventListener('click', function (e) {
+                var btn = e.target.closest('button[data-cat]');
+                if (!btn) return;
+                category = btn.getAttribute('data-cat');
+                page = 1;
+                bar.querySelectorAll('button').forEach(function (b) {
+                    b.classList.toggle('is-active', b === btn);
+                    b.setAttribute('aria-pressed', String(b === btn));
+                });
+                render();
+            });
+        }
+        if (search) {
+            // "View all photos" links from destination pages pass ?q=<place>.
+            var query = new URLSearchParams(window.location.search).get('q');
+            if (query) search.value = query;
+            search.addEventListener('input', function () {
+                page = 1;
+                render();
+            });
+        }
+
+        // GLightbox is checked on click because it may load after this file.
+        gallery.addEventListener('click', function (e) {
+            var item = e.target.closest('.ls-gl-item');
+            if (!item || !window.GLightbox) return;
+            e.preventDefault();
+            var box = window.GLightbox({
+                elements: matches.map(function (el) {
+                    return { href: el.getAttribute('href'), type: 'image', title: el.getAttribute('data-title') };
+                })
+            });
+            box.on('close', function () { setTimeout(function () { box.destroy(); }, 400); });
+            box.openAt(matches.indexOf(item));
+        });
+
+        render();
     });
 
     // Enquiry forms: pass the page / tour name in the hidden 'page_title' field
@@ -150,6 +247,19 @@
         });
     }
     setPageTitle(document.title);
+
+    // Day tours listing: "Book" on a card names that tour in the booking form.
+    document.addEventListener('click', function (e) {
+        var btn = e.target.closest('[data-ls-book]');
+        if (!btn) return;
+        var tour = btn.getAttribute('data-ls-book');
+        setPageTitle(tour + ' — ' + document.title);
+        var selected = document.querySelector('.ls-dt-selected');
+        if (selected) {
+            selected.querySelector('strong').textContent = tour;
+            selected.hidden = false;
+        }
+    });
 
     // Photo lightbox
     if (window.GLightbox && document.querySelector('.ls-page .glightbox')) {
@@ -164,7 +274,7 @@
         var reveal = [
             '.ls-section-head',
             '.ls-exp-grid', '.ls-testi-grid', '.ls-grid', '.ls-stats-grid',
-            '.ls-why-photo',
+            '.ls-why-photo', '.ls-gl-grid',
             '.ls-b2b > .ls-wrap', '.ls-cta-band > .ls-wrap', '.ls-cta-green > .ls-wrap'
         ];
 

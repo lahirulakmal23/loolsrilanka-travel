@@ -8,10 +8,11 @@ while ( have_posts() ) :
     the_post();
     $id         = get_the_ID();
     $region     = ls_get( 'ds_region' );
-    $gallery    = ls_gallery_items( $id );
     $facts      = ls_get( 'ds_facts' );
     $related    = ls_get( 'ds_related' );
     $hero_image = ls_post_hero_image( get_the_ID() );
+    $photos     = ls_destination_photos( $id, is_numeric( $hero_image ) ? (int) $hero_image : 0 );
+    $gallery_pg = get_page_by_path( 'gallery' );
     ?>
     <main id="primary" class="ls-page ls-detail">
         <?php
@@ -36,10 +37,23 @@ while ( have_posts() ) :
 
                 <?php get_template_part( 'template-parts/highlights-grid' ); ?>
 
-                <?php if ( $gallery ) : ?>
-                    <section class="ls-block">
-                        <h2 class="ls-block-title"><?php esc_html_e( 'Gallery', 'looksrilanka' ); ?></h2>
-                        <?php get_template_part( 'template-parts/gallery-grid', null, array( 'items' => $gallery, 'group' => 'destination' ) ); ?>
+                <?php if ( $photos ) : ?>
+                    <section class="ls-block ls-ds-gallery">
+                        <div class="ls-ds-gallery-head">
+                            <h2 class="ls-block-title"><?php echo esc_html( str_replace( '{destination}', get_the_title(), (string) ( ls_option( 'ds_gallery_heading' ) ?: 'Photos of {destination}' ) ) ); ?></h2>
+                            <?php $place = current( array_filter( wp_list_pluck( $photos, 'place' ) ) ); ?>
+                            <?php if ( $place && $gallery_pg && 'publish' === $gallery_pg->post_status ) : ?>
+                                <a class="ls-text-link" href="<?php echo esc_url( add_query_arg( 'q', rawurlencode( $place ), get_permalink( $gallery_pg ) ) ); ?>"><?php echo esc_html( ls_option( 'ds_gallery_link' ) ?: 'View all photos →' ); ?></a>
+                            <?php endif; ?>
+                        </div>
+                        <?php
+                        get_template_part( 'template-parts/photo-grid', null, array(
+                            'photos'     => array_slice( $photos, 0, 9 ),
+                            'class'      => 'ls-gl-grid-sm',
+                            'lightbox'   => 'destination',
+                            'show_place' => false,
+                        ) );
+                        ?>
                     </section>
                 <?php endif; ?>
             </div>

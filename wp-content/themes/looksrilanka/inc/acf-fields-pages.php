@@ -206,6 +206,45 @@ function ls_register_page_field_groups() {
         ),
     ) );
 
+    /* Day tour ----------------------------------------------------------- */
+    acf_add_local_field_group( array(
+        'key'        => 'group_ls_day_tour',
+        'title'      => 'Day Tour Details (New Design)',
+        'menu_order' => -10,
+        'position'   => 'acf_after_title',
+        'location'   => $post_rule( 'day-tour' ),
+        'fields'     => array(
+            ls_tab( 'Card & hero' ),
+            ls_f( 'text', 'dt_badge', 'Badge', array( 'instructions' => 'e.g. "Full Day" or "Half Day"', 'wrapper' => array( 'width' => 25 ) ) ),
+            ls_f( 'text', 'dt_duration', 'Duration', array( 'instructions' => 'e.g. "10–11 hrs"', 'wrapper' => array( 'width' => 25 ) ) ),
+            ls_f( 'text', 'dt_from', 'Starting point', array( 'instructions' => 'e.g. "From Colombo"', 'wrapper' => array( 'width' => 25 ) ) ),
+            ls_f( 'text', 'dt_price_note', 'Price note', array( 'instructions' => 'Small text under the price, e.g. "per person"', 'wrapper' => array( 'width' => 25 ) ) ),
+            ls_f( 'text', 'dt_good_for', 'Good for', array( 'instructions' => 'e.g. "first-timers, history lovers"', 'wrapper' => array( 'width' => 50 ) ) ),
+            ls_f( 'textarea', 'dt_summary', 'Card summary', array( 'rows' => 2, 'new_lines' => '', 'instructions' => 'Short text for the listing card. Leave empty to use the start of the description.', 'wrapper' => array( 'width' => 50 ) ) ),
+            ls_f( 'post_object', 'dt_destination', 'Destination guide card', array( 'post_type' => array( 'destination' ), 'return_format' => 'id', 'allow_null' => 1, 'instructions' => 'Shown as the last "Other day tours" card. Leave empty to match the "destinations" field automatically.' ) ),
+            ls_f( 'message', 'dt_card_note', 'Photos, price & filters', array( 'message' => 'The photos are the Featured Image plus the "gallery" field further down. The price is the "price" field. Listing filters are the Day Tour Categories (right-hand sidebar).' ) ),
+
+            ls_tab( 'Overview' ),
+            ls_f( 'text', 'dt_heading', 'Overview heading', array( 'instructions' => 'e.g. "The Cultural Triangle\'s two biggest sites, done in one long day". The overview text is the "description" field further down.' ) ),
+
+            ls_tab( 'Schedule' ),
+            ls_repeater( 'dt_schedule', 'Hour-by-hour schedule', array(
+                ls_f( 'text', 'time', 'Time', array( 'instructions' => 'e.g. "5:00 AM"', 'wrapper' => array( 'width' => 20 ) ) ),
+                ls_f( 'text', 'title', 'Title', array( 'wrapper' => array( 'width' => 30 ) ) ),
+                ls_f( 'textarea', 'text', 'Text', array( 'rows' => 2, 'new_lines' => '' ) ),
+            ), array( 'button_label' => 'Add stop', 'instructions' => 'When empty, the "itinerary" text further down is shown instead.' ) ),
+
+            ls_tab( 'Meeting point' ),
+            ls_f( 'wysiwyg', 'dt_meeting', 'Meeting point & pickup', array( 'tabs' => 'visual', 'toolbar' => 'basic', 'media_upload' => 0, 'instructions' => 'Pickup place, time and vehicle. The map next to it is the "iframe" field further down.' ) ),
+
+            ls_tab( 'Good to know' ),
+            ls_repeater( 'dt_tips', 'Good to know', array(
+                ls_f( 'text', 'title', 'Title', array( 'instructions' => 'e.g. "What to wear"', 'wrapper' => array( 'width' => 30 ) ) ),
+                ls_f( 'textarea', 'text', 'Text', array( 'rows' => 2, 'new_lines' => '' ) ),
+            ), array( 'button_label' => 'Add card' ) ),
+        ),
+    ) );
+
     /* Destination ------------------------------------------------------ */
     acf_add_local_field_group( array(
         'key'        => 'group_ls_destination',
@@ -257,6 +296,41 @@ function ls_register_page_field_groups() {
             ),
             ls_cta_fields( 'it_single' ),
             array(
+                ls_tab( 'Day tours page' ),
+                ls_f( 'text', 'dt_list_heading', 'Heading', array( 'instructions' => 'Leave empty to use the page title.' ) ),
+                ls_f( 'textarea', 'dt_list_text', 'Intro text', array( 'rows' => 2, 'new_lines' => '' ) ),
+                ls_f( 'image', 'dt_list_image', 'Banner photo', array( 'return_format' => 'id', 'preview_size' => 'medium', 'instructions' => 'Optional. Leave empty for a plain blue banner (or the Day Tours page\'s Featured Image).' ) ),
+                ls_f( 'text', 'dt_list_all', '"All" filter label', array( 'default_value' => 'All Tours', 'instructions' => 'Filter buttons are the Day Tour Categories that have tours (Day Tours → Categories).', 'wrapper' => array( 'width' => 34 ) ) ),
+                ls_f( 'text', 'dt_book_btn', 'Card button', array( 'default_value' => 'Book', 'wrapper' => array( 'width' => 33 ) ) ),
+                ls_f( 'text', 'dt_good_for_label', '"Good for" label', array( 'default_value' => 'Good for:', 'wrapper' => array( 'width' => 33 ) ) ),
+                ls_f( 'text', 'dt_book_heading', 'Booking form heading', array( 'wrapper' => array( 'width' => 50 ) ) ),
+                ls_f( 'text', 'dt_selected_label', '"Selected tour" label', array( 'default_value' => 'Selected tour:', 'wrapper' => array( 'width' => 50 ) ) ),
+                ls_f( 'textarea', 'dt_book_text', 'Booking form intro', array( 'rows' => 2, 'new_lines' => '' ) ),
+                ls_f( 'text', 'dt_book_form', 'Day tour booking form shortcode', array( 'instructions' => 'Contact Form 7 shortcode, used on the listing and on every day tour. Leave empty to use the tour enquiry form (Booking form tab). The chosen tour name is sent in the form\'s hidden "page_title" field.' ) ),
+                ls_f( 'text', 'dt_detail_form', 'Day tour page form shortcode', array( 'instructions' => 'Shorter form for the booking card on each day tour. Leave empty to use the form above.' ) ),
+                ls_f( 'text', 'dt_book_note', 'Note under the form', array( 'instructions' => 'e.g. "No payment required to request"' ) ),
+                ls_f( 'text', 'dt_steps_heading', '"What happens next" heading', array( 'wrapper' => array( 'width' => 50 ) ) ),
+                ls_f( 'text', 'dt_wa_text', 'WhatsApp card text', array( 'wrapper' => array( 'width' => 50 ) ) ),
+                ls_repeater( 'dt_steps', '"What happens next" steps', array( ls_f( 'text', 'text', 'Step' ) ), array( 'button_label' => 'Add step' ) ),
+                ls_f( 'text', 'dt_combo_heading', 'Combo band heading', array( 'instructions' => 'Leave empty to hide the band.', 'wrapper' => array( 'width' => 50 ) ) ),
+                ls_f( 'link', 'dt_combo_btn', 'Combo band button', array( 'wrapper' => array( 'width' => 50 ) ) ),
+                ls_f( 'textarea', 'dt_combo_text', 'Combo band text', array( 'rows' => 2, 'new_lines' => '' ) ),
+                ls_repeater( 'dt_combos', 'Example combos', array( ls_f( 'text', 'text', 'Combo', array( 'instructions' => 'e.g. "Sigiriya + Kandy Temple — 2 days from Colombo"' ) ) ), array( 'button_label' => 'Add combo' ) ),
+
+                ls_tab( 'Day tour detail' ),
+                ls_repeater( 'dt_trust', 'Trust points (booking card)', array( ls_f( 'text', 'text', 'Text' ) ), array( 'button_label' => 'Add point' ) ),
+                ls_f( 'text', 'dt_view_btn', 'Button on "other tours" cards', array( 'default_value' => 'View Tour', 'wrapper' => array( 'width' => 50 ) ) ),
+                ls_f( 'text', 'dt_overview_label', '"Overview" label', array( 'default_value' => 'Overview', 'wrapper' => array( 'width' => 50 ) ) ),
+                ls_f( 'text', 'dt_highlights_heading', 'Highlights heading', array( 'default_value' => 'Highlights', 'wrapper' => array( 'width' => 50 ) ) ),
+                ls_f( 'text', 'dt_schedule_heading', 'Schedule heading', array( 'default_value' => 'Hour-by-hour schedule', 'wrapper' => array( 'width' => 50 ) ) ),
+                ls_f( 'text', 'dt_itinerary_heading', 'Itinerary heading (when there is no schedule)', array( 'default_value' => 'The day', 'wrapper' => array( 'width' => 50 ) ) ),
+                ls_f( 'text', 'dt_meeting_heading', 'Meeting point heading', array( 'default_value' => 'Meeting point & pickup', 'wrapper' => array( 'width' => 50 ) ) ),
+                ls_f( 'text', 'dt_tips_heading', '"Good to know" heading', array( 'default_value' => 'Good to know', 'wrapper' => array( 'width' => 50 ) ) ),
+                ls_f( 'text', 'dt_faq_heading', 'Questions heading', array( 'default_value' => 'Frequently asked', 'wrapper' => array( 'width' => 50 ) ) ),
+                ls_f( 'text', 'dt_related_heading', '"Other day tours" heading', array( 'default_value' => 'Other day tours you might like' ) ),
+                ls_f( 'text', 'dt_dest_title', 'Destination guide card title', array( 'default_value' => '%s Destination Guide', 'instructions' => '%s is the destination name.', 'wrapper' => array( 'width' => 50 ) ) ),
+                ls_f( 'text', 'dt_dest_text', 'Destination guide card text', array( 'default_value' => 'Learn more about this site', 'wrapper' => array( 'width' => 50 ) ) ),
+
                 ls_tab( 'Destinations page' ),
                 ls_f( 'message', 'ds_list_note', 'Banner', array( 'message' => 'The background photo is "destination_page_banner" under Theme Settings.' ) ),
                 ls_f( 'text', 'ds_list_heading', 'Heading' ),
@@ -264,7 +338,11 @@ function ls_register_page_field_groups() {
                 ls_f( 'text', 'ds_list_all', '"All" filter label', array( 'default_value' => 'All Regions' ) ),
             ),
             ls_cta_fields( 'ds_list' ),
-            array( ls_tab( 'Destination detail' ) ),
+            array(
+                ls_tab( 'Destination detail' ),
+                ls_f( 'text', 'ds_gallery_heading', 'Photos heading', array( 'default_value' => 'Photos of {destination}', 'instructions' => '{destination} is the destination name. Photos are the destination\'s own gallery plus the Gallery page photos whose "Place" matches the destination name.', 'wrapper' => array( 'width' => 50 ) ) ),
+                ls_f( 'text', 'ds_gallery_link', '"View all photos" link', array( 'default_value' => 'View all photos →', 'wrapper' => array( 'width' => 50 ) ) ),
+            ),
             ls_cta_fields( 'ds_single', 'Call to action (use {destination} for the name)' ),
             array(
                 ls_tab( 'Experiences page' ),
@@ -312,6 +390,39 @@ function ls_register_page_field_groups() {
                 ls_tab( 'Call to action' ),
             ),
             ls_cta_fields( 'fq' )
+        ),
+    ) );
+
+    /* Gallery page ------------------------------------------------------- */
+    acf_add_local_field_group( array(
+        'key'        => 'group_ls_gallery',
+        'title'      => 'Gallery Page (New Design)',
+        'menu_order' => -10,
+        'position'   => 'acf_after_title',
+        'location'   => $page_rule( 'page-gallery.php' ),
+        'fields'     => array_merge(
+            array( ls_tab( 'Hero' ) ),
+            ls_hero_fields( 'gl_hero', $hero_note ),
+            array(
+                ls_tab( 'Photos' ),
+                ls_repeater( 'gl_photos', 'Photos', array(
+                    ls_f( 'image', 'image', 'Photo', array( 'return_format' => 'id', 'preview_size' => 'thumbnail', 'wrapper' => array( 'width' => 30 ) ) ),
+                    ls_f( 'text', 'place', 'Place', array( 'instructions' => 'e.g. "Sigiriya"', 'wrapper' => array( 'width' => 35 ) ) ),
+                    ls_f( 'text', 'category', 'Category', array( 'instructions' => 'One of the filter categories, e.g. "Beaches"', 'wrapper' => array( 'width' => 35 ) ) ),
+                ), array( 'button_label' => 'Add photo' ) ),
+                ls_f( 'number', 'gl_per_page', 'Photos per page', array( 'default_value' => 8, 'min' => 1, 'wrapper' => array( 'width' => 50 ) ) ),
+
+                ls_tab( 'Filters & search' ),
+                ls_f( 'textarea', 'gl_categories', 'Filter categories', array( 'rows' => 6, 'new_lines' => '', 'instructions' => 'One per line, in the order the buttons should appear. Categories with no photos are hidden; categories used by photos but not listed here are added at the end.' ) ),
+                ls_f( 'text', 'gl_all_label', '"All" filter label', array( 'default_value' => 'All', 'wrapper' => array( 'width' => 50 ) ) ),
+                ls_f( 'text', 'gl_search_label', 'Search box placeholder', array( 'default_value' => 'Search gallery…', 'wrapper' => array( 'width' => 50 ) ) ),
+                ls_f( 'text', 'gl_empty_text', 'Text when no photos match', array( 'default_value' => 'No photos match your search.' ) ),
+
+                ls_tab( 'Share band' ),
+                ls_f( 'text', 'gl_share_heading', 'Heading', array( 'instructions' => 'Leave empty to hide this band.', 'wrapper' => array( 'width' => 50 ) ) ),
+                ls_f( 'link', 'gl_share_btn', 'Button', array( 'instructions' => 'Leave empty to use the Instagram link from Theme Settings → Site Settings.', 'wrapper' => array( 'width' => 50 ) ) ),
+                ls_f( 'textarea', 'gl_share_text', 'Text', array( 'rows' => 2, 'new_lines' => '' ) ),
+            )
         ),
     ) );
 }
