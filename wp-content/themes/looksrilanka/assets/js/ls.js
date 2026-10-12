@@ -103,4 +103,56 @@
 
         start();
     });
+
+    // Contact page: Traveller / Travel Agent tabs
+    var tabs = document.querySelectorAll('.ls-path-tabs [role=tab]');
+    tabs.forEach(function (tab, index) {
+        function select() {
+            tabs.forEach(function (t) {
+                var on = t === tab;
+                t.setAttribute('aria-selected', String(on));
+                t.tabIndex = on ? 0 : -1;
+                var panel = document.getElementById(t.getAttribute('aria-controls'));
+                if (panel) panel.hidden = !on;
+            });
+        }
+        tab.addEventListener('click', select);
+        tab.addEventListener('keydown', function (e) {
+            if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+            var next = tabs[(index + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length];
+            next.focus();
+            next.click();
+        });
+    });
+
+    // Destinations: client-side region filter
+    document.querySelectorAll('[data-ls-filter]').forEach(function (bar) {
+        var grid = document.querySelector(bar.getAttribute('data-ls-filter'));
+        if (!grid) return;
+        bar.addEventListener('click', function (e) {
+            var btn = e.target.closest('button[data-region]');
+            if (!btn) return;
+            var region = btn.getAttribute('data-region');
+            bar.querySelectorAll('button').forEach(function (b) {
+                b.classList.toggle('is-active', b === btn);
+                b.setAttribute('aria-pressed', String(b === btn));
+            });
+            grid.querySelectorAll('[data-region]').forEach(function (card) {
+                card.hidden = region !== 'all' && card.getAttribute('data-region') !== region;
+            });
+        });
+    });
+
+    // Enquiry forms: pass the page / tour name in the hidden 'page_title' field
+    function setPageTitle(value) {
+        document.querySelectorAll('input[name=page_title]').forEach(function (input) {
+            input.value = value;
+        });
+    }
+    setPageTitle(document.title);
+
+    // Photo lightbox
+    if (window.GLightbox && document.querySelector('.ls-page .glightbox')) {
+        window.GLightbox({ selector: '.ls-page .glightbox' });
+    }
 })();

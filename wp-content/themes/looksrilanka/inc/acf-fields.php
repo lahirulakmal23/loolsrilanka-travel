@@ -101,6 +101,26 @@ function ls_register_field_groups() {
                 ) ),
             ) ),
 
+            ls_tab( 'Fallback photos' ),
+            ls_f( 'gallery', 'ls_fallback_images', 'Fallback photos', array(
+                'instructions'  => 'Used wherever a photo is missing or fails to load (a tour without a featured image, a deleted file…). Add a few landscape photos of Sri Lanka; each tour or destination always gets the same one.',
+                'return_format' => 'id',
+                'preview_size'  => 'thumbnail',
+                'library'       => 'all',
+            ) ),
+
+            ls_tab( 'Page not found (404)' ),
+            ls_f( 'text', 'ls_404_heading', 'Heading' ),
+            ls_f( 'textarea', 'ls_404_text', 'Text', array( 'rows' => 2, 'new_lines' => '' ) ),
+            ls_f( 'image', 'ls_404_image', 'Background photo', array( 'return_format' => 'id', 'preview_size' => 'medium' ) ),
+            ls_f( 'repeater', 'ls_404_links', 'Suggested links', array(
+                'layout'       => 'table',
+                'button_label' => 'Add link',
+                'sub_fields'   => ls_sub( 'ls_404_links', array(
+                    ls_f( 'link', 'link', 'Link' ),
+                ) ),
+            ) ),
+
             ls_tab( 'Footer' ),
             ls_f( 'textarea', 'ls_footer_about', 'Footer description', array( 'rows' => 3, 'new_lines' => '' ) ),
             ls_f( 'text', 'ls_footer_explore_title', 'Column 2 heading', array( 'default_value' => 'Explore', 'instructions' => 'Links come from Appearance → Menus → "Footer: Explore column".' ) ),
@@ -173,7 +193,7 @@ function ls_register_field_groups() {
                 'sub_fields'   => ls_sub( 'hp_ways', array(
                     ls_f( 'image', 'image', 'Photo', array( 'return_format' => 'id', 'preview_size' => 'medium', 'wrapper' => array( 'width' => 35 ) ) ),
                     ls_f( 'text', 'title', 'Title', array( 'wrapper' => array( 'width' => 65 ) ) ),
-                    ls_f( 'text', 'count', 'Count label', array( 'instructions' => 'e.g. "{tours} routes". {tours} and {day_tours} are replaced with the live number of published tours.', 'wrapper' => array( 'width' => 65 ) ) ),
+                    ls_f( 'text', 'count', 'Count label', array( 'instructions' => 'e.g. "{tours} routes". {tours}, {destinations} and {experiences} are replaced with the live number published.', 'wrapper' => array( 'width' => 65 ) ) ),
                     ls_f( 'textarea', 'text', 'Text', array( 'rows' => 2, 'new_lines' => '', 'wrapper' => array( 'width' => 65 ) ) ),
                     ls_f( 'link', 'link', 'Link', array( 'wrapper' => array( 'width' => 65 ) ) ),
                 ) ),

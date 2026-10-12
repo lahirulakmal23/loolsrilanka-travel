@@ -1,94 +1,119 @@
 <?php
-// Include the header
-get_header();
 /**
  * Template Name: Contact us
  */
+get_header();
 
-?>
+while ( have_posts() ) :
+    the_post();
+    $traveller_form = ls_form( ls_get( 'ct_form_shortcode' ) ?: '[contact-form-7 id="da98f42" title="Contact form 1"]' );
+    $agent_form     = ls_form( ls_get( 'ct_agent_shortcode' ) );
+    $phone          = ls_option( 'phone_number' );
+    $email          = ls_option( 'email_address' );
+    $address        = ls_option( 'address' );
+    $map            = trim( (string) ls_get( 'ct_map_embed' ) );
+    $map_image      = ls_get( 'ct_map_image' );
 
-    <!-- Main -->    
-    <main>
+    $tabs = '';
+    if ( $agent_form ) {
+        $tabs = sprintf(
+            '<div class="ls-path-tabs" role="tablist"><button type="button" role="tab" id="ls-tab-traveller" aria-controls="ls-panel-traveller" aria-selected="true">%s</button><button type="button" role="tab" id="ls-tab-agent" aria-controls="ls-panel-agent" aria-selected="false" tabindex="-1">%s</button></div>',
+            esc_html( ls_get( 'ct_form_label' ) ?: __( "I'm a Traveller", 'looksrilanka' ) ),
+            esc_html( ls_get( 'ct_agent_label' ) ?: __( "I'm a Travel Agent", 'looksrilanka' ) )
+        );
+    }
+    ?>
+    <main id="primary" class="ls-page ls-contact">
+        <?php
+        get_template_part( 'template-parts/page-hero', null, array(
+            'kicker'  => ls_get( 'ct_hero_kicker' ) ?: ls_get( 'sub_title' ),
+            'heading' => ls_get( 'ct_hero_heading' ) ?: get_the_title(),
+            'text'    => ls_get( 'ct_hero_text' ),
+            'image'   => has_post_thumbnail() ? get_post_thumbnail_id() : '',
+            'after'   => $tabs,
+        ) );
+        ?>
 
-        <!-- Title -->
-        <section class="hero" data-aos="fade">
-            <div class="hero-bg">
-                <?php if (has_post_thumbnail()) : ?>
-                    <?php the_post_thumbnail('full', ['class' => 'img-fluid']); ?>
-
-                <?php else : ?>
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/img/default-image.jpg" alt="Destination">
+        <div class="ls-wrap ls-side-layout ls-side-layout-wide">
+            <div class="ls-panel" data-ls-tabs>
+                <div id="ls-panel-traveller" role="tabpanel" aria-labelledby="ls-tab-traveller">
+                    <?php if ( $h = ls_get( 'ct_form_heading' ) ) : ?><h2 class="ls-block-title"><?php echo esc_html( $h ); ?></h2><?php endif; ?>
+                    <?php if ( $t = ls_get( 'ct_form_text' ) ) : ?><p class="ls-sub"><?php echo esc_html( $t ); ?></p><?php endif; ?>
+                    <?php echo $traveller_form; ?>
+                </div>
+                <?php if ( $agent_form ) : ?>
+                    <div id="ls-panel-agent" role="tabpanel" aria-labelledby="ls-tab-agent" hidden>
+                        <?php if ( $h = ls_get( 'ct_agent_heading' ) ) : ?><h2 class="ls-block-title"><?php echo esc_html( $h ); ?></h2><?php endif; ?>
+                        <?php if ( $t = ls_get( 'ct_agent_text' ) ) : ?><p class="ls-sub"><?php echo esc_html( $t ); ?></p><?php endif; ?>
+                        <?php echo $agent_form; ?>
+                    </div>
                 <?php endif; ?>
             </div>
-            <div class="bg-content container">
-                <div class="hero-page-title">
-                    <span class="hero-sub-title"><?php echo acf_esc_html( get_field('sub_title') ); ?></span>
-                    <h1 class="display-4 hero-title">
-                       <?php the_title(); ?>
-                    </h1>
-                </div>
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item"><a href="<?php echo home_url(); ?>">Home</a></li> 
-                        <li class="breadcrumb-item active" aria-current="page"><?php the_title(); ?></li>
-                    </ol>
-                </nav>
-            </div>
-        </section>
-        <!-- /Title -->
 
-        <!-- About -->
-        <section class="bg-gray-gradient p-bottom-90" data-aos="fade">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12 col-xl-6">
-                        <!-- Contac Information -->
-                        <div class="p-top-90 mb-4">
-                            <div class="border-bottom pb-4 mb-4">
-                                <h2 class="me-auto mb-0">Ready to help you!</h2>
-                            </div>
-                            <p class="mb-4">We're here to help and answer any question you might have.</p>
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="fw-medium mb-3">
-                                        <i class="hicon hicon-flights-pin text-primary me-2"></i>
-                                        <span><?php echo esc_html( get_field('address','option') ); ?></span>
+            <aside class="ls-side">
+                <?php if ( $phone || $email || $address ) : ?>
+                    <div class="ls-side-card">
+                        <h3><?php esc_html_e( 'Direct contact', 'looksrilanka' ); ?></h3>
+                        <ul class="ls-contact-list">
+                            <?php if ( $phone ) : ?>
+                                <li>
+                                    <svg class="ls-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014 2h3a2 2 0 012 1.7c.1.9.3 1.8.6 2.7a2 2 0 01-.4 2.1L8 9.9a16 16 0 006 6l1.4-1.4a2 2 0 012.1-.4c.9.3 1.8.5 2.7.6a2 2 0 011.8 2z"/></svg>
+                                    <div>
+                                        <a href="tel:<?php echo esc_attr( preg_replace( '/[^\d+]/', '', $phone ) ); ?>"><?php echo esc_html( $phone ); ?></a>
+                                        <?php if ( $hours = ls_get( 'ct_hours' ) ) : ?><small><?php echo esc_html( $hours ); ?></small><?php endif; ?>
                                     </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="fw-medium mb-3">
-                                        <i class="hicon hicon-telephone text-primary me-2"></i>
-                                        <span><a href="tel:<?php echo esc_html( get_field('phone_number','option') ); ?>"></a><?php echo esc_html( get_field('phone_number','option') ); ?></a></span>
+                                </li>
+                            <?php endif; ?>
+                            <?php if ( $email ) : ?>
+                                <li>
+                                    <svg class="ls-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 4h16v16H4z"/><path d="M22 6l-10 7L2 6"/></svg>
+                                    <div>
+                                        <a href="mailto:<?php echo esc_attr( antispambot( $email ) ); ?>"><?php echo esc_html( antispambot( $email ) ); ?></a>
+                                        <?php if ( $email_2 = ls_get( 'ct_email_2' ) ) : ?><small><?php echo esc_html( $email_2 ); ?></small><?php endif; ?>
                                     </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="fw-medium mb-3">
-                                        <i class="hicon hicon-email-envelope text-primary me-2"></i>
-                                        <span><a href="mailto:<?php echo get_field('email_address','option'); ?>"></a><?php echo esc_html( get_field('email_address','option') ); ?></a></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /Contac Information -->
+                                </li>
+                            <?php endif; ?>
+                            <?php if ( $address ) : ?>
+                                <li>
+                                    <svg class="ls-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                                    <div><?php echo esc_html( $address ); ?></div>
+                                </li>
+                            <?php endif; ?>
+                        </ul>
                     </div>
-                    <div class="col-12 col-xl-6">
-                        <!-- Contact Form -->
-                        <div class="form-contact rounded shadow-sm">
-                            <div class="border-bottom pb-4 mb-4">
-                                <h2 class="text-white mb-0">Looking for any help?</h2>
-                            </div>
-                            
-                            <?php echo do_shortcode('[contact-form-7 id="da98f42" title="Contact form 1"]'); ?>
+                <?php endif; ?>
 
-                        </div>
-                        <!-- /Contact Form -->
+                <?php get_template_part( 'template-parts/wa-card', null, array( 'text' => ls_get( 'ct_whatsapp_text' ) ) ); ?>
+
+                <?php if ( $map || $map_image ) : ?>
+                    <div class="ls-side-card">
+                        <?php if ( $h = ls_get( 'ct_map_heading' ) ) : ?><h3><?php echo esc_html( $h ); ?></h3><?php endif; ?>
+                        <?php if ( $map ) : ?>
+                            <div class="ls-map-embed ls-map-embed-sm"><?php echo ls_kses_embed( $map ); ?></div>
+                        <?php else : ?>
+                            <?php echo ls_image( $map_image, 'medium_large' ); ?>
+                        <?php endif; ?>
                     </div>
-                </div>
-            </div>
-        </section>
-        <!-- /About -->
+                <?php endif; ?>
+            </aside>
+        </div>
 
+        <?php if ( ls_get( 'ct_faq' ) ) : ?>
+            <section class="ls-section ls-white">
+                <div class="ls-wrap">
+                    <?php
+                    get_template_part( 'template-parts/faq-list', null, array(
+                        'items'   => ls_get( 'ct_faq' ),
+                        'heading' => ls_get( 'ct_faq_heading' ),
+                        'link'    => ls_get( 'ct_faq_link' ),
+                        'class'   => 'ls-faq-wide',
+                    ) );
+                    ?>
+                </div>
+            </section>
+        <?php endif; ?>
     </main>
-    <!-- /Main -->    
-<!-- Footer -->
-<?php get_footer(); ?>
+    <?php
+endwhile;
+
+get_footer();

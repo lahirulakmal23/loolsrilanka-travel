@@ -1,85 +1,76 @@
 <?php
-// Include the header
+/**
+ * News article.
+ */
 get_header();
-?>
 
-    <!-- Main -->
-<main>
+$blog_page = get_page_by_path( 'blog' );
+$list_url  = $blog_page ? get_permalink( $blog_page ) : get_post_type_archive_link( 'news' );
+$list_name = $blog_page ? get_the_title( $blog_page ) : __( 'News', 'looksrilanka' );
 
-    <!-- Hero -->
-    <section class="hero" data-aos="fade">
-        <div class="hero-bg">
-            <?php if (has_post_thumbnail()) : ?>
-                <?php the_post_thumbnail('full', ['class' => 'img-fluid']); ?>
-            <?php else : ?>
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/img/default-image.jpg" alt="Destination">
-            <?php endif; ?>
+while ( have_posts() ) :
+    the_post();
+    $tags = get_the_tags();
+    ?>
+    <main id="primary" class="ls-page">
+        <?php
+        get_template_part( 'template-parts/page-hero', null, array(
+            'kicker' => get_the_date(),
+            'image'  => ls_post_hero_image( get_the_ID() ),
+            'crumbs' => array( 'Home' => home_url( '/' ), $list_name => $list_url, get_the_title() => '' ),
+            'class'  => 'ls-page-hero-tall',
+        ) );
+        ?>
+        <div class="ls-wrap">
+            <article class="ls-article ls-prose">
+                <?php the_content(); ?>
+
+                <?php if ( $tags ) : ?>
+                    <ul class="ls-tags">
+                        <?php foreach ( $tags as $tag ) : ?>
+                            <li><a href="<?php echo esc_url( get_tag_link( $tag ) ); ?>"><?php echo esc_html( $tag->name ); ?></a></li>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php endif; ?>
+
+                <a class="ls-text-link ls-back-link" href="<?php echo esc_url( $list_url ); ?>">&larr; <?php echo esc_html( sprintf( __( 'Back to %s', 'looksrilanka' ), $list_name ) ); ?></a>
+            </article>
         </div>
 
-        <div class="bg-content container">
-            <div class="hero-page-title">
-                
-
-                <h1 class="display-3 hero-title mb-2">
-                    <?php the_title(); ?>
-                </h1>
-
-               
-            </div>
-        </div>
-    </section>
-
-    <!-- News Content -->
-    <section class="py-5">
-        <div class="container">
-            <div class="row">
-
-                <!-- Main Content -->
-                <div class="col-md-12">
-
-                
-
-                    <!-- Post Content -->
-                    <div class="news-content">
-                        <?php the_content(); ?>
+        <?php
+        $more = new WP_Query( array(
+            'post_type'      => 'news',
+            'posts_per_page' => 3,
+            'post__not_in'   => array( get_the_ID() ),
+            'no_found_rows'  => true,
+        ) );
+        if ( $more->have_posts() ) :
+            ?>
+            <section class="ls-section ls-related">
+                <div class="ls-wrap">
+                    <h2 class="ls-block-title"><?php echo esc_html( ls_option( 'nw_more_heading' ) ?: __( 'More articles', 'looksrilanka' ) ); ?></h2>
+                    <div class="ls-grid ls-grid-3">
+                        <?php
+                        while ( $more->have_posts() ) {
+                            $more->the_post();
+                            get_template_part( 'template-parts/card-post' );
+                        }
+                        wp_reset_postdata();
+                        ?>
                     </div>
-
-                    <!-- Tags -->
-                    <?php
-                    $tags = get_the_tags();
-                    if ($tags) :
-                    ?>
-                        <div class="mt-5">
-                            <h5>Tags</h5>
-
-                            <?php foreach ($tags as $tag) : ?>
-                                <a href="<?php echo esc_url(get_tag_link($tag->term_id)); ?>"
-                                   class="badge bg-primary text-decoration-none me-2 mb-2">
-                                    <?php echo esc_html($tag->name); ?>
-                                </a>
-                            <?php endforeach; ?>
-
-                        </div>
-                    <?php endif; ?>
-
                 </div>
+            </section>
+        <?php endif; ?>
 
-               
+        <?php
+        get_template_part( 'template-parts/cta-band', null, array(
+            'heading' => ls_option( 'nw_cta_heading' ),
+            'text'    => ls_option( 'nw_cta_text' ),
+            'button'  => ls_option( 'nw_cta_btn' ),
+        ) );
+        ?>
+    </main>
+    <?php
+endwhile;
 
-            </div>
-        </div>
-    </section>
-
-</main>
-    <!-- /Main -->
-
-<!-- Footer -->
-<?php get_footer(); ?>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    var field = document.getElementById('page_title');
-    if(field){
-        field.value = document.title;
-    }
-});
-</script>
+get_footer();

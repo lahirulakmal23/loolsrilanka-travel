@@ -2,16 +2,17 @@
 /**
  * Look Sri Lanka theme.
  *
- * Pages are being redesigned one at a time. Redesigned templates load only
- * assets/css/ls.css; the rest still load the legacy Bootstrap/main.css stack
- * (plus ls.css for the shared header and footer).
+ * Every template uses the redesign: assets/css/ls.css and assets/js/ls.js.
+ * Content is edited through ACF fields (inc/acf-fields*.php).
  */
 
-define( 'LS_VERSION', '2.0.2' );
+define( 'LS_VERSION', '2.3.0' );
 
 require get_template_directory() . '/inc/helpers.php';
 require get_template_directory() . '/inc/acf-fields.php';
+require get_template_directory() . '/inc/acf-fields-pages.php';
 require get_template_directory() . '/inc/seed.php';
+require get_template_directory() . '/inc/seed-pages.php';
 
 
 // Theme setup
@@ -27,24 +28,53 @@ function ls_setup() {
         'footer-explore' => __( 'Footer: Explore column' ),
         'footer-company' => __( 'Footer: Company column' ),
         'tour-menu'      => __( 'Tour menu' ),
-        'day-tour-menu'  => __( 'Day tour menu' ),
     ) );
 }
 add_action( 'after_setup_theme', 'ls_setup' );
 
+/**
+ * Day Tours are no longer offered. The post type and its category are
+ * registered by Custom Post Type UI, so they are removed again here; the
+ * existing day tour posts stay in the database untouched.
+ */
+add_action( 'init', function () {
+    if ( post_type_exists( 'day-tour' ) ) {
+        unregister_post_type( 'day-tour' );
+    }
+    if ( taxonomy_exists( 'day-tour-category' ) ) {
+        unregister_taxonomy( 'day-tour-category' );
+    }
+}, 100 );
+
+// Old day tour links go to the itineraries page instead of a 404.
+add_action( 'template_redirect', function () {
+    $path = trim( (string) wp_parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH ), '/' );
+    if ( preg_match( '#^day-tour(-category)?(/|$)#', $path ) ) {
+        wp_safe_redirect( get_post_type_archive_link( 'tour' ), 301 );
+        exit;
+    }
+} );
+
+// Hide any menu item that still points to day tours.
+add_filter( 'wp_nav_menu_objects', function ( $items ) {
+    return array_filter( $items, function ( $item ) {
+        return ! preg_match( '#/day-tour(-category)?(/|$)#', (string) wp_parse_url( $item->url, PHP_URL_PATH ) );
+    } );
+} );
+
 
 /**
- * Templates that have been moved to the new design.
- * Add a check here as each page is redesigned.
+ * Show every destination on one page so the region filter covers them all.
  */
-function ls_is_redesigned() {
-    return is_front_page();
-}
-
-add_filter( 'body_class', function ( $classes ) {
-    if ( ls_is_redesigned() ) {
-        $classes[] = 'ls-redesign';
+add_action( 'pre_get_posts', function ( $query ) {
+    if ( ! is_admin() && $query->is_main_query() && $query->is_post_type_archive( 'destination' ) ) {
+        $query->set( 'posts_per_page', -1 );
     }
+} );
+
+// Base styles in ls.css are scoped to this class.
+add_filter( 'body_class', function ( $classes ) {
+    $classes[] = 'ls-redesign';
     return $classes;
 } );
 
@@ -55,32 +85,14 @@ function ls_enqueue_assets() {
     $uri = get_template_directory_uri();
 
     wp_enqueue_style( 'ls-fonts', 'https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap', array(), null );
-
-    if ( ! ls_is_redesigned() ) {
-        wp_enqueue_style( 'font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', array(), null );
-        wp_enqueue_style( 'bootstrap', $uri . '/assets/css/vendors/bootstrap.min.css', array(), null );
-        wp_enqueue_style( 'hotel-icons', $uri . '/assets/fonts/hotel-icons/hotel-icons.min.css', array(), null );
-        wp_enqueue_style( 'aos', $uri . '/assets/css/vendors/aos.min.css', array(), null );
-        wp_enqueue_style( 'plyr', $uri . '/assets/css/vendors/plyr.min.css', array(), null );
-        wp_enqueue_style( 'glightbox', $uri . '/assets/css/vendors/glightbox.min.css', array(), null );
-        wp_enqueue_style( 'splide', $uri . '/assets/css/vendors/splide.min.css', array(), null );
-        wp_enqueue_style( 'flatpickr', $uri . '/assets/css/vendors/flatpickr.min.css', array(), null );
-        wp_enqueue_style( 'bootstrap-select', $uri . '/assets/css/vendors/use-bootstrap-select.min.css', array(), null );
-        wp_enqueue_style( 'main-style', $uri . '/assets/css/main.css', array(), null );
-
-        wp_enqueue_script( 'bootstrap', $uri . '/assets/js/vendors/bootstrap.bundle.min.js', array( 'jquery' ), null, true );
-        wp_enqueue_script( 'aos', $uri . '/assets/js/vendors/aos.js', array(), null, true );
-        wp_enqueue_script( 'plyr', $uri . '/assets/js/vendors/plyr.js', array(), null, true );
-        wp_enqueue_script( 'glightbox', $uri . '/assets/js/vendors/glightbox.min.js', array(), null, true );
-        wp_enqueue_script( 'splide', $uri . '/assets/js/vendors/splide.min.js', array(), null, true );
-        wp_enqueue_script( 'flatpickr', $uri . '/assets/js/vendors/flatpickr.min.js', array(), null, true );
-        wp_enqueue_script( 'bootstrap-select', $uri . '/assets/js/vendors/use-bootstrap-select.min.js', array(), null, true );
-        wp_enqueue_script( 'main-script', $uri . '/assets/js/main.js', array(), null, true );
-    }
-
-    // Loaded last so the shared header/footer win over legacy styles.
     wp_enqueue_style( 'ls-style', $uri . '/assets/css/ls.css', array(), LS_VERSION );
     wp_enqueue_script( 'ls-script', $uri . '/assets/js/ls.js', array(), LS_VERSION, true );
+
+    // Photo lightbox on pages with galleries.
+    if ( is_singular( array( 'tour', 'destination', 'escapades' ) ) ) {
+        wp_enqueue_style( 'glightbox', $uri . '/assets/css/vendors/glightbox.min.css', array(), null );
+        wp_enqueue_script( 'glightbox', $uri . '/assets/js/vendors/glightbox.min.js', array(), null, true );
+    }
 }
 add_action( 'wp_enqueue_scripts', 'ls_enqueue_assets' );
 

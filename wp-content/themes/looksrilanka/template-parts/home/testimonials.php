@@ -23,8 +23,8 @@ $avatar_colors = array( 'var(--ls-blue)', 'var(--ls-primary-text)', 'var(--ls-na
                     </div>
                     <blockquote><p><?php echo esc_html( $review['quote'] ); ?></p></blockquote>
                     <figcaption class="ls-who-row">
-                        <?php if ( $review['photo'] ) : ?>
-                            <?php echo ls_image( $review['photo'], 'thumbnail', array( 'class' => 'ls-avatar' ) ); ?>
+                        <?php if ( $review['photo'] && ls_image_ok( $review['photo'] ) ) : ?>
+                            <?php echo ls_image( $review['photo'], 'thumbnail', array( 'class' => 'ls-avatar' ), false ); ?>
                         <?php else : ?>
                             <span class="ls-avatar" style="background:<?php echo esc_attr( $avatar_colors[ $i % 3 ] ); ?>" aria-hidden="true"><?php echo esc_html( ls_initials( $review['name'] ) ); ?></span>
                         <?php endif; ?>

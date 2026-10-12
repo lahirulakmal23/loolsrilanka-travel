@@ -22,7 +22,7 @@
         <div class="ls-navbar">
             <a class="ls-logo" href="<?php echo esc_url( home_url( '/' ) ); ?>">
                 <?php if ( $logo ) : ?>
-                    <?php echo ls_image( $logo, 'medium', array( 'alt' => get_bloginfo( 'name' ), 'loading' => 'eager' ) ); ?>
+                    <?php echo ls_image( $logo, 'medium', array( 'alt' => get_bloginfo( 'name' ), 'loading' => 'eager' ), false ); ?>
                 <?php else : ?>
                     <?php bloginfo( 'name' ); ?>
                 <?php endif; ?>

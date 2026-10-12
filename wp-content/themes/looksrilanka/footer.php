@@ -14,7 +14,7 @@ $wa_message  = ls_option( 'ls_whatsapp_message' );
             <div class="ls-foot-brand">
                 <a class="ls-foot-logo" href="<?php echo esc_url( home_url( '/' ) ); ?>">
                     <?php if ( $footer_logo ) : ?>
-                        <?php echo ls_image( $footer_logo, 'medium', array( 'alt' => get_bloginfo( 'name' ) ) ); ?>
+                        <?php echo ls_image( $footer_logo, 'medium', array( 'alt' => get_bloginfo( 'name' ) ), false ); ?>
                     <?php else : ?>
                         <?php bloginfo( 'name' ); ?>
                     <?php endif; ?>

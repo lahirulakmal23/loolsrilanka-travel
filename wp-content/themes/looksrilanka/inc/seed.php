@@ -143,10 +143,10 @@ function ls_seed_content() {
             ),
             array(
                 'image' => ls_seed_attachment( '2024/12/Arugambay-copy-scaled.jpg' ),
-                'title' => 'Day Tours',
-                'count' => '{day_tours} options',
-                'text'  => 'Short on time? Half and full-day trips with a local guide — culture, wildlife, beaches and adventure.',
-                'link'  => ls_seed_link( '/day-tour/', 'See day tours →' ),
+                'title' => 'Experiences',
+                'count' => '{experiences} activities',
+                'text'  => 'Surfing, rafting, hot-air ballooning, whale watching and more — add an adventure to any trip.',
+                'link'  => ls_seed_link( '/experiences/', 'See experiences →' ),
             ),
             array(
                 'image' => ls_seed_attachment( '2025/02/Weligama-Home-01.jpg' ),
@@ -180,6 +180,8 @@ function ls_seed_content() {
         ls_seed_field( 'hp_cta_text', 'Tell us your dates and interests — we\'ll send a draft itinerary within one business day.', $front );
         ls_seed_field( 'hp_cta_btn', ls_seed_link( '/contact-us/', 'Get a Custom Quote' ), $front );
     }
+
+    ls_seed_inner_pages();
 
     update_option( 'ls_seeded_version', LS_VERSION );
 }

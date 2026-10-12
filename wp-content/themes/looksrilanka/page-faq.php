@@ -1,78 +1,78 @@
 <?php
-// Include the header
-get_header();
 /**
  * Template Name: FAQ
+ *
+ * Each row of the "faq" field is a topic. Q:/A: pairs inside it become
+ * separate expandable questions; text without Q: markers is shown as is.
  */
-?>
+get_header();
 
+while ( have_posts() ) :
+    the_post();
+    $topics = ls_get( 'faq' ) ?: array();
+    ?>
+    <main id="primary" class="ls-page ls-faq-page">
+        <?php
+        get_template_part( 'template-parts/page-hero', null, array(
+            'kicker'  => ls_get( 'fq_hero_kicker' ) ?: ls_get( 'sub_title' ),
+            'heading' => ls_get( 'fq_hero_heading' ) ?: get_the_title(),
+            'text'    => ls_get( 'fq_hero_text' ),
+            'image'   => has_post_thumbnail() ? get_post_thumbnail_id() : '',
+        ) );
+        ?>
 
-    <!-- Main -->
-    <main>
-
-        <!-- Title -->
-        <section class="hero" data-aos="fade">
-            <div class="hero-bg">
-                 <?php if (has_post_thumbnail()) : ?>
-                    <?php the_post_thumbnail('full', ['class' => 'img-fluid']); ?>
-
-                <?php else : ?>
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/img/default-image.jpg" alt="Destination">
+        <div class="ls-wrap ls-side-layout ls-side-left">
+            <aside class="ls-side">
+                <?php if ( count( $topics ) > 1 ) : ?>
+                    <nav class="ls-side-card ls-topic-nav" aria-label="<?php esc_attr_e( 'Topics', 'looksrilanka' ); ?>">
+                        <h3><?php esc_html_e( 'Topics', 'looksrilanka' ); ?></h3>
+                        <ul>
+                            <?php foreach ( $topics as $i => $topic ) : ?>
+                                <li><a href="#topic-<?php echo esc_attr( $i + 1 ); ?>"><?php echo esc_html( wp_strip_all_tags( $topic['headingfaq'] ) ); ?></a></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </nav>
                 <?php endif; ?>
-            </div>
-            <div class="bg-content container">
-                <div class="hero-page-title">
-                    <span class="hero-sub-title"><?php echo acf_esc_html( get_field('sub_title') ); ?> </span>
-                    <h1 class="display-4 hero-title">
-                       <?php the_title(); ?>
-                    </h1>
-                </div>
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item"><a href="<?php echo home_url(); ?>">Home</a></li> 
-                        <li class="breadcrumb-item active" aria-current="page"><?php the_title(); ?></li>
-                    </ol>
-                </nav>
-            </div>
-        </section>
-        <!-- /Title -->
 
- 
-        <!-- /Featured -->
-
-        <!-- About -->
-        <section class="p-top-90 p-bottom-90 bg-gray-gradient" data-aos="fade">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="accordion" id="accordionExample">
-                        <?php if( have_rows('faq') ): ?>
-                            <?php $a = 0; while( have_rows('faq') ): the_row(); ?>
-
-                          <div class="accordion-item">
-                            <h2 class="accordion-header">
-                              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?php echo $a; ?>" aria-expanded="false" aria-controls="collapse<?php echo $a; ?>">
-                                <?php echo get_sub_field('headingfaq'); ?>
-                              </button>
-                            </h2>
-                            <div id="collapse<?php echo $a; ?>" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                              <div class="accordion-body">
-                                <?php echo get_sub_field('contentfaq'); ?>
-                              </div>
-                            </div>
-                          </div>
-                        <?php $a++; endwhile; endif; ?>
-                         
-                        </div>
+                <?php if ( $side = ls_get( 'fq_side_text' ) ) : ?>
+                    <div class="ls-side-card">
+                        <?php if ( $h = ls_get( 'fq_side_heading' ) ) : ?><h3><?php echo esc_html( $h ); ?></h3><?php endif; ?>
+                        <p><?php echo esc_html( $side ); ?></p>
+                        <?php echo ls_link( ls_get( 'fq_side_btn' ), 'ls-btn ls-btn-primary ls-btn-block' ); ?>
                     </div>
-                </div>
+                <?php endif; ?>
+
+                <?php get_template_part( 'template-parts/wa-card', null, array( 'text' => ls_get( 'fq_whatsapp_text' ) ) ); ?>
+            </aside>
+
+            <div class="ls-main-col">
+                <?php if ( trim( get_the_content() ) ) : ?>
+                    <div class="ls-prose ls-block-first"><?php the_content(); ?></div>
+                <?php endif; ?>
+
+                <?php foreach ( $topics as $i => $topic ) : ?>
+                    <?php $items = ls_parse_faq_html( $topic['contentfaq'] ); ?>
+                    <section class="ls-faq-topic" id="topic-<?php echo esc_attr( $i + 1 ); ?>">
+                        <h2 class="ls-block-title"><?php echo esc_html( wp_strip_all_tags( $topic['headingfaq'] ) ); ?></h2>
+                        <?php if ( $items ) : ?>
+                            <?php get_template_part( 'template-parts/faq-list', null, array( 'items' => $items ) ); ?>
+                        <?php else : ?>
+                            <div class="ls-prose ls-prose-card"><?php echo wp_kses_post( wpautop( $topic['contentfaq'] ) ); ?></div>
+                        <?php endif; ?>
+                    </section>
+                <?php endforeach; ?>
             </div>
-        </section>
-        <!-- /About -->
+        </div>
 
-      
-
+        <?php
+        get_template_part( 'template-parts/cta-band', null, array(
+            'heading' => ls_get( 'fq_cta_heading' ),
+            'text'    => ls_get( 'fq_cta_text' ),
+            'button'  => ls_get( 'fq_cta_btn' ),
+        ) );
+        ?>
     </main>
-    <!-- /Main -->
-<!-- Footer -->
-<?php get_footer(); ?>
+    <?php
+endwhile;
+
+get_footer();
