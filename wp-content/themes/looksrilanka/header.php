@@ -56,7 +56,7 @@
                 'depth'          => 2,
                 'fallback_cb'    => false,
             ) );
-            echo ls_link( $cta, 'ls-btn ls-btn-gold' );
+            echo ls_link( $cta, 'ls-btn ls-btn-primary' );
             ?>
         </div>
     </header>

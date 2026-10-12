@@ -42,7 +42,7 @@ $multiple = count( $slides ) > 1;
 
                 <?php if ( ! empty( $btn_1['url'] ) || ! empty( $btn_2['url'] ) ) : ?>
                     <div class="ls-actions">
-                        <?php echo ls_link( $btn_1, 'ls-btn ls-btn-gold' ); ?>
+                        <?php echo ls_link( $btn_1, 'ls-btn ls-btn-primary' ); ?>
                         <?php echo ls_link( $btn_2, 'ls-btn ls-btn-outline' ); ?>
                     </div>
                 <?php endif; ?>

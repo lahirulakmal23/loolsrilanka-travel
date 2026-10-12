@@ -70,10 +70,9 @@ function ls_seed_content() {
         array( 'network' => 'tiktok', 'url' => 'https://www.tiktok.com/@lsladventuretourslk' ),
         array( 'network' => 'tripadvisor', 'url' => 'https://www.tripadvisor.com/Attraction_Review-g297897-d11660643-Reviews-LSL_Adventure_Tours-Negombo_Western_Province.html' ),
     ) ), 'option' );
-    ls_seed_field( 'ls_footer_about', 'A Sri Lanka-based inbound tour operator crafting private, tailor-made journeys across the island with licensed chauffeur guides.', 'option' );
-    ls_seed_field( 'ls_footer_explore_title', 'Explore', 'option' );
-    ls_seed_field( 'ls_footer_company_title', 'Company', 'option' );
-    ls_seed_field( 'ls_footer_contact_title', 'Reach us', 'option' );
+    ls_seed_field( 'ls_footer_contact_heading', 'Contact Info', 'option' );
+    ls_seed_field( 'ls_footer_menu_heading', 'LSL Adventure Travels', 'option' );
+    ls_seed_field( 'ls_footer_social_heading', 'Find us on', 'option' );
     ls_seed_field( 'ls_footer_legal', ls_seed_rows( 'ls_footer_legal', array(
         array( 'link' => ls_seed_link( '/privacy-policy/', 'Privacy Policy' ) ),
         array( 'link' => ls_seed_link( '/terms-conditions/', 'Terms & Conditions' ) ),

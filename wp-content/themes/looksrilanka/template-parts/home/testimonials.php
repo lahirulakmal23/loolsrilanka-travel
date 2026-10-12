@@ -4,7 +4,7 @@ $reviews = ls_get( 'hp_testimonials' );
 if ( empty( $reviews ) ) {
     return;
 }
-$avatar_colors = array( 'var(--ls-blue)', 'var(--ls-orange)', 'var(--ls-green)' );
+$avatar_colors = array( 'var(--ls-blue)', 'var(--ls-primary-text)', 'var(--ls-navy)' );
 ?>
 <section class="ls-section">
     <div class="ls-wrap">

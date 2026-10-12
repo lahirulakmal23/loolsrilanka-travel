@@ -12,6 +12,6 @@ $text = ls_get( 'hp_cta_text' );
         <?php if ( $text ) : ?>
             <p><?php echo esc_html( $text ); ?></p>
         <?php endif; ?>
-        <div class="ls-actions"><?php echo ls_link( ls_get( 'hp_cta_btn' ), 'ls-btn ls-btn-gold' ); ?></div>
+        <div class="ls-actions"><?php echo ls_link( ls_get( 'hp_cta_btn' ), 'ls-btn ls-btn-primary' ); ?></div>
     </div>
 </section>

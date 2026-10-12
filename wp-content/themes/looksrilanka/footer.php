@@ -1,4 +1,8 @@
 <?php
+/**
+ * Footer — same layout as the original theme footer (logo, contact info,
+ * menu, social links, skyline illustration), with every item editable.
+ */
 $footer_logo = ls_option( 'footer_logo' );
 $phone       = ls_option( 'phone_number' );
 $email       = ls_option( 'email_address' );
@@ -10,86 +14,79 @@ $whatsapp    = preg_replace( '/\D/', '', (string) ls_option( 'ls_whatsapp' ) );
 $wa_message  = ls_option( 'ls_whatsapp_message' );
 ?>
     <footer class="ls-footer">
-        <div class="ls-wrap ls-foot-grid">
-            <div class="ls-foot-brand">
-                <a class="ls-foot-logo" href="<?php echo esc_url( home_url( '/' ) ); ?>">
-                    <?php if ( $footer_logo ) : ?>
-                        <?php echo ls_image( $footer_logo, 'medium', array( 'alt' => get_bloginfo( 'name' ) ) ); ?>
-                    <?php else : ?>
-                        <?php bloginfo( 'name' ); ?>
-                    <?php endif; ?>
-                </a>
-                <?php if ( $about = ls_option( 'ls_footer_about' ) ) : ?>
-                    <p><?php echo esc_html( $about ); ?></p>
-                <?php endif; ?>
-                <?php if ( $social ) : ?>
-                    <ul class="ls-social">
-                        <?php foreach ( $social as $item ) : ?>
-                            <?php if ( empty( $item['url'] ) ) { continue; } ?>
-                            <li>
-                                <a href="<?php echo esc_url( $item['url'] ); ?>" target="_blank" rel="noopener" aria-label="<?php echo esc_attr( ucfirst( $item['network'] ) ); ?>">
-                                    <?php echo ls_social_icon( $item['network'] ); ?>
-                                </a>
-                            </li>
-                        <?php endforeach; ?>
+
+        <div class="ls-foot-top">
+            <div class="ls-wrap ls-foot-grid">
+                <div class="ls-foot-widget ls-foot-brand">
+                    <a class="ls-foot-logo" href="<?php echo esc_url( home_url( '/' ) ); ?>">
+                        <?php if ( $footer_logo ) : ?>
+                            <?php echo ls_image( $footer_logo, 'medium_large', array( 'alt' => get_bloginfo( 'name' ) ) ); ?>
+                        <?php else : ?>
+                            <?php bloginfo( 'name' ); ?>
+                        <?php endif; ?>
+                    </a>
+                </div>
+
+                <div class="ls-foot-widget">
+                    <h2 class="ls-foot-title"><?php echo esc_html( ls_option( 'ls_footer_contact_heading' ) ?: 'Contact Info' ); ?></h2>
+                    <ul class="ls-foot-contact">
+                        <?php if ( $address ) : ?>
+                            <li><?php echo esc_html( $address ); ?></li>
+                        <?php endif; ?>
+                        <?php if ( $phone ) : ?>
+                            <li><a href="tel:<?php echo esc_attr( preg_replace( '/[^\d+]/', '', $phone ) ); ?>"><?php echo esc_html( $phone ); ?></a></li>
+                        <?php endif; ?>
+                        <?php if ( $email ) : ?>
+                            <li><a href="mailto:<?php echo esc_attr( antispambot( $email ) ); ?>"><?php echo esc_html( antispambot( $email ) ); ?></a></li>
+                        <?php endif; ?>
                     </ul>
+                </div>
+
+                <div class="ls-foot-widget">
+                    <h2 class="ls-foot-title"><?php echo esc_html( ls_option( 'ls_footer_menu_heading' ) ?: get_bloginfo( 'name' ) ); ?></h2>
+                    <?php
+                    wp_nav_menu( array(
+                        'theme_location' => 'footer-menu',
+                        'menu_class'     => 'ls-foot-links',
+                        'container'      => false,
+                        'depth'          => 1,
+                        'fallback_cb'    => 'ls_footer_fallback',
+                    ) );
+                    ?>
+                </div>
+
+                <?php if ( $social ) : ?>
+                    <div class="ls-foot-widget">
+                        <h2 class="ls-foot-title"><?php echo esc_html( ls_option( 'ls_footer_social_heading' ) ?: 'Find us on' ); ?></h2>
+                        <ul class="ls-social">
+                            <?php foreach ( $social as $item ) : ?>
+                                <?php if ( empty( $item['url'] ) ) { continue; } ?>
+                                <li>
+                                    <a href="<?php echo esc_url( $item['url'] ); ?>" target="_blank" rel="noopener" aria-label="<?php echo esc_attr( ucfirst( $item['network'] ) ); ?>">
+                                        <?php echo ls_social_icon( $item['network'] ); ?>
+                                    </a>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
                 <?php endif; ?>
-            </div>
-
-            <div>
-                <h2 class="ls-foot-title"><?php echo esc_html( ls_option( 'ls_footer_explore_title' ) ?: 'Explore' ); ?></h2>
-                <?php
-                wp_nav_menu( array(
-                    'theme_location' => 'footer-explore',
-                    'menu_class'     => 'ls-foot-links',
-                    'container'      => false,
-                    'depth'          => 1,
-                    'fallback_cb'    => 'ls_footer_fallback',
-                ) );
-                ?>
-            </div>
-
-            <div>
-                <h2 class="ls-foot-title"><?php echo esc_html( ls_option( 'ls_footer_company_title' ) ?: 'Company' ); ?></h2>
-                <?php
-                wp_nav_menu( array(
-                    'theme_location' => 'footer-company',
-                    'menu_class'     => 'ls-foot-links',
-                    'container'      => false,
-                    'depth'          => 1,
-                    'fallback_cb'    => 'ls_footer_fallback',
-                ) );
-                ?>
-            </div>
-
-            <div>
-                <h2 class="ls-foot-title"><?php echo esc_html( ls_option( 'ls_footer_contact_title' ) ?: 'Reach us' ); ?></h2>
-                <ul class="ls-foot-links">
-                    <?php if ( $phone ) : ?>
-                        <li><a href="tel:<?php echo esc_attr( preg_replace( '/[^\d+]/', '', $phone ) ); ?>"><?php echo esc_html( $phone ); ?></a></li>
-                    <?php endif; ?>
-                    <?php if ( $email ) : ?>
-                        <li><a href="mailto:<?php echo esc_attr( antispambot( $email ) ); ?>"><?php echo esc_html( antispambot( $email ) ); ?></a></li>
-                    <?php endif; ?>
-                    <?php if ( $address ) : ?>
-                        <li><?php echo esc_html( $address ); ?></li>
-                    <?php endif; ?>
-                </ul>
             </div>
         </div>
 
         <div class="ls-wrap ls-foot-bottom">
-            <span>&copy; <?php echo esc_html( date( 'Y' ) ); ?> <?php bloginfo( 'name' ); ?>. All rights reserved.</span>
-            <span class="ls-foot-legal">
-                <?php if ( $legal ) : ?>
-                    <?php foreach ( $legal as $item ) : ?>
-                        <?php echo ls_link( $item['link'] ); ?>
+            <p>&copy; <?php echo esc_html( date( 'Y' ) ); ?> <?php bloginfo( 'name' ); ?>. All rights reserved.</p>
+            <?php if ( $legal || $note ) : ?>
+                <ul class="ls-foot-legal">
+                    <?php foreach ( (array) $legal as $item ) : ?>
+                        <?php if ( $link = ls_link( $item['link'] ) ) : ?>
+                            <li><?php echo $link; ?></li>
+                        <?php endif; ?>
                     <?php endforeach; ?>
-                <?php endif; ?>
-                <?php if ( $note ) : ?>
-                    <span><?php echo esc_html( $note ); ?></span>
-                <?php endif; ?>
-            </span>
+                    <?php if ( $note ) : ?>
+                        <li><?php echo esc_html( $note ); ?></li>
+                    <?php endif; ?>
+                </ul>
+            <?php endif; ?>
         </div>
     </footer>
 
