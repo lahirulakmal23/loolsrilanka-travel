@@ -534,78 +534,67 @@ html:has(body.ls-redesign) { scroll-behavior: smooth; }
 .ls-page .ls-cta-band p { margin: 16px auto 0; color: #D6E4EC; }
 .ls-cta-band .ls-actions { justify-content: center; }
 
-/* Footer (layout from the original theme) ---------------------------------- */
+/* Footer ------------------------------------------------------------------- */
 
 .ls-footer {
-    position: relative;
-    padding: 90px 0;
+    padding: 56px 0 30px;
     background: var(--ls-navy);
-    color: rgba(255, 255, 255, .65);
+    color: #A9BAB6;
     font-family: var(--ls-sans);
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.55;
+    font-size: .9rem;
+    line-height: 1.5;
 }
-.ls-foot-top {
-    margin-bottom: 45px;
-    padding-bottom: 150px;
-    border-bottom: 1px solid rgba(255, 255, 255, .15);
-    background: url(../img/footer.png) no-repeat center bottom / min(1200px, 100%) auto;
-}
-.ls-foot-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0 24px; }
-.ls-foot-widget { margin-bottom: 2.5rem; }
+.ls-foot-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; }
 .ls-foot-logo {
     display: inline-block;
+    margin-bottom: 14px;
     font-family: var(--ls-serif);
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     color: var(--ls-white) !important;
     text-decoration: none !important;
 }
-.ls-foot-logo img { display: block; width: 100%; max-width: 260px; height: auto; }
+.ls-foot-logo img { display: block; max-height: 64px; width: auto; }
+.ls-foot-brand p { max-width: 34ch; margin: 0; color: #A9BAB6; }
 .ls-footer .ls-foot-title {
-    margin: 0;
-    padding-bottom: 1rem;
+    margin: 0 0 14px;
     font-family: var(--ls-serif);
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     font-weight: 400;
-    line-height: 1.2;
     color: var(--ls-white);
 }
-.ls-foot-contact,
-.ls-foot-links,
-.ls-foot-legal,
-.ls-social { margin: 0; padding: 0; list-style: none; }
-.ls-foot-contact li { margin-bottom: 1rem; color: var(--ls-white); }
-.ls-foot-links li { margin: 0; padding: 0 0 .5rem; }
-.ls-foot-links a { display: inline-block; padding: .125rem 0; }
-.ls-footer a { color: var(--ls-white) !important; text-decoration: none !important; transition: color .2s; }
+.ls-foot-links { display: flex; flex-direction: column; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.ls-foot-links li { margin: 0; }
+.ls-footer a { color: #A9BAB6 !important; text-decoration: none !important; transition: color .2s; }
 .ls-footer a:hover { color: var(--ls-primary) !important; }
 
-.ls-social { display: flex; flex-wrap: wrap; gap: 20px; padding-top: 1rem; }
-.ls-social a { display: block; }
-.ls-social svg { display: block; width: 28px; height: 28px; }
+.ls-social { display: flex; gap: 10px; margin: 20px 0 0; padding: 0; list-style: none; }
+.ls-social a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(255, 255, 255, .15);
+    border-radius: 50%;
+}
+.ls-social a:hover { border-color: var(--ls-primary); }
+.ls-social svg { width: 16px; height: 16px; }
 
 .ls-foot-bottom {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    align-items: center;
-    gap: 12px 24px;
+    gap: 10px;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, .08);
+    font-size: .82rem;
 }
-.ls-foot-bottom p { margin: 0; }
-.ls-foot-legal { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+.ls-foot-legal { display: flex; flex-wrap: wrap; gap: 18px; }
 
-@media (max-width: 1199px) {
-    .ls-foot-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 767px) {
-    .ls-footer { padding: 64px 0; }
-    .ls-foot-top { padding-bottom: 90px; }
-    .ls-foot-grid { grid-template-columns: 1fr; }
-}
-@media (max-width: 480px) {
-    .ls-foot-brand { text-align: center; }
-    .ls-foot-logo img { max-width: 215px; margin: 0 auto; }
+@media (max-width: 760px) {
+    .ls-foot-grid { grid-template-columns: 1fr 1fr; }
+    .ls-foot-brand { grid-column: 1 / -1; }
 }
 
 /* WhatsApp button ---------------------------------------------------------- */

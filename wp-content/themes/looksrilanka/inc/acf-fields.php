@@ -102,13 +102,11 @@ function ls_register_field_groups() {
             ) ),
 
             ls_tab( 'Footer' ),
-            ls_f( 'message', 'ls_footer_note_logo', 'Footer logo', array(
-                'message' => 'The footer logo, address, phone and email are set under Theme Settings → Footer / Header.',
-            ) ),
-            ls_f( 'text', 'ls_footer_contact_heading', 'Contact column heading', array( 'default_value' => 'Contact Info' ) ),
-            ls_f( 'text', 'ls_footer_menu_heading', 'Menu column heading', array( 'instructions' => 'Links come from Appearance → Menus → "Footer menu".' ) ),
-            ls_f( 'text', 'ls_footer_social_heading', 'Social column heading', array( 'default_value' => 'Find us on', 'instructions' => 'Icons come from the "Social links" list on the Contact & Social tab.' ) ),
-            ls_f( 'text', 'ls_footer_note', 'Extra bottom note', array( 'instructions' => 'Optional, e.g. a licence or registration number.' ) ),
+            ls_f( 'textarea', 'ls_footer_about', 'Footer description', array( 'rows' => 3, 'new_lines' => '' ) ),
+            ls_f( 'text', 'ls_footer_explore_title', 'Column 2 heading', array( 'default_value' => 'Explore', 'instructions' => 'Links come from Appearance → Menus → "Footer: Explore column".' ) ),
+            ls_f( 'text', 'ls_footer_company_title', 'Column 3 heading', array( 'default_value' => 'Company', 'instructions' => 'Links come from Appearance → Menus → "Footer: Company column".' ) ),
+            ls_f( 'text', 'ls_footer_contact_title', 'Column 4 heading', array( 'default_value' => 'Reach us', 'instructions' => 'Phone, email and address come from Theme Settings → Header / Footer.' ) ),
+            ls_f( 'text', 'ls_footer_note', 'Bottom-right note', array( 'instructions' => 'e.g. a licence or registration number. Leave empty to show the Privacy / Terms links only.' ) ),
             ls_f( 'repeater', 'ls_footer_legal', 'Bottom links', array(
                 'layout'       => 'table',
                 'button_label' => 'Add link',

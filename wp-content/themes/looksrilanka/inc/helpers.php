@@ -116,17 +116,24 @@ function ls_social_icon( $network ) {
 }
 
 /**
- * Fallback for the footer menu when no menu is assigned in Appearance > Menus.
+ * Fallback for the footer menus when no menu is assigned in Appearance > Menus.
  */
 function ls_footer_fallback( $args ) {
-    $items = array(
-        '/'               => 'Home',
-        '/about-us/'      => 'About us',
-        '/tailor-made-2/' => 'Tailor-Made',
-        '/blog/'          => 'Blog',
-        '/faq/'           => 'Faq',
-        '/contact-us/'    => 'Contact us',
+    $sets = array(
+        'footer-explore' => array(
+            '/tour/'        => 'Tour Itineraries',
+            '/day-tour/'    => 'Day Tours',
+            '/destination/' => 'Destinations',
+            '/blog/'        => 'Blog',
+        ),
+        'footer-company' => array(
+            '/about-us/'      => 'About Us',
+            '/tailor-made-2/' => 'Tailor-Made Tours',
+            '/faq/'           => 'FAQ',
+            '/contact-us/'    => 'Contact',
+        ),
     );
+    $items = isset( $sets[ $args['theme_location'] ] ) ? $sets[ $args['theme_location'] ] : array();
 
     echo '<ul class="' . esc_attr( $args['menu_class'] ) . '">';
     foreach ( $items as $path => $label ) {

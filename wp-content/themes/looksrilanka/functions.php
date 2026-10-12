@@ -7,7 +7,7 @@
  * (plus ls.css for the shared header and footer).
  */
 
-define( 'LS_VERSION', '2.0.1' );
+define( 'LS_VERSION', '2.0.2' );
 
 require get_template_directory() . '/inc/helpers.php';
 require get_template_directory() . '/inc/acf-fields.php';
@@ -24,6 +24,8 @@ function ls_setup() {
     register_nav_menus( array(
         'header-menu'    => __( 'Header Menu' ),
         'footer-menu'    => __( 'Footer menu' ),
+        'footer-explore' => __( 'Footer: Explore column' ),
+        'footer-company' => __( 'Footer: Company column' ),
         'tour-menu'      => __( 'Tour menu' ),
         'day-tour-menu'  => __( 'Day tour menu' ),
     ) );
