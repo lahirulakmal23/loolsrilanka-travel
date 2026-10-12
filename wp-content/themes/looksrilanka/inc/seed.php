@@ -165,6 +165,7 @@ function ls_seed_content() {
             array( 'icon' => 'tag', 'title' => 'No hidden charges', 'text' => 'Travel permits, lodging and meals are included as quoted. No surprises with hidden costs.' ),
             array( 'icon' => 'sliders', 'title' => '100% customisable', 'text' => 'Tell us your travel needs and we will tailor the trip to them for an unforgettable experience.' ),
         ) ), $front );
+        ls_seed_field( 'hp_why_image', ls_seed_attachment( '2025/02/Clients-at-Sigiriya.jpg' ), $front );
         ls_seed_field( 'hp_why_caption', 'A classic route: Sigiriya, Kandy, Ella and Galle', $front );
 
         ls_seed_field( 'hp_b2b_show', 1, $front );
@@ -179,6 +180,7 @@ function ls_seed_content() {
         ls_seed_field( 'hp_cta_heading', 'Ready to see the island properly?', $front );
         ls_seed_field( 'hp_cta_text', 'Tell us your dates and interests — we\'ll send a draft itinerary within one business day.', $front );
         ls_seed_field( 'hp_cta_btn', ls_seed_link( '/contact-us/', 'Get a Custom Quote' ), $front );
+        ls_seed_field( 'hp_cta_image', ls_seed_attachment( '2025/02/Front-Nuwaraeliya.jpg' ), $front );
     }
 
     ls_seed_inner_pages();

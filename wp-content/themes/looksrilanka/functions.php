@@ -6,7 +6,7 @@
  * Content is edited through ACF fields (inc/acf-fields*.php).
  */
 
-define( 'LS_VERSION', '2.3.0' );
+define( 'LS_VERSION', '2.4.0' );
 
 require get_template_directory() . '/inc/helpers.php';
 require get_template_directory() . '/inc/acf-fields.php';
@@ -85,8 +85,12 @@ function ls_enqueue_assets() {
     $uri = get_template_directory_uri();
 
     wp_enqueue_style( 'ls-fonts', 'https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap', array(), null );
-    wp_enqueue_style( 'ls-style', $uri . '/assets/css/ls.css', array(), LS_VERSION );
-    wp_enqueue_script( 'ls-script', $uri . '/assets/js/ls.js', array(), LS_VERSION, true );
+    // Scroll-reveal animations (AOS); ls.js decides which elements get them.
+    wp_enqueue_style( 'aos', $uri . '/assets/css/vendors/aos.min.css', array(), null );
+    wp_enqueue_script( 'aos', $uri . '/assets/js/vendors/aos.js', array(), null, true );
+
+    wp_enqueue_style( 'ls-style', $uri . '/assets/css/ls.css', array( 'aos' ), LS_VERSION );
+    wp_enqueue_script( 'ls-script', $uri . '/assets/js/ls.js', array( 'aos' ), LS_VERSION, true );
 
     // Photo lightbox on pages with galleries.
     if ( is_singular( array( 'tour', 'destination', 'escapades' ) ) ) {

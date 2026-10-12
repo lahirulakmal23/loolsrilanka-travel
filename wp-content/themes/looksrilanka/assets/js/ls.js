@@ -155,4 +155,39 @@
     if (window.GLightbox && document.querySelector('.ls-page .glightbox')) {
         window.GLightbox({ selector: '.ls-page .glightbox' });
     }
+
+    // Scroll reveal (AOS). Attributes are added here rather than in the
+    // templates, so content stays visible if the script never runs.
+    // Heroes keep their own CSS animation, and grids animate as a whole
+    // because AOS's transform would cancel the cards' hover lift.
+    if (window.AOS) {
+        var reveal = [
+            '.ls-section-head',
+            '.ls-exp-grid', '.ls-testi-grid', '.ls-grid', '.ls-stats-grid',
+            '.ls-why-photo',
+            '.ls-b2b > .ls-wrap', '.ls-cta-band > .ls-wrap', '.ls-cta-green > .ls-wrap'
+        ];
+
+        document.querySelectorAll(reveal.join(',')).forEach(function (el) {
+            if (!el.closest('.ls-hero, .ls-page-hero') && !el.hasAttribute('data-aos')) {
+                el.setAttribute('data-aos', 'fade-up');
+            }
+        });
+
+        // List items come in one after another.
+        document.querySelectorAll('.ls-why-list li').forEach(function (li, i) {
+            li.setAttribute('data-aos', 'fade-up');
+            li.setAttribute('data-aos-delay', String(Math.min(i, 5) * 100));
+        });
+
+        window.AOS.init({
+            once: true,
+            duration: 700,
+            easing: 'ease-out-cubic',
+            offset: 60,
+            disable: function () {
+                return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            }
+        });
+    }
 })();

@@ -214,7 +214,7 @@ function ls_register_field_groups() {
                 ) ),
             ) ),
             ls_f( 'image', 'hp_why_image', 'Side image', array(
-                'instructions' => 'Optional. Leave empty to show the built-in route map illustration.',
+                'instructions' => 'Portrait photo works best (about 4:5). Leave empty to use a fallback photo.',
                 'return_format' => 'id',
                 'preview_size'  => 'medium',
                 'wrapper'       => array( 'width' => 50 ),
@@ -251,6 +251,11 @@ function ls_register_field_groups() {
             ls_f( 'text', 'hp_cta_heading', 'Heading' ),
             ls_f( 'textarea', 'hp_cta_text', 'Text', array( 'rows' => 2, 'new_lines' => '' ) ),
             ls_f( 'link', 'hp_cta_btn', 'Button' ),
+            ls_f( 'image', 'hp_cta_image', 'Background image', array(
+                'instructions'  => 'Wide landscape photo, at least 2000px wide. A dark overlay keeps the text readable. Leave empty for a plain blue band.',
+                'return_format' => 'id',
+                'preview_size'  => 'medium',
+            ) ),
         ),
     ) );
 }
