@@ -1,0 +1,16 @@
+# Track only custom code. WordPress core, config, uploads, cache and
+# third-party plugins stay out of the repo.
+/*
+!/.gitignore
+!/wp-content/
+
+/wp-content/*
+!/wp-content/themes/
+
+/wp-content/themes/*
+!/wp-content/themes/Shivanka/
+
+*.zip
+*.log
+.DS_Store
+Thumbs.db

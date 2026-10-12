@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<!-- Head -->
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Destinations 2 - Moliva - Travel & Tours Bootstrap HTML Template</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="Themenix.com">
+    <link href="./assets/img/logos/128x128.png" rel="shortcut icon" type="image/png">
+    <link href="./assets/css/vendors/bootstrap.min.css" rel="stylesheet">
+    <link href="./assets/fonts/hotel-icons/hotel-icons.min.css" rel="stylesheet">
+    <link href="./assets/css/vendors/aos.min.css" rel="stylesheet">
+    <link href="./assets/css/vendors/plyr.min.css" rel="stylesheet">
+    <link href="./assets/css/vendors/glightbox.min.css" rel="stylesheet">
+    <link href="./assets/css/vendors/splide.min.css" rel="stylesheet">
+    <link href="./assets/css/vendors/flatpickr.min.css" rel="stylesheet">
+    <link href="./assets/css/vendors/use-bootstrap-select.min.css" rel="stylesheet">
+    <link href="./assets/css/main.css" rel="stylesheet">
+</head>
+
+<!-- /Head -->
+
+<body>
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+    <!-- /Preloader -->
+
+    <!-- Header -->
+    <header id="header" data-aos="fade">
+
+        <!-- Header Topbar -->
+        <div class="header-topbar">
+            <div class="container">
+                <div class="row g-0">
+                    <div class="col-6 col-xl-7 col-md-8">
+                        <div class="d-flex align-items-center">
+                            <a href="tel:+84966704132">
+                                <i class="hicon hicon-telephone me-1"></i>
+                                <span>+33 321-654-987</span>
+                            </a>
+                            <span class="vr bg-white d-none d-md-inline ms-3 me-3"></span>
+                            <a href="mailto:" class="d-none d-md-inline">
+                                <i class="hicon hicon-email-envelope me-1"></i>
+                                <span>Booking@example.com</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-6 col-xl-5 col-md-4">
+                        <div class="text-end">
+                            <a class="d-inline-flex align-items-center me-3" data-bs-toggle="modal" href="#mdlLanguage">
+                                <img src="./assets/img/flags/en.svg" height="14" class="me-1" alt="">
+                                <span class="me-1">English</span>
+                                <i class="hicon hicon-thin-arrow-down hicon-bold hicon-60"></i>
+                            </a>
+                            <a class="d-inline-flex align-items-center" data-bs-toggle="modal" href="#mdlCurrency">
+                                <span class="me-1">USD</span>
+                                <i class="hicon hicon-thin-arrow-down hicon-bold hicon-60"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Header Topbar -->
+
+        <!-- Header Navbar -->
+        <div class="header-navbar">
+            <nav class="navbar navbar-expand-xl">
+                <div class="container">
+                    <button class="navbar-toggler me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                        <i class="hicon hicon-bold hicon-hamburger-menu"></i>
+                    </button>
+                    <a class="navbar-brand" href="./index.html">
+                        <img src="./assets/img/logos/170x50-1.png" srcset="./assets/img/logos/340x100-1.png 2x" alt="">
+                    </a>
+                    <div class="offcanvas offcanvas-navbar offcanvas-start border-end-0" tabindex="-1" id="offcanvasNavbar">
+                        <div class="offcanvas-header border-bottom p-4 p-xl-0">
+                            <a href="./index.html" class="d-inline-block">
+                                <img src="./assets/img/logos/170x50-2.png" srcset="./assets/img/logos/340x100-2.png 2x" alt="">
+                            </a>
+                            <button type="button" class="btn-close shadow-none" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body p-4 p-xl-0">
+                            <ul class="navbar-nav">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle-hover" href="./index.html" data-bs-display="static">
+                                        <span>Home</span>
+                                        <i class="hicon hicon-thin-arrow-down hicon-bold dropdown-toggle-icon"></i>
+                                    </a>
+                                    <ul class="dropdown-menu slideIn" data-bs-popper="static">
+                                        <li>
+                                            <a class="dropdown-item" href="./index.html">Home 1</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="./home-2.html">Home 2</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="./home-3.html">Home 3</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle-hover active" href="./destinations-1.html" data-bs-display="static">
+                                        <span>Destinations</span>
+                                        <i class="hicon hicon-thin-arrow-down hicon-bold dropdown-toggle-icon"></i>
+                                    </a>
+                                    <ul class="dropdown-menu slideIn" data-bs-popper="static">
+                                        <li>
+                                            <a class="dropdown-item" href="./destinations-1.html">Destinations 1</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item active" href="./destinations-2.html">Destinations 2</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="./destinations-3.html">Destinations 3</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle-hover" href="./tour-packages-1.html" data-bs-display="static">
+                                        <span>Moliva Tours</span>
+                                        <i class="hicon hicon-thin-arrow-down hicon-bold dropdown-toggle-icon"></i>
+                                    </a>
+                                    <ul class="dropdown-menu slideIn" data-bs-popper="static">
+                                        <li>
+                                            <a class="dropdown-item" href="./tour-packages-1.html">Tour packages 1</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="./tour-packages-2.html">Tour packages 2</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="./tour-packages-3.html">Tour packages 3</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="./single-tour-1.html">Single tour 1</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="./single-tour-2.html">Single tour 2</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="./single-tour-3.html">Single tour 3</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle-hover" href="post-list-1.html" data-bs-display="static">
+                                        <span>Travel Insight</span>
+                                        <i class="hicon hicon-thin-arrow-down hicon-bold dropdown-toggle-icon"></i>
+                                    </a>
+                                    <ul class="dropdown-menu slideIn" data-bs-popper="static">
+                                        <li>
+                                            <a class="dropdown-item" href="./post-list.html">Post list</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="./single-post.html">Single post</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle-hover" href="#" data-bs-display="static">
+                                        <span>Pages</span>
+                                        <i class="hicon hicon-thin-arrow-down hicon-bold dropdown-toggle-icon"></i>
+                                    </a>
+                                    <div class="dropdown-menu slideIn" data-bs-popper="static">
+                                        <div class="mega-menu">
+                                            <div class="mega-menu-item">
+                                                <div class="mega-menu-title">
+                                                    <span>My Account</span>
+                                                </div>
+                                                <ul class="nav flex-column ms-6 ms-xl-0">
+                                                    <li>
+                                                        <a class="dropdown-item" href="./dashboard.html">Dashboard</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="./booking.html">Booking</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="./wishlist.html">Wishlist</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="./settings.html">Settings</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="./security.html">Security</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="./login.html">Login</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="./register.html">Register</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="./forgot-password.html">Forgot Password</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="./new-password.html">New Password</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="mega-menu-item">
+                                                <div class="mega-menu-title">
+                                                    <span>Booking</span>
+                                                </div>
+                                                <ul class="nav flex-column ms-6 ms-xl-0">
+                                                    <li>
+                                                        <a class="dropdown-item" href="./shopping-cart.html">1. Shopping cart</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="./checkout.html">2. Checkout</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="./completed.html">3. Completed</a>
+                                                    </li>
+                                                </ul>
+                                                <div class="mega-menu-title">
+                                                    <span>Other pages</span>
+                                                </div>
+                                                <ul class="nav flex-column ms-6 ms-xl-0">
+                                                    <li>
+                                                        <a class="dropdown-item" href="./about.html">About</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="./contact.html">Contact</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="./coming-soon.html">Coming Soon</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="./404.html">404 page</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="d-flex align-items-center ms-auto">
+                                <a href="./shopping-cart.html" class="circle-icon cart-icon me-4">
+                                    <i class="hicon hicon-bold hicon-shopping-markets"></i>
+                                    <span>3</span>
+                                </a>
+                                <a href="./wishlist.html" class="circle-icon wishlist-icon me-4">
+                                    <i class="hicon hicon-bold hicon-menu-favorite"></i>
+                                    <span>5</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dropdown user-menu ms-xl-auto">
+                        <button class="circle-icon circle-icon-link circle-icon-link-hover" data-bs-toggle="dropdown" data-bs-display="static">
+                            <i class="hicon hicon-mmb-account"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end animate slideIn" data-bs-popper="static">
+                            <li>
+                                <a class="dropdown-item" href="./register.html">
+                                    <i class="hicon hicon-edit me-1"></i>
+                                    <span>Register</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="./login.html">
+                                    <i class="hicon hicon-aps-lock me-1"></i>
+                                    <span>Login</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <!-- /Header Navbar -->
+
+        <!-- Language -->
+        <div class="modal fade" id="mdlLanguage" tabindex="-1" aria-labelledby="h3Language" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content border-0 shadow-lg">
+                    <div class="modal-header">
+                        <span class="fs-3 modal-title text-body-emphasis fw-medium" id="h3Language">Select language</span>
+                        <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="list-unstyled row mb-0">
+                            <li class="col-6 col-lg-4">
+                                <a href="?lang=en" class="link-dark link-hover">
+                                    <span class="d-flex align-items-center pt-2 pb-2">
+                                        <img src="./assets/img/flags/en.svg" height="16" alt="">
+                                        <span class="ms-2">English</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="col-6 col-lg-4">
+                                <a href="?lang=en" class="link-dark link-hover">
+                                    <span class="d-flex align-items-center pt-2 pb-2">
+                                        <img src="./assets/img/flags/fr.svg" height="16" alt="">
+                                        <span class="ms-2">Français</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="col-6 col-lg-4">
+                                <a href="?lang=en" class="link-dark link-hover">
+                                    <span class="d-flex align-items-center pt-2 pb-2">
+                                        <img src="./assets/img/flags/es.svg" height="16" alt="">
+                                        <span class="ms-2">Español</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="col-6 col-lg-4">
+                                <a href="?lang=en" class="link-dark link-hover">
+                                    <span class="d-flex align-items-center pt-2 pb-2">
+                                        <img src="./assets/img/flags/de.svg" height="16" alt="">
+                                        <span class="ms-2">Deutsch</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="col-6 col-lg-4">
+                                <a href="?lang=en" class="link-dark link-hover">
+                                    <span class="d-flex align-items-center pt-2 pb-2">
+                                        <img src="./assets/img/flags/it.svg" height="16" alt="">
+                                        <span class="ms-2">Italiano</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="col-6 col-lg-4">
+                                <a href="?lang=en" class="link-dark link-hover">
+                                    <span class="d-flex align-items-center pt-2 pb-2">
+                                        <img src="./assets/img/flags/nl.svg" height="16" alt="">
+                                        <span class="ms-2">Nederlands</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="col-6 col-lg-4">
+                                <a href="?lang=en" class="link-dark link-hover">
+                                    <span class="d-flex align-items-center pt-2 pb-2">
+                                        <img src="./assets/img/flags/pt.svg" height="16" alt="">
+                                        <span class="ms-2">Português</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="col-6 col-lg-4">
+                                <a href="?lang=en" class="link-dark link-hover">
+                                    <span class="d-flex align-items-center pt-2 pb-2">
+                                        <img src="./assets/img/flags/ru.svg" height="16" alt="">
+                                        <span class="ms-2">Русский</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="col-6 col-lg-4">
+                                <a href="?lang=en" class="link-dark link-hover">
+                                    <span class="d-flex align-items-center pt-2 pb-2">
+                                        <img src="./assets/img/flags/cn.svg" height="16" alt="">
+                                        <span class="ms-2">日本語</span>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Language -->
+
+        <!-- Currency -->
+        <div class="modal fade" id="mdlCurrency" tabindex="-1" aria-labelledby="h3Currency" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content border-0 shadow-lg">
+                    <div class="modal-header">
+                        <span class="fs-3 modal-title text-body-emphasis fw-medium" id="h3Currency">Select currency</span>
+                        <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="list-unstyled row mb-0">
+                            <li class="col-12 col-lg-6">
+                                <a href="?currency=usd" class="link-dark link-hover">
+                                    <span class="d-block pt-2 pb-2"><strong>USD</strong> (United States Dollar)</span>
+                                </a>
+                            </li>
+                            <li class="col-12 col-lg-6">
+                                <a href="?currency=eur" class="link-dark link-hover">
+                                    <span class="d-block pt-2 pb-2"><strong>EUR</strong> (Euro)</span>
+                                </a>
+                            </li>
+                            <li class="col-12 col-lg-6">
+                                <a href="?currency=gbp" class="link-dark link-hover">
+                                    <span class="d-block pt-2 pb-2"><strong>GBP</strong> (Pound Sterling)</span>
+                                </a>
+                            </li>
+                            <li class="col-12 col-lg-6">
+                                <a href="?currency=aud" class="link-dark link-hover">
+                                    <span class="d-block pt-2 pb-2"><strong>AUD</strong> (Australian Dollar)</span>
+                                </a>
+                            </li>
+                            <li class="col-12 col-lg-6">
+                                <a href="?currency=nzd" class="link-dark link-hover">
+                                    <span class="d-block pt-2 pb-2"><strong>NZD</strong> (New Zealand Dollar)</span>
+                                </a>
+                            </li>
+                            <li class="col-12 col-lg-6">
+                                <a href="?currency=cad" class="link-dark link-hover">
+                                    <span class="d-block pt-2 pb-2"><strong>CAD</strong> (Canadian Dollar)</span>
+                                </a>
+                            </li>
+                            <li class="col-12 col-lg-6">
+                                <a href="?currency=jpy" class="link-dark link-hover">
+                                    <span class="d-block pt-2 pb-2"><strong>JPY</strong> (Japanese Yen)</span>
+                                </a>
+                            </li>
+                            <li class="col-12 col-lg-6">
+                                <a href="?currency=cny" class="link-dark link-hover">
+                                    <span class="d-block pt-2 pb-2"><strong>CNY</strong> (Chinese Yuan)</span>
+                                </a>
+                            </li>
+                            <li class="col-12 col-lg-6">
+                                <a href="?currency=vnd" class="link-dark link-hover">
+                                    <span class="d-block pt-2 pb-2"><strong>VND</strong> (Vietnam Dong)</span>
+                                </a>
+                            </li>
+                            <li class="col-12 col-lg-6">
+                                <a href="?currency=sgd" class="link-dark link-hover">
+                                    <span class="d-block pt-2 pb-2"><strong>SGD</strong> (Singapore Dollar)</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Currency -->
+
+    </header>
+    <!-- /Header -->
+
+    <!-- Main -->
+    <main>
+
+        <!-- Title -->
+        <section class="hero" data-aos="fade">
+            <div class="hero-bg">
+                <img src="./assets/img/destinations/1500x600.jpg" srcset="./assets/img/destinations/3000x1200.jpg 2x" alt="">
+            </div>
+            <div class="bg-content container">
+                <div class="hero-page-title">
+                    <span class="hero-sub-title">Moliva tours</span>
+                    <h1 class="display-3 hero-title">
+                        Destinations
+                    </h1>
+                </div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a href="./index.html">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Destinations 2</li>
+                    </ol>
+                </nav>
+            </div>
+        </section>
+        <!-- /Title -->
+
+        <!-- Search tour -->
+        <section class="bg-light" data-aos="fade">
+            <h2 class="d-none">Search tours</h2>
+            <div class="container">
+                <div class="search-tours">
+                    <form class="search-tour-form" method="post">
+                        <div class="search-tour-input">
+                            <div class="row g-3 g-xl-2">
+                                <div class="col-12 col-xl-4 col-md-6">
+                                    <div class="input-icon-group">
+                                        <label for="txtKeyword" class="input-icon hicon hicon-flights-pin"></label>
+                                        <input id="txtKeyword" type="text" class="form-control shadow-sm" placeholder="Where are you going?">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-xl-3 col-md-6">
+                                    <div class="input-icon-group tour-date">
+                                        <label class="input-icon hicon hicon-menu-calendar hicon-bold" for="txtCheckDate2"></label>
+                                        <input id="txtCheckDate2" type="text" class="form-select shadow-sm" placeholder="Tour date" data-input readonly>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-xl-3 col-md-6">
+                                    <div class="input-icon-group">
+                                        <label class="input-icon hicon hicon-menu-calendar hicon-bold" for="txtCheckDate2"></label>
+                                        <select class="form-select dropdown-select shadow-sm" id="selAdults">
+                                            <option selected="">All categories</option>
+                                            <option value="1">Ecotourism &amp; Resort</option>
+                                            <option value="2">Cultural &amp; Foods</option>
+                                            <option value="3">Explorer &amp; Adventure</option>
+                                            <option value="4">Festival &amp; Events</option>
+                                            <option value="5">Museums &amp; Exhibitions</option>
+                                            <option value="6">Hiking &amp; Trekking</option>
+                                            <option value="7">Motor &amp; Bicycles</option>
+                                            <option value="8">Ships &amp; boats</option>
+                                            <option value="9">Family Activities</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-xl-2 col-md-6">
+                                    <button type="submit" class="btn btn-primary btn-uppercase w-100">
+                                        <i class="hicon hicon-bold hicon-search-box"></i>
+                                        <span>Search</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+        <!-- /Search tour -->
+
+        <!-- Destination -->
+        <section class="p-top-90 p-bottom-90 bg-gray-gradient">
+            <div class="container">
+                <!-- Title -->
+                <div class="block-title text-center pb-4">
+                    <small class="sub-title">Explore Moliva</small>
+                    <h2 class="h1 title">Destinations in Moliva</h2>
+                </div>
+                <!-- Title -->
+                <!-- Destination list -->
+                <div class="row g-1 g-md-3 align-items-center">
+                    <div class="col-6 col-xl-3 order-0">
+                        <!-- Destination -->
+                        <a href="./tour-packages-1.html" class="destination destination-center bottom-overlay rounded">
+                            <figure class="image-hover image-hover-overlay image-hover-scale">
+                                <img src="./assets/img/destinations/300x465-1.jpg" srcset="./assets/img/destinations/600x930-1.jpg 2x" alt="">
+                            </figure>
+                            <div class="bottom-overlay-content pb-3 pb-md-4">
+                                <div class="destination-icon">
+                                    <span class="circle-icon circle-icon-link icon-mobile-small">
+                                        <i class="hicon hicon-flights-pin"></i>
+                                    </span>
+                                </div>
+                                <h3 class="destination-title">Noriva</h3>
+                            </div>
+                            <div class="float-text float-absolute">
+                                <span>176 tours</span>
+                            </div>
+                        </a>
+                        <!-- /Destination -->
+                    </div>
+                    <div class="col-12 col-xl-6 order-2 order-xl-1">
+                        <div class="row g-1 g-md-3 align-items-center">
+                            <div class="col-12">
+                                <!-- Destination -->
+                                <a href="./tour-packages-1.html" class="destination destination-center bottom-overlay rounded">
+                                    <figure class="image-hover image-hover-overlay image-hover-scale">
+                                        <img src="./assets/img/destinations/600x220-1.jpg" srcset="./assets/img/destinations/1200x440-1.jpg 2x" alt="">
+                                    </figure>
+                                    <div class="bottom-overlay-content pb-3 pb-md-4">
+                                        <div class="destination-icon">
+                                            <span class="circle-icon circle-icon-link icon-mobile-small">
+                                                <i class="hicon hicon-flights-pin"></i>
+                                            </span>
+                                        </div>
+                                        <h3 class="destination-title">Kardal</h3>
+                                    </div>
+                                    <div class="float-text float-absolute">
+                                        <span>127 tours</span>
+                                    </div>
+                                </a>
+                                <!-- /Destination -->
+                            </div>
+                            <div class="col-6">
+                                <!-- Destination -->
+                                <a href="./tour-packages-1.html" class="destination destination-center bottom-overlay rounded">
+                                    <figure class="image-hover image-hover-overlay image-hover-scale">
+                                        <img src="./assets/img/destinations/300x225-1.jpg" srcset="./assets/img/destinations/600x450-1.jpg 2x" alt="">
+                                    </figure>
+                                    <div class="bottom-overlay-content pb-3 pb-md-4">
+                                        <div class="destination-icon">
+                                            <span class="circle-icon circle-icon-link icon-mobile-small">
+                                                <i class="hicon hicon-flights-pin"></i>
+                                            </span>
+                                        </div>
+                                        <h3 class="destination-title">Leront</h3>
+                                    </div>
+                                    <div class="float-text float-absolute">
+                                        <span>210 tours</span>
+                                    </div>
+                                </a>
+                                <!-- /Destination -->
+                            </div>
+                            <div class="col-6">
+                                <!-- Destination -->
+                                <a href="./tour-packages-1.html" class="destination destination-center bottom-overlay rounded">
+                                    <figure class="image-hover image-hover-overlay image-hover-scale">
+                                        <img src="./assets/img/destinations/300x225-2.jpg" srcset="./assets/img/destinations/600x450-2.jpg 2x" alt="">
+                                    </figure>
+                                    <div class="bottom-overlay-content pb-3 pb-md-4">
+                                        <div class="destination-icon">
+                                            <span class="circle-icon circle-icon-link icon-mobile-small">
+                                                <i class="hicon hicon-flights-pin"></i>
+                                            </span>
+                                        </div>
+                                        <h3 class="destination-title">Fruska</h3>
+                                    </div>
+                                    <div class="float-text float-absolute">
+                                        <span>155 tours</span>
+                                    </div>
+                                </a>
+                                <!-- /Destination -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-xl-3 order-1 order-xl-2">
+                        <!-- Destination -->
+                        <a href="./tour-packages-1.html" class="destination destination-center bottom-overlay rounded">
+                            <figure class="image-hover image-hover-overlay image-hover-scale">
+                                <img src="./assets/img/destinations/300x465-2.jpg" srcset="./assets/img/destinations/600x930-2.jpg 2x" alt="">
+                            </figure>
+                            <div class="bottom-overlay-content pb-3 pb-md-4">
+                                <div class="destination-icon">
+                                    <span class="circle-icon circle-icon-link icon-mobile-small">
+                                        <i class="hicon hicon-flights-pin"></i>
+                                    </span>
+                                </div>
+                                <h3 class="destination-title">Sitafo</h3>
+                            </div>
+                            <div class="float-text float-absolute">
+                                <span>217 tours</span>
+                            </div>
+                        </a>
+                        <!-- /Destination -->
+                    </div>
+                    <div class="col-6 col-xl-3 order-3">
+                        <!-- Destination -->
+                        <a href="./tour-packages-1.html" class="destination destination-center bottom-overlay rounded">
+                            <figure class="image-hover image-hover-overlay image-hover-scale">
+                                <img src="./assets/img/destinations/300x225-3.jpg" srcset="./assets/img/destinations/600x450-3.jpg 2x" alt="">
+                            </figure>
+                            <div class="bottom-overlay-content pb-3 pb-md-4">
+                                <div class="destination-icon">
+                                    <span class="circle-icon circle-icon-link icon-mobile-small">
+                                        <i class="hicon hicon-flights-pin"></i>
+                                    </span>
+                                </div>
+                                <h3 class="destination-title">Zolmir</h3>
+                            </div>
+                            <div class="float-text float-absolute">
+                                <span>162 tours</span>
+                            </div>
+                        </a>
+                        <!-- /Destination -->
+                    </div>
+                    <div class="col-6 col-xl-3 order-4">
+                        <!-- Destination -->
+                        <a href="./tour-packages-1.html" class="destination destination-center bottom-overlay rounded">
+                            <figure class="image-hover image-hover-overlay image-hover-scale">
+                                <img src="./assets/img/destinations/300x225-4.jpg" srcset="./assets/img/destinations/600x450-4.jpg 2x" alt="">
+                            </figure>
+                            <div class="bottom-overlay-content pb-3 pb-md-4">
+                                <div class="destination-icon">
+                                    <span class="circle-icon circle-icon-link icon-mobile-small">
+                                        <i class="hicon hicon-flights-pin"></i>
+                                    </span>
+                                </div>
+                                <h3 class="destination-title">Panoda</h3>
+                            </div>
+                            <div class="float-text float-absolute">
+                                <span>278 tours</span>
+                            </div>
+                        </a>
+                        <!-- /Destination -->
+                    </div>
+                    <div class="col-12 col-xl-6 order-5">
+                        <!-- Destination -->
+                        <a href="./tour-packages-1.html" class="destination destination-center bottom-overlay rounded">
+                            <figure class="image-hover image-hover-overlay image-hover-scale">
+                                <img src="./assets/img/destinations/600x220-2.jpg" srcset="./assets/img/destinations/1200x440-2.jpg 2x" alt="">
+                            </figure>
+                            <div class="bottom-overlay-content pb-3 pb-md-4">
+                                <div class="destination-icon">
+                                    <span class="circle-icon circle-icon-link icon-mobile-small">
+                                        <i class="hicon hicon-flights-pin"></i>
+                                    </span>
+                                </div>
+                                <h3 class="destination-title">Malota</h3>
+                            </div>
+                            <div class="float-text float-absolute">
+                                <span>321 tours</span>
+                            </div>
+                        </a>
+                        <!-- /Destination -->
+                    </div>
+                </div>
+                <!-- /Destination list -->
+                <!-- Pagination -->
+                <nav aria-label="Page navigation" class="pt-5 text-center" data-aos="fade">
+                    <ul class="pagination pagination-circle d-inline-flex mb-0">
+                        <li class="page-item">
+                            <a class="page-link" href="#">
+                                <i class="hicon hicon-edge-arrow-left"></i>
+                            </a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">
+                                <i class="hicon hicon-edge-arrow-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- /Pagination -->
+            </div>
+        </section>
+        <!-- /Destination -->
+
+        <!-- About -->
+        <section class="p-top-90 p-bottom-90 bg-gray-gradient" data-aos="fade">
+            <div class="container">
+                <div class="row g-0">
+                    <div class="col-12 col-xl-6 order-1 order-xl-0">
+                        <!-- Image -->
+                        <div class="pe-xl-5">
+                            <div class="image-info image-info-right image-info-vertical mb-5">
+                                <div class="vertical-title">
+                                    <small>
+                                        <strong class="text-primary fw-semibold">Moliva</strong> - Attractive <strong class="text-body">destinations</strong>
+                                    </small>
+                                </div>
+                                <div class="image-center rounded">
+                                    <img src="./assets/img/about/600x600-1.jpg" srcset="./assets/img/about/1200x1200-1.jpg 2x" class="w-100" alt="">
+                                </div>
+                                <div class="info-top-right">
+                                    <div class="vertical-review rounded">
+                                        <div class="review-content">
+                                            <h3 class="h1 review-score">4.9</h3>
+                                            <span class="star-rate-view star-rate-size-sm"><span class="star-value rate-50"></span></span>
+                                            <small class="review-total"><strong>2394</strong> reviews</small>
+                                            <small class="review-label ">Best choice</small>
+                                        </div>
+                                        <div class="review-footer">
+                                            <small>Tripadvisor</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /Image -->
+                    </div>
+                    <div class="col-12 col-xl-6 order-0 order-xl-1">
+                        <!-- Content -->
+                        <div class="pt-4 mb-5 mb-xl-0">
+                            <div class="block-title">
+                                <small class="sub-title">Beautiful & Romantic</small>
+                                <h2 class="h1 title">About Moliva</h2>
+                            </div>
+                            <p>
+                                Moliva is a breathtaking country known for its stunning natural landscapes.
+                                From lush green valleys and majestic mountains to pristine beaches and serene lakes,
+                                Moliva offers a diverse array of picturesque views that captivate every traveler.
+                                The country’s unspoiled beauty provides the perfect backdrop for outdoor adventures
+                                and peaceful retreats alike.
+                            </p>
+                            <p>
+                                Beyond its scenic wonders, Moliva is home to incredibly friendly people and a rich cultural heritage.
+                                The vibrant culture is a tapestry of unique traditions, colorful festivals,
+                                and diverse culinary delights that reflect the country's deep historical roots and artistic expressions.
+                                In Moliva, every visit is an opportunity to experience warmth, hospitality,
+                                and a true sense of cultural richness.
+                            </p>
+                        </div>
+                        <!-- /Content -->
+                    </div>
+                </div>
+                <!-- Overview -->
+                <div class="row g-3 g-lg-4 mb-0">
+                    <div class="col-6 col-xl-3">
+                        <div class="mini-card card-simple card-mobile-small">
+                            <span class="card-icon">
+                                <i class="hicon hicon-global"></i>
+                            </span>
+                            <div class="card-content">
+                                <small class="card-desc">Continent</small>
+                                <h3 class="h5 card-title">Asia</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-xl-3">
+                        <div class="mini-card card-simple card-mobile-small">
+                            <span class="card-icon">
+                                <i class="hicon hicon-poi"></i>
+                            </span>
+                            <div class="card-content">
+                                <small class="card-desc">Capital</small>
+                                <h3 class="h5 card-title">Noriva city</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-xl-3">
+                        <div class="mini-card card-simple card-mobile-small">
+                            <span class="card-icon">
+                                <i class="hicon hicon-seriously-multilingual"></i>
+                            </span>
+                            <div class="card-content">
+                                <small class="card-desc">Language</small>
+                                <h3 class="h5 card-title">English</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-xl-3">
+                        <div class="mini-card card-simple card-mobile-small">
+                            <span class="card-icon">
+                                <i class="hicon hicon-more-money"></i>
+                            </span>
+                            <div class="card-content">
+                                <small class="card-desc">Currency</small>
+                                <h3 class="h5 card-title">Moli</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-xl-3">
+                        <div class="mini-card card-simple card-mobile-small">
+                            <span class="card-icon">
+                                <i class="hicon hicon-light-snow"></i>
+                            </span>
+                            <div class="card-content">
+                                <small class="card-desc">Weather</small>
+                                <h3 class="h5 card-title">4 Seasons</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-xl-3">
+                        <div class="mini-card card-simple card-mobile-small">
+                            <span class="card-icon">
+                                <i class="hicon hicon-wintry-mix-snow-sleet"></i>
+                            </span>
+                            <div class="card-content">
+                                <small class="card-desc">Winter (avg)</small>
+                                <h3 class="h5 card-title">41°F/5°C</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-xl-3">
+                        <div class="mini-card card-simple card-mobile-small">
+                            <span class="card-icon">
+                                <i class="hicon hicon-partly-cloudy-day"></i>
+                            </span>
+                            <div class="card-content">
+                                <small class="card-desc">Summer (avg)</small>
+                                <h3 class="h5 card-title">68°F/20°C</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-xl-3">
+                        <div class="mini-card card-simple card-mobile-small">
+                            <span class="card-icon">
+                                <i class="hicon hicon-time-clock"></i>
+                            </span>
+                            <div class="card-content">
+                                <small class="card-desc">Time Zone</small>
+                                <h3 class="h5 card-title">GMT+2</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /Overview -->
+            </div>
+        </section>
+        <!-- /About -->
+
+        <!-- Travel Insight -->
+        <section class="p-top-90 p-bottom-90 bg-gray-gradient" data-aos="fade">
+            <div class="container">
+                <div class="block-title text-center pb-3">
+                    <small class="sub-title">Useful information</small>
+                    <h2 class="h1 title">Moliva Travel Insight</h2>
+                </div>
+                <div class="blog-slider-2 splide mb-5">
+                    <div class="splide__arrows">
+                        <button class="splide__arrow splide__arrow--prev">
+                            <i class="hicon hicon-edge-arrow-left"></i>
+                        </button>
+                        <button class="splide__arrow splide__arrow--next">
+                            <i class="hicon hicon-edge-arrow-right"></i>
+                        </button>
+                    </div>
+                    <!-- Post list -->
+                    <div class="splide__track pt-2 pb-2">
+                        <ul class="splide__list">
+                            <li class="splide__slide">
+                                <!-- Post -->
+                                <div class="post shadow-sm rounded hover-effect">
+                                    <div class="post-img">
+                                        <a href="./post-list.html" class="float-text float-absolute">Travel tips</a>
+                                        <a href="./single-post.html">
+                                            <figure class="image-hover image-hover-overlay rounded">
+                                                <img src="./assets/img/blog/400x300-1.jpg" srcset="./assets/img/blog/800x600-1.jpg 2x" alt="">
+                                                <i class="hicon hicon-plus-thin image-hover-icon"></i>
+                                            </figure>
+                                        </a>
+                                    </div>
+                                    <div class="post-content">
+                                        <h3 class="post-title">
+                                            <a href="./single-post.html">
+                                                Top 10 Must-Visit Tourist Spots in Moliva
+                                            </a>
+                                        </h3>
+                                        <div class="post-link">
+                                            <div class="post-ext">
+                                                <div class="post-date">
+                                                    <i class="hicon hicon-menu-calendar"></i>
+                                                    <span>Jun 30 2024</span>
+                                                </div>
+                                                <div class="post-comment">
+                                                    <i class="hicon hicon-chat"></i>
+                                                    <span>36</span>
+                                                </div>
+                                                <div class="post-view">
+                                                    <i class="hicon hicon-installment-graph"></i>
+                                                    <span>754</span>
+                                                </div>
+                                            </div>
+                                            <a href="./single-post.html" class="circle-icon circle-icon-link">
+                                                <i class="hicon hicon-flights-one-ways fs-4"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /Post -->
+                            </li>
+                            <li class="splide__slide">
+                                <!-- Post -->
+                                <div class="post shadow-sm rounded hover-effect">
+                                    <div class="post-img">
+                                        <a href="./post-list.html" class="float-text float-absolute"><span>Hotel & Resort</span></a>
+                                        <a href="./single-post.html">
+                                            <figure class="image-hover image-hover-overlay rounded">
+                                                <img src="./assets/img/blog/400x300-2.jpg" srcset="./assets/img/blog/800x600-2.jpg 2x" alt="">
+                                                <i class="hicon hicon-plus-thin image-hover-icon"></i>
+                                            </figure>
+                                        </a>
+                                    </div>
+                                    <div class="post-content">
+                                        <h3 class="post-title">
+                                            <a href="./single-post.html">
+                                                5 Best Tips for an Amazing Moliva Trip
+                                            </a>
+                                        </h3>
+                                        <div class="post-link">
+                                            <div class="post-ext">
+                                                <div class="post-date">
+                                                    <i class="hicon hicon-menu-calendar"></i>
+                                                    <span>Jun 30 2024</span>
+                                                </div>
+                                                <div class="post-comment">
+                                                    <i class="hicon hicon-chat"></i>
+                                                    <span>36</span>
+                                                </div>
+                                                <div class="post-view">
+                                                    <i class="hicon hicon-installment-graph"></i>
+                                                    <span>754</span>
+                                                </div>
+                                            </div>
+                                            <a href="./single-post.html" class="circle-icon circle-icon-link">
+                                                <i class="hicon hicon-flights-one-ways fs-4"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /Post -->
+                            </li>
+                            <li class="splide__slide">
+                                <!-- Post -->
+                                <div class="post shadow-sm rounded hover-effect">
+                                    <div class="post-img">
+                                        <a href="./post-list.html" class="float-text float-absolute"><span>Travel Guide</span></a>
+                                        <a href="./single-post.html">
+                                            <figure class="image-hover image-hover-overlay rounded">
+                                                <img src="./assets/img/blog/400x300-3.jpg" srcset="./assets/img/blog/800x600-3.jpg 2x" alt="">
+                                                <i class="hicon hicon-plus-thin image-hover-icon"></i>
+                                            </figure>
+                                        </a>
+                                    </div>
+                                    <div class="post-content">
+                                        <h3 class="post-title">
+                                            <a href="./single-post.html">
+                                                8 Key Essentials for Traveling to Moliva
+                                            </a>
+                                        </h3>
+                                        <div class="post-link">
+                                            <div class="post-ext">
+                                                <div class="post-date">
+                                                    <i class="hicon hicon-menu-calendar"></i>
+                                                    <span>Jun 30 2024</span>
+                                                </div>
+                                                <div class="post-comment">
+                                                    <i class="hicon hicon-chat"></i>
+                                                    <span>36</span>
+                                                </div>
+                                                <div class="post-view">
+                                                    <i class="hicon hicon-installment-graph"></i>
+                                                    <span>754</span>
+                                                </div>
+                                            </div>
+                                            <a href="./single-post.html" class="circle-icon circle-icon-link">
+                                                <i class="hicon hicon-flights-one-ways fs-4"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /Post -->
+                            </li>
+                            <li class="splide__slide">
+                                <!-- Post -->
+                                <div class="post shadow-sm rounded hover-effect">
+                                    <div class="post-img">
+                                        <a href="./post-list.html" class="float-text float-absolute"><span>Hotel & Resort</span></a>
+                                        <a href="./single-post.html">
+                                            <figure class="image-hover image-hover-overlay rounded">
+                                                <img src="./assets/img/blog/400x300-6.jpg" srcset="./assets/img/blog/800x600-6.jpg 2x" alt="">
+                                                <i class="hicon hicon-plus-thin image-hover-icon"></i>
+                                            </figure>
+                                        </a>
+                                    </div>
+                                    <div class="post-content">
+                                        <h3 class="post-title">
+                                            <a href="./single-post.html">
+                                                Discover Beautiful Moliva: Nature's Paradise
+                                            </a>
+                                        </h3>
+                                        <div class="post-link">
+                                            <div class="post-ext">
+                                                <div class="post-date">
+                                                    <i class="hicon hicon-menu-calendar"></i>
+                                                    <span>Jun 30 2024</span>
+                                                </div>
+                                                <div class="post-comment">
+                                                    <i class="hicon hicon-chat"></i>
+                                                    <span>36</span>
+                                                </div>
+                                                <div class="post-view">
+                                                    <i class="hicon hicon-installment-graph"></i>
+                                                    <span>754</span>
+                                                </div>
+                                            </div>
+                                            <a href="./single-post.html" class="circle-icon circle-icon-link">
+                                                <i class="hicon hicon-flights-one-ways fs-4"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /Post -->
+                            </li>
+                            <li class="splide__slide">
+                                <!-- Post -->
+                                <div class="post shadow-sm rounded hover-effect">
+                                    <div class="post-img">
+                                        <a href="./post-list.html" class="float-text float-absolute"><span>Destinations</span></a>
+                                        <a href="./single-post.html">
+                                            <figure class="image-hover image-hover-overlay rounded">
+                                                <img src="./assets/img/blog/400x300-5.jpg" srcset="./assets/img/blog/800x600-5.jpg 2x" alt="">
+                                                <i class="hicon hicon-plus-thin image-hover-icon"></i>
+                                            </figure>
+                                        </a>
+                                    </div>
+                                    <div class="post-content">
+                                        <h3 class="post-title">
+                                            <a href="./single-post.html">
+                                                Best Time Ever to Explore Moliva's Nature
+                                            </a>
+                                        </h3>
+                                        <div class="post-link">
+                                            <div class="post-ext">
+                                                <div class="post-date">
+                                                    <i class="hicon hicon-menu-calendar"></i>
+                                                    <span>Jun 30 2024</span>
+                                                </div>
+                                                <div class="post-comment">
+                                                    <i class="hicon hicon-chat"></i>
+                                                    <span>36</span>
+                                                </div>
+                                                <div class="post-view">
+                                                    <i class="hicon hicon-installment-graph"></i>
+                                                    <span>754</span>
+                                                </div>
+                                            </div>
+                                            <a href="./single-post.html" class="circle-icon circle-icon-link">
+                                                <i class="hicon hicon-flights-one-ways fs-4"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /Post -->
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- /Post list -->
+                </div>
+            </div>
+        </section>
+        <!-- /Travel Insigh -->
+
+        <!-- Popular Topics -->
+        <section class="p-top-90 p-bottom-90 bg-gray-gradient" data-aos="fade">
+            <div class="container">
+                <!-- Title -->
+                <div class="text-center mb-4">
+                    <div class="block-title me-auto">
+                        <small class="sub-title">Most searched</small>
+                        <h2 class="h1 title">Popular Topics</h2>
+                    </div>
+                </div>
+                <!-- /Title -->
+                <!-- Tags -->
+                <ul class="tag-list tag-lg text-center mb-0">
+                    <li><a href="#">Travel guide</a></li>
+                    <li><a href="#">Travel tips</a></li>
+                    <li><a href="#">Activities</a></li>
+                    <li><a href="#">Noriva city</a></li>
+                    <li><a href="#">Cuisine</a></li>
+                    <li><a href="#">Noriva tours</a></li>
+                    <li><a href="#">Destinations</a></li>
+                    <li><a href="#">Moliva tours</a></li>
+                    <li><a href="#">Fruska Swamp</a></li>
+                    <li><a href="#">Resort in Moliva</a></li>
+                    <li><a href="#">Moliva's Nature</a></li>
+                    <li><a href="#">Nature's Paradise</a></li>
+                    <li><a href="#">Spots in Moliva</a></li>
+                    <li><a href="#">Moliva Trip</a></li>
+                    <li><a href="#">Ancient castles</a></li>
+                    <li><a href="#">Travel Insight</a></li>
+                    <li><a href="#">Kardal city</a></li>
+                    <li><a href="#">Noriva Bay</a></li>
+                    <li><a href="#">Leront lake</a></li>
+                    <li><a href="#">Malota beach</a></li>
+                    <li><a href="#">Panoda mountain</a></li>
+                    <li><a href="#">Zolmir hill</a></li>
+                    <li><a href="#">Sitafo bay</a></li>
+                    <li><a href="#">Noriva castles</a></li>
+                    <li><a href="#">Sitafo city</a></li>
+                </ul>
+                <!-- /Tags -->
+                <div class="text-center">
+                    <div class="extra-info mt-4">
+                        <strong>+1.6K</strong>
+                        <span>Topics of interest in Moliva</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- /Popular Topics -->
+
+    </main>
+    <!-- /Main -->
+
+    <!-- Footer -->
+    <footer class="footer p-top-90 p-bottom-90" data-aos="fade">
+
+        <!-- Footer top -->
+        <div class="footer-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-xl-3 col-md-6">
+                        <!-- Brand -->
+                        <div class="footer-widget">
+                            <a href="./index.html" class="brand-img">
+                                <img class="me-4" src="./assets/img/logos/160x40.png" srcset="./assets/img/logos/320x80.png 2x" alt="">
+                            </a>
+                            <p class="brand-desc">
+                                <em>
+                                    Moliva Travel Agency offers unique and memorable tours, providing rich experiences in the beautiful country of Moliva.
+                                </em>
+                                <a href="./about.html">[+]</a>
+                            </p>
+                            <ul class="social-list">
+                                <li class="social-item">
+                                    <a href="#">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="1.75" stroke="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3"></path>
+                                        </svg>
+                                    </a>
+                                </li>
+                                <li class="social-item">
+                                    <a href="#">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
+                                            <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
+                                        </svg>
+                                    </a>
+                                </li>
+                                <li class="social-item">
+                                    <a href="#">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.75" stroke="none" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M3 5m0 4a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4z"></path>
+                                            <path d="M10 9l5 3l-5 3z"></path>
+                                        </svg>
+                                    </a>
+                                </li>
+                                <li class="social-item">
+                                    <a href="#">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.75" stroke="none" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M8 20l4 -9"></path>
+                                            <path d="M10.7 14c.437 1.263 1.43 2 2.55 2c2.071 0 3.75 -1.554 3.75 -4a5 5 0 1 0 -9.7 1.7"></path>
+                                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+                                        </svg>
+                                    </a>
+                                </li>
+                                <li class="social-item">
+                                    <a href="#">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.75" stroke="none" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M6.5 13.5m-1.5 0a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0"></path>
+                                            <path d="M17.5 13.5m-1.5 0a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0"></path>
+                                            <path d="M17.5 9a4.5 4.5 0 1 0 3.5 1.671l1 -1.671h-4.5z"></path>
+                                            <path d="M6.5 9a4.5 4.5 0 1 1 -3.5 1.671l-1 -1.671h4.5z"></path>
+                                            <path d="M10.5 15.5l1.5 2l1.5 -2"></path>
+                                            <path d="M9 6.75c2 -.667 4 -.667 6 0"></path>
+                                        </svg>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- /Brand -->
+                    </div>
+                    <div class="col-12 col-xl-3 col-md-6">
+                        <!-- Contact Info -->
+                        <div class="footer-widget">
+                            <h2 class="h4 pb-3">Contact Info</h2>
+                            <div class="contact-info">
+                                <p>
+                                    <span>No 234, Placer Loquen Marsei Niriva, Moliva.</span>
+                                </p>
+                                <p>
+                                    <span>+33 321-654-987 (Ext: 123).</span>
+                                </p>
+                                <p>
+                                    <a href="#">Booking@example.com</a>
+                                </p>
+                                <p>
+                                    <a href="#">www.example.com</a>
+                                </p>
+                            </div>
+                        </div>
+                        <!-- /Contact Info -->
+                    </div>
+                    <div class="col-12 col-xl-3 col-md-6">
+                        <!-- Quick Links -->
+                        <div class="footer-widget">
+                            <h2 class="h4 pb-3">Moliva Travel</h2>
+                            <ul class="footer-link">
+                                <li class="link-item">
+                                    <a href="./about.html">About us</a>
+                                </li>
+                                <li class="link-item">
+                                    <a href="./destinations-1.html">Destinations</a>
+                                </li>
+                                <li class="link-item">
+                                    <a href="./tour-packages-1.html">Moliva Tours</a>
+                                </li>
+                                <li class="link-item">
+                                    <a href="./post-list.html">Travel insight</a>
+                                </li>
+                                <li class="link-item">
+                                    <a href="./contact.html">Contact us</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- /Quick Links -->
+                    </div>
+                    <div class="col-12 col-xl-3 col-md-6">
+                        <div class="footer-widget">
+                            <h2 class="h4 pb-3">Get the app</h2>
+                            <!-- Mobile App -->
+                            <div class="mb-5 pt-3">
+                                <div class="row g-3">
+                                    <div class="col-6">
+                                        <a href="#">
+                                            <img src="./assets/img/icons/i1.svg" class="w-100" alt="">
+                                        </a>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="#">
+                                            <img src="./assets/img/icons/i2.svg" class="w-100" alt="">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /Mobile App -->
+                            <!-- Social -->
+                            <div class="footer-local">
+                                <a data-bs-toggle="modal" href="#mdlLanguage" class="me-4">
+                                    <img src="./assets/img/flags/en.svg" height="14" alt="" class="me-2">
+                                    <span class="me-1">English</span>
+                                    <i class="hicon hicon-thin-arrow-down fsm-6"></i>
+                                </a>
+                                <a data-bs-toggle="modal" href="#mdlCurrency">
+                                    <span class="me-1">USD (US Dollar)</span>
+                                    <i class="hicon hicon-thin-arrow-down fsm-6"></i>
+                                </a>
+                            </div>
+                            <!-- /Social -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Footer top -->
+
+        <!-- Footer Bottom -->
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <p class="mb-lg-0">© 2024 Moliva Travel Agency. All rights reserved.</p>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="text-start text-md-end">
+                            <ul class="list-inline mb-lg-0">
+                                <li class="list-inline-item">
+                                    <a href="#">Privacy Policy</a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a href="#">Terms of Use</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Footer Bottom -->
+
+    </footer>
+    <!-- /Footer -->
+
+    <!-- Scroll top -->
+    <a href="#" class="scroll-top">
+        <i class="hicon hicon-thin-arrow-up"></i>
+    </a>
+    <!-- /Scroll top -->
+
+    <script defer src="./assets/js/vendors/bootstrap.bundle.min.js"></script>
+    <script defer src="./assets/js/vendors/aos.js"></script>
+    <script defer src="./assets/js/vendors/plyr.js"></script>
+    <script defer src="./assets/js/vendors/glightbox.min.js"></script>
+    <script defer src="./assets/js/vendors/splide.min.js"></script>
+    <script defer src="./assets/js/vendors/flatpickr.min.js"></script>
+    <script defer src="./assets/js/vendors/use-bootstrap-select.min.js"></script>
+    <script defer src="./assets/js/main.js"></script>
+
+</body>
+
+</html>
