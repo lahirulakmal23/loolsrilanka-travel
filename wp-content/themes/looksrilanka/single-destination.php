@@ -8,8 +8,40 @@ while ( have_posts() ) :
     the_post();
     $id         = get_the_ID();
     $region     = ls_get( 'ds_region' );
-    $facts      = ls_get( 'ds_facts' );
-    $related    = ls_get( 'ds_related' );
+    $facts      = array_values( array_filter( (array) ls_get( 'ds_facts' ), function ( $fact ) {
+        return is_array( $fact ) && '' !== trim( (string) $fact['label'] ) && '' !== trim( (string) $fact['value'] );
+    } ) );
+    $appears    = ls_destination_appearances( $id );
+    $labels     = wp_list_pluck( $appears, 'label', 'id' );
+    $related    = array();
+
+    // "Where this appears": the itineraries picked in wp-admin, otherwise the
+    // itineraries and day tours whose route mentions this destination.
+    foreach ( (array) ls_get( 'ds_related' ) as $rel_id ) {
+        if ( $rel_id && 'publish' === get_post_status( $rel_id ) ) {
+            $related[] = array( 'id' => $rel_id, 'label' => $labels[ $rel_id ] ?? ls_days_label( ls_get( 'days', $rel_id ) ) );
+        }
+    }
+    if ( ! $related ) {
+        $related = array_slice( $appears, 0, 6 );
+    }
+
+    // Quick facts: the rows entered in wp-admin, with the region and how many
+    // tours visit it added unless those rows already exist.
+    $fact_keys = array_map( 'ls_place_key', wp_list_pluck( $facts, 'label' ) );
+    $auto      = array();
+    $tours     = count( wp_list_filter( $appears, array( 'type' => 'tour' ) ) );
+    $day_tours = count( $appears ) - $tours;
+    if ( $region && ! in_array( 'region', $fact_keys, true ) ) {
+        $auto[] = array( 'label' => __( 'Region', 'looksrilanka' ), 'value' => $region );
+    }
+    if ( $tours && ! in_array( 'itineraries', $fact_keys, true ) ) {
+        $auto[] = array( 'label' => __( 'Itineraries', 'looksrilanka' ), 'value' => sprintf( _n( '%d tour', '%d tours', $tours, 'looksrilanka' ), $tours ) );
+    }
+    if ( $day_tours && ! in_array( 'daytours', $fact_keys, true ) ) {
+        $auto[] = array( 'label' => __( 'Day tours', 'looksrilanka' ), 'value' => sprintf( _n( '%d day trip', '%d day trips', $day_tours, 'looksrilanka' ), $day_tours ) );
+    }
+    $facts = array_merge( $auto, $facts );
     $hero_image = ls_post_hero_image( get_the_ID() );
     $photos     = ls_destination_photos( $id, is_numeric( $hero_image ) ? (int) $hero_image : 0 );
     $gallery_pg = get_page_by_path( 'gallery' );
@@ -74,12 +106,11 @@ while ( have_posts() ) :
                         <div class="ls-side-card">
                             <h3><?php esc_html_e( 'Where this appears', 'looksrilanka' ); ?></h3>
                             <ul class="ls-related-list">
-                                <?php foreach ( $related as $rel_id ) : ?>
-                                    <?php if ( 'publish' !== get_post_status( $rel_id ) ) { continue; } ?>
+                                <?php foreach ( $related as $rel ) : ?>
                                     <li>
-                                        <a href="<?php echo esc_url( get_permalink( $rel_id ) ); ?>">
-                                            <?php echo esc_html( get_the_title( $rel_id ) ); ?>
-                                            <span><?php echo esc_html( ls_days_label( ls_get( 'days', $rel_id ) ) ); ?></span>
+                                        <a href="<?php echo esc_url( get_permalink( $rel['id'] ) ); ?>">
+                                            <?php echo esc_html( wp_strip_all_tags( get_the_title( $rel['id'] ) ) ); ?>
+                                            <?php if ( $rel['label'] ) : ?><span><?php echo esc_html( $rel['label'] ); ?></span><?php endif; ?>
                                         </a>
                                     </li>
                                 <?php endforeach; ?>

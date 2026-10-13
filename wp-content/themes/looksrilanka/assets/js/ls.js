@@ -261,6 +261,28 @@
         }
     });
 
+    // Tour form: the departure date appears once an arrival date is picked,
+    // and can't be earlier than it. Arrival can't be in the past.
+    var today = new Date();
+    today = new Date(today.getTime() - today.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+    document.querySelectorAll('input[name=arrival-date]').forEach(function (input) {
+        input.min = today;
+    });
+    document.addEventListener('change', function (e) {
+        if (!e.target.matches('input[name=arrival-date]')) return;
+        var form = e.target.form;
+        var wrap = form && form.querySelector('.ls-depart');
+        var depart = form && form.querySelector('input[name=departure-date]');
+        if (!wrap || !depart) return;
+        wrap.hidden = !e.target.value;
+        depart.min = e.target.value || today;
+        if (depart.value && depart.value < e.target.value) depart.value = '';
+    });
+    document.addEventListener('wpcf7reset', function (e) {
+        var wrap = e.target.querySelector('.ls-depart');
+        if (wrap) wrap.hidden = true;
+    });
+
     // Photo lightbox
     if (window.GLightbox && document.querySelector('.ls-page .glightbox')) {
         window.GLightbox({ selector: '.ls-page .glightbox' });

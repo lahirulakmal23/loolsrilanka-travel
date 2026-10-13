@@ -23,6 +23,6 @@ $partners = array_filter( array_map( 'trim', explode( "\n", (string) ls_get( 'hp
                 </ul>
             <?php endif; ?>
         </div>
-        <?php echo ls_link( ls_get( 'hp_b2b_btn' ), 'ls-btn ls-btn-dark' ); ?>
+        <?php echo ls_link( ls_get( 'hp_b2b_btn' ), 'ls-btn ls-btn-accent' ); ?>
     </div>
 </section>

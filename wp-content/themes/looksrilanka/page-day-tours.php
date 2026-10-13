@@ -104,7 +104,7 @@ while ( have_posts() ) :
                             <?php endforeach; ?>
                         </ul>
                     <?php endif; ?>
-                    <div class="ls-actions"><?php echo ls_link( ls_option( 'dt_combo_btn' ), 'ls-btn ls-btn-dark' ); ?></div>
+                    <div class="ls-actions"><?php echo ls_link( ls_option( 'dt_combo_btn' ), 'ls-btn ls-btn-accent' ); ?></div>
                 </div>
             </section>
         <?php endif; ?>

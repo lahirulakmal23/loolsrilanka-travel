@@ -15,6 +15,6 @@ if ( ! $args['heading'] ) {
         <?php if ( $args['text'] ) : ?>
             <p><?php echo esc_html( $args['text'] ); ?></p>
         <?php endif; ?>
-        <div class="ls-actions"><?php echo ls_link( $args['button'], 'ls-btn ls-btn-dark' ); ?></div>
+        <div class="ls-actions"><?php echo ls_link( $args['button'], 'ls-btn ls-btn-accent' ); ?></div>
     </div>
 </section>

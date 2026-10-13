@@ -340,6 +340,82 @@ function ls_destination_photos( $post_id, $skip = 0 ) {
 }
 
 /**
+ * Itineraries and day tours that visit a destination, for "Where this appears".
+ * Itineraries match on their day titles ("Negombo - Kandy"), day tours on their
+ * "destinations" field or title. Returns rows of id, type ('tour' or 'day-tour')
+ * and label ("Day 03", "Days 02–04" or "Day tour").
+ */
+function ls_destination_appearances( $post_id ) {
+    static $cache = array();
+    if ( isset( $cache[ $post_id ] ) ) {
+        return $cache[ $post_id ];
+    }
+
+    // "Yala - Tissamaharama" is listed under either name.
+    $names = array_filter( array_map( 'ls_place_key', preg_split( '/\s+[-–]\s+/', get_the_title( $post_id ) ) ), function ( $name ) {
+        return strlen( $name ) >= 3;
+    } );
+    $match = function ( $text ) use ( $names ) {
+        foreach ( preg_split( '/\s*[-–→|,()]\s*/u', wp_strip_all_tags( (string) $text ) ) as $place ) {
+            $place = ls_place_key( preg_replace( '/^(via|to)\s+/i', '', trim( $place ) ) );
+            if ( strlen( $place ) < 3 ) {
+                continue;
+            }
+            foreach ( $names as $name ) {
+                if ( 0 === strpos( $place, $name ) || 0 === strpos( $name, $place ) ) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    };
+
+    $rows = array();
+    if ( $names ) {
+        foreach ( get_posts( array( 'post_type' => 'tour', 'numberposts' => -1, 'fields' => 'ids' ) ) as $tour_id ) {
+            $numbers = array();
+            foreach ( (array) ls_get( 'itinerary', $tour_id ) as $day ) {
+                if ( is_array( $day ) && ! empty( $day['title_copy'] ) && $match( $day['title_copy'] ) ) {
+                    preg_match_all( '/\d+/', (string) $day['day'], $found );
+                    $numbers = array_merge( $numbers, $found[0] );
+                }
+            }
+            if ( ! $numbers ) {
+                continue;
+            }
+            // Runs of consecutive days: 1, 6, 7 → "Days 01, 06–07".
+            $numbers = array_unique( array_map( 'intval', $numbers ) );
+            sort( $numbers );
+            $runs = array();
+            foreach ( $numbers as $n ) {
+                $last = count( $runs ) - 1;
+                if ( $last >= 0 && $runs[ $last ][1] === $n - 1 ) {
+                    $runs[ $last ][1] = $n;
+                } else {
+                    $runs[] = array( $n, $n );
+                }
+            }
+            $parts = array_map( function ( $run ) {
+                return $run[0] === $run[1] ? sprintf( '%02d', $run[0] ) : sprintf( '%02d–%02d', $run[0], $run[1] );
+            }, $runs );
+            $rows[] = array(
+                'id'    => $tour_id,
+                'type'  => 'tour',
+                'label' => ( 1 === count( $numbers ) ? 'Day ' : 'Days ' ) . implode( ', ', $parts ),
+            );
+        }
+
+        foreach ( get_posts( array( 'post_type' => 'day-tour', 'numberposts' => -1, 'fields' => 'ids' ) ) as $tour_id ) {
+            if ( $match( ls_get( 'destinations', $tour_id ) ) || $match( get_the_title( $tour_id ) ) ) {
+                $rows[] = array( 'id' => $tour_id, 'type' => 'day-tour', 'label' => __( 'Day tour', 'looksrilanka' ) );
+            }
+        }
+    }
+
+    return $cache[ $post_id ] = $rows;
+}
+
+/**
  * Route line for a tour. Uses the "Route" field, or builds one from the
  * itinerary day titles ("Negombo - Kandy" → Negombo → Kandy).
  */

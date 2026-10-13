@@ -261,7 +261,7 @@ function ls_register_page_field_groups() {
                 ls_f( 'text', 'value', 'Value' ),
             ), array( 'button_label' => 'Add fact' ) ),
             ls_f( 'relationship', 'ds_related', 'Where this appears', array(
-                'instructions'  => 'Itineraries that visit this destination.',
+                'instructions'  => 'Itineraries that visit this destination. Leave empty to list them automatically from the tour day titles (plus matching day tours).',
                 'post_type'     => array( 'tour' ),
                 'filters'       => array( 'search' ),
                 'return_format' => 'id',
