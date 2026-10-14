@@ -6,7 +6,7 @@
  * Content is edited through ACF fields (inc/acf-fields*.php).
  */
 
-define( 'LS_VERSION', '2.7.3' );
+define( 'LS_VERSION', '2.7.4' );
 
 require get_template_directory() . '/inc/helpers.php';
 require get_template_directory() . '/inc/acf-fields.php';
@@ -48,6 +48,11 @@ add_action( 'template_redirect', function () {
         exit;
     }
 } );
+
+// News (registered by Custom Post Type UI): enable the Excerpt box, which the blog cards use as their summary.
+add_action( 'init', function () {
+    add_post_type_support( 'news', 'excerpt' );
+}, 20 );
 
 
 /**

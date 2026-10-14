@@ -134,7 +134,7 @@ function ls_register_page_field_groups() {
                 ls_f( 'text', 'ct_email_2', 'Second email line', array( 'instructions' => 'Optional, e.g. "B2B: partners@…".' ) ),
                 ls_f( 'text', 'ct_whatsapp_text', 'WhatsApp card text', array( 'instructions' => 'The WhatsApp number is set under Theme Settings → Site Settings.' ) ),
                 ls_f( 'text', 'ct_map_heading', 'Map card heading' ),
-                ls_f( 'textarea', 'ct_map_embed', 'Google Maps embed code', array( 'rows' => 3, 'new_lines' => '', 'instructions' => 'Paste the <iframe> from Google Maps → Share → Embed a map. Optional.' ) ),
+                ls_f( 'textarea', 'ct_map_embed', 'Google Maps embed code', array( 'rows' => 3, 'new_lines' => '', 'instructions' => 'Paste the embed code (it starts with &lt;iframe) from Google Maps → Share → Embed a map. Optional.' ) ),
                 ls_f( 'image', 'ct_map_image', 'Office photo', array( 'return_format' => 'id', 'preview_size' => 'medium', 'instructions' => 'Optional. Shown when there is no map.' ) ),
 
                 ls_tab( 'FAQ' ),
@@ -188,6 +188,20 @@ function ls_register_page_field_groups() {
     ) );
 
     /* Tour (multi-day itinerary) -------------------------------------- */
+    // The day-by-day "itinerary" repeater lives in the older "Tours" group (database);
+    // this adds a "Tip" to each day without editing that group.
+    add_filter( 'acf/load_field/key=field_674f030fbbae9', function ( $field ) {
+        $field['sub_fields'][] = acf_get_valid_field( array(
+            'key'          => 'field_ls_it_day_tip',
+            'name'         => 'tip',
+            'label'        => 'Tip',
+            'type'         => 'text',
+            'parent'       => $field['key'],
+            'instructions' => 'Optional. Shown in a blue box under the day, e.g. "Most international flights land after dark, so day 1 is kept free."',
+        ) );
+        return $field;
+    } );
+
     acf_add_local_field_group( array(
         'key'        => 'group_ls_tour',
         'title'      => 'Itinerary Details (New Design)',

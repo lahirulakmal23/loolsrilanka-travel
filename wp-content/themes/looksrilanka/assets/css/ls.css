@@ -988,6 +988,14 @@ html:has(body.ls-redesign) { scroll-behavior: smooth; }
 .ls-day-label { display: block; margin-bottom: 4px; font-size: .8rem; font-weight: 600; color: var(--ls-primary-text); }
 .ls-page .ls-day h3 { margin-bottom: 10px; font-size: 1.2rem; }
 .ls-day .ls-prose { font-size: .95rem; }
+.ls-page .ls-day-tip {
+    margin: 14px 0 0;
+    padding: 12px 16px;
+    border-radius: 4px;
+    background: #E8F1FA;
+    color: var(--ls-blue);
+    font-size: .92rem;
+}
 @media (max-width: 600px) { .ls-day { gap: 14px; } .ls-day-badge { width: 42px; height: 42px; font-size: .95rem; } }
 
 /* Included / not included -------------------------------------------------- */

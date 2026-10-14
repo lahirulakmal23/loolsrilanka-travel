@@ -104,6 +104,9 @@ while ( have_posts() ) :
                                         <?php if ( $text ) : ?>
                                             <div class="ls-prose"><?php echo wpautop( wp_kses_post( $text ) ); ?></div>
                                         <?php endif; ?>
+                                        <?php if ( ! empty( $day['tip'] ) ) : ?>
+                                            <p class="ls-day-tip"><?php echo esc_html( $day['tip'] ); ?></p>
+                                        <?php endif; ?>
                                     </div>
                                 </li>
                             <?php endforeach; ?>
