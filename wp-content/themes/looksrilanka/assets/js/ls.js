@@ -6,12 +6,15 @@
     var burger = document.querySelector('.ls-burger');
     var menu = document.getElementById('ls-mobile-menu');
 
+    var header = document.querySelector('.ls-header');
+
     if (burger && menu) {
         burger.addEventListener('click', function () {
             var open = burger.getAttribute('aria-expanded') === 'true';
             burger.setAttribute('aria-expanded', String(!open));
             burger.setAttribute('aria-label', open ? 'Open menu' : 'Close menu');
             menu.hidden = open;
+            if (header) header.classList.toggle('is-open', !open);
         });
 
         document.addEventListener('keydown', function (e) {
@@ -21,6 +24,58 @@
             }
         });
     }
+
+    // Header: solid with a shadow once the page scrolls (transparent over photo heroes until then).
+    if (header) {
+        var onScroll = function () {
+            header.classList.toggle('is-scrolled', window.scrollY > 24);
+        };
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+    }
+
+    // Hero destination cards: rise in when the band scrolls into view.
+    var heroDest = document.querySelector('.ls-hero-dest');
+    if (heroDest && 'IntersectionObserver' in window) {
+        heroDest.setAttribute('data-reveal', '');
+        var destObserver = new IntersectionObserver(function (entries) {
+            if (entries[0].isIntersecting) {
+                heroDest.classList.add('is-in');
+                destObserver.disconnect();
+            }
+        }, { threshold: 0.2 });
+        destObserver.observe(heroDest);
+    }
+
+    // Card sliders: arrows scroll one card at a time and are disabled at the ends.
+    // The arrows stay hidden when every card already fits.
+    document.querySelectorAll('[data-ls-carousel]').forEach(function (carousel) {
+        var track = carousel.querySelector('[data-ls-track]');
+        var nav = carousel.querySelector('.ls-hdest-nav');
+        if (!track || !nav) return;
+        var prev = nav.querySelector('[data-ls-step="-1"]');
+        var next = nav.querySelector('[data-ls-step="1"]');
+
+        var step = function () {
+            var card = track.firstElementChild;
+            var gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+            return card ? card.getBoundingClientRect().width + gap : track.clientWidth;
+        };
+        var update = function () {
+            var max = track.scrollWidth - track.clientWidth;
+            nav.hidden = max < 4;
+            prev.disabled = track.scrollLeft <= 2;
+            next.disabled = track.scrollLeft >= max - 2;
+        };
+
+        nav.addEventListener('click', function (e) {
+            var btn = e.target.closest('[data-ls-step]');
+            if (btn) track.scrollBy({ left: step() * parseInt(btn.getAttribute('data-ls-step'), 10), behavior: 'smooth' });
+        });
+        track.addEventListener('scroll', update, { passive: true });
+        window.addEventListener('resize', update);
+        update();
+    });
 
     // Preloader (redesigned pages; legacy pages use main.js)
     var preloader = document.querySelector('.ls-redesign .ls-preloader');
@@ -296,7 +351,7 @@
         var reveal = [
             '.ls-section-head',
             '.ls-exp-grid', '.ls-testi-grid', '.ls-grid', '.ls-stats-grid',
-            '.ls-why-photo', '.ls-gl-grid',
+            '.ls-gl-grid', '.ls-blog-layout',
             '.ls-b2b > .ls-wrap', '.ls-cta-band > .ls-wrap', '.ls-cta-green > .ls-wrap'
         ];
 
@@ -306,10 +361,14 @@
             }
         });
 
-        // List items come in one after another.
+        // List items come in one after another, and so do the collage photos.
         document.querySelectorAll('.ls-why-list li').forEach(function (li, i) {
             li.setAttribute('data-aos', 'fade-up');
             li.setAttribute('data-aos-delay', String(Math.min(i, 5) * 100));
+        });
+        document.querySelectorAll('.ls-why-photo').forEach(function (photo, i) {
+            photo.setAttribute('data-aos', 'fade-up');
+            photo.setAttribute('data-aos-delay', String(i * 150));
         });
 
         window.AOS.init({

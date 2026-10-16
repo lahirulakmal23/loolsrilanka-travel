@@ -36,19 +36,28 @@ if ( empty( $reasons ) && ! $heading ) {
         </div>
 
         <?php
-        // An empty field falls back to one of the Theme Settings fallback photos.
-        $photo = ls_image( $image, 'large', array(
-            'class' => 'ls-why-photo-img',
-            'sizes' => '(max-width: 900px) 100vw, 520px',
-        ) );
+        // Three overlapping photos. An empty field falls back to one of the
+        // Theme Settings fallback photos (a different one per slot).
+        $photos = array();
+        foreach ( array( $image, ls_get( 'hp_why_image_2' ), ls_get( 'hp_why_image_3' ) ) as $i => $value ) {
+            $photos[] = ls_image( $value ?: ls_fallback_id( 'why-' . $i ), 'large', array(
+                'class' => 'ls-why-photo-img',
+                'sizes' => '(max-width: 900px) 70vw, 380px',
+            ) );
+        }
+        $photos = array_filter( $photos );
         ?>
-        <?php if ( $photo ) : ?>
-            <figure class="ls-why-photo">
-                <?php echo $photo; ?>
-                <?php if ( $caption ) : ?>
-                    <figcaption><?php echo esc_html( $caption ); ?></figcaption>
-                <?php endif; ?>
-            </figure>
+        <?php if ( $photos ) : ?>
+            <div class="ls-why-collage">
+                <?php foreach ( array_values( $photos ) as $i => $photo ) : ?>
+                    <figure class="ls-why-photo ls-why-photo-<?php echo esc_attr( $i + 1 ); ?>">
+                        <?php echo $photo; ?>
+                        <?php if ( $caption && $i === count( $photos ) - 1 ) : ?>
+                            <figcaption><?php echo esc_html( $caption ); ?></figcaption>
+                        <?php endif; ?>
+                    </figure>
+                <?php endforeach; ?>
+            </div>
         <?php endif; ?>
     </div>
 </section>

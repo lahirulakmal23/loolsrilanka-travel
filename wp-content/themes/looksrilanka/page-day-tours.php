@@ -3,7 +3,8 @@
  * Template Name: Day Tours
  *
  * Day tour listing. WordPress uses this file for the page with the slug
- * "day-tours" automatically. Texts are under Theme Settings → Tour & Listing
+ * "day-tours" automatically, and archive-day-tour.php loads it for /day-tour/
+ * on sites without that page. Texts are under Theme Settings → Tour & Listing
  * Pages → "Day tours page"; the tours themselves are the Day Tours posts.
  */
 get_header();
@@ -27,16 +28,18 @@ $form  = ls_form( ls_option( 'dt_book_form' ) ?: ls_option( 'ls_tour_form' ) );
 $steps = array_filter( wp_list_pluck( ls_option( 'dt_steps' ) ?: array(), 'text' ) );
 $combo = array_filter( wp_list_pluck( ls_option( 'dt_combos' ) ?: array(), 'text' ) );
 
-while ( have_posts() ) :
-    the_post();
-    ?>
+// The page's own title and photo, or the post type name on the /day-tour/ archive.
+$is_page = is_page();
+$title   = $is_page ? get_the_title( get_queried_object_id() ) : post_type_archive_title( '', false );
+$photo   = $is_page && has_post_thumbnail( get_queried_object_id() ) ? get_post_thumbnail_id( get_queried_object_id() ) : '';
+?>
     <main id="primary" class="ls-page ls-listing ls-day-tours">
         <?php
         get_template_part( 'template-parts/page-hero', null, array(
-            'heading' => ls_option( 'dt_list_heading' ) ?: get_the_title(),
+            'heading' => ls_option( 'dt_list_heading' ) ?: $title,
             'text'    => ls_option( 'dt_list_text' ),
-            'image'   => ls_option( 'dt_list_image' ) ?: ( has_post_thumbnail() ? get_post_thumbnail_id() : '' ),
-            'crumbs'  => array( 'Home' => home_url( '/' ), get_the_title() => '' ),
+            'image'   => ls_option( 'dt_list_image' ) ?: $photo,
+            'crumbs'  => array( 'Home' => home_url( '/' ), $title => '' ),
         ) );
         ?>
 
@@ -109,7 +112,5 @@ while ( have_posts() ) :
             </section>
         <?php endif; ?>
     </main>
-    <?php
-endwhile;
-
+<?php
 get_footer();

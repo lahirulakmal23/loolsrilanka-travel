@@ -374,6 +374,7 @@ function ls_register_page_field_groups() {
                 ls_f( 'text', 'nw_list_heading', 'Heading', array( 'wrapper' => array( 'width' => 65 ) ) ),
                 ls_f( 'textarea', 'nw_list_text', 'Intro text', array( 'rows' => 2, 'new_lines' => '' ) ),
                 ls_f( 'text', 'nw_more_heading', '"More articles" heading on article pages' ),
+                ls_f( 'text', 'nw_recent_heading', 'Sidebar heading on article pages', array( 'instructions' => 'e.g. "Recent Posts". Lists the 4 newest other articles.' ) ),
             ),
             ls_cta_fields( 'nw', 'Call to action (blog & articles)' ),
             array(

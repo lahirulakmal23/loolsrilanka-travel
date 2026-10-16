@@ -15,7 +15,7 @@
     --ls-blue: #1C75BC;
     --ls-navy: #042233;
     --ls-navy-rgb: 4, 34, 51;
-    --ls-light: #F4F5F7;
+    --ls-light: rgba(247, 243, 234, .94);   /* warm sand page background */
     --ls-light-2: #e9ecef;
     --ls-ink: #181818;
     --ls-muted: #555555;
@@ -27,6 +27,8 @@
     --ls-wrap: 1180px;
     --ls-gutter: 24px;
     --ls-radius: 2px;
+    --ls-radius-btn: 8px;          /* buttons ("md" rounding) */
+    --ls-header-h: 90px;           /* navbar height, kept clear above hero text */
 }
 
 /* Base (redesigned pages only) ------------------------------------------- */
@@ -85,7 +87,7 @@ html:has(body.ls-redesign) { scroll-behavior: smooth; }
 .ls-btn {
     display: inline-block;
     padding: 15px 28px;
-    border-radius: var(--ls-radius);
+    border-radius: var(--ls-radius-btn);
     border: 1.5px solid transparent;
     font-family: var(--ls-sans);
     font-size: .98rem;
@@ -101,8 +103,14 @@ html:has(body.ls-redesign) { scroll-behavior: smooth; }
 .ls-btn-primary:hover { background: var(--ls-primary-hover); }
 .ls-btn-accent { background: var(--ls-accent); color: var(--ls-white) !important; }
 .ls-btn-accent:hover { background: var(--ls-accent-hover); }
-.ls-btn-outline { border-color: rgba(255, 255, 255, .5); color: var(--ls-white) !important; }
-.ls-btn-outline:hover { border-color: var(--ls-white); }
+.ls-btn-outline {
+    border-color: rgba(255, 255, 255, .55);
+    background: rgba(255, 255, 255, .08);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    color: var(--ls-white) !important;
+}
+.ls-btn-outline:hover { border-color: var(--ls-white); background: var(--ls-white); color: var(--ls-navy) !important; }
 
 .ls-actions {
     display: flex;
@@ -111,38 +119,31 @@ html:has(body.ls-redesign) { scroll-behavior: smooth; }
     margin-top: 30px;
 }
 
-/* Button micro-interactions: lift and shadow on hover, press down on click,
-   and a light sweep across filled buttons. The colour transitions above stay. */
-.ls-btn, .ls-btn-sm, .ls-nav-cta {
+/* Button micro-interactions: a soft lift with a glow in the button's own
+   colour on hover, a gentle press on click, and a clear keyboard focus ring. */
+.ls-btn, .ls-btn-sm, .ls-nav-cta, :is(.ls-form, .wpcf7) .wpcf7-submit {
+    --ls-btn-glow: rgba(var(--ls-navy-rgb), .35);
     position: relative;
-    overflow: hidden;
-    transition: background-color .2s, border-color .2s, color .2s, transform .2s ease, box-shadow .2s ease;
+    transition: background-color .25s ease, border-color .25s ease, color .25s ease, transform .25s cubic-bezier(.2, .7, .3, 1), box-shadow .25s ease;
 }
-.ls-btn-primary::after, .ls-btn-dark::after, .ls-btn-accent::after, .ls-btn-sm::after, .ls-nav-cta::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: -75%;
-    width: 50%;
-    background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .28), transparent);
-    transform: skewX(-20deg);
-    pointer-events: none;
-}
+.ls-btn-primary, :is(.ls-form, .wpcf7) .wpcf7-submit { --ls-btn-glow: rgba(124, 179, 66, .55); }
+.ls-btn-accent, .ls-hero .ls-btn-primary, .ls-page-hero .ls-btn-primary { --ls-btn-glow: rgba(247, 148, 29, .55); }
+.ls-btn-dark, .ls-btn-ghost, .ls-btn-sm, .ls-nav-cta { --ls-btn-glow: rgba(28, 117, 188, .45); }
+.ls-btn-outline { --ls-btn-glow: rgba(0, 0, 0, .3); }
 @media (hover: hover) {
-    .ls-btn:hover, .ls-btn-sm:hover, .ls-nav-cta:hover {
+    .ls-btn:hover, .ls-btn-sm:hover, .ls-nav-cta:hover, :is(.ls-form, .wpcf7) .wpcf7-submit:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 18px rgba(var(--ls-navy-rgb), .18);
-    }
-    .ls-btn-primary:hover::after, .ls-btn-dark:hover::after, .ls-btn-accent:hover::after, .ls-btn-sm:hover::after, .ls-nav-cta:hover::after {
-        left: 125%;
-        transition: left .6s ease;
+        box-shadow: 0 12px 24px -10px var(--ls-btn-glow);
     }
 }
-.ls-btn:active, .ls-btn-sm:active, .ls-nav-cta:active {
-    transform: translateY(0) scale(.97);
-    box-shadow: 0 2px 6px rgba(var(--ls-navy-rgb), .15);
+.ls-btn:active, .ls-btn-sm:active, .ls-nav-cta:active, :is(.ls-form, .wpcf7) .wpcf7-submit:active {
+    transform: translateY(0) scale(.98);
+    box-shadow: 0 4px 10px -6px var(--ls-btn-glow);
     transition-duration: .08s;
+}
+.ls-btn:focus-visible, .ls-btn-sm:focus-visible, .ls-nav-cta:focus-visible, :is(.ls-form, .wpcf7) .wpcf7-submit:focus-visible {
+    outline: 2px solid var(--ls-accent);
+    outline-offset: 3px;
 }
 
 /* Scroll reveal (AOS): a shorter slide than the library's 100px default. */
@@ -155,14 +156,77 @@ html:has(body.ls-redesign) { scroll-behavior: smooth; }
     position: sticky;
     top: 0;
     z-index: 50;
-    background: rgba(255, 255, 255, .96);
-    -webkit-backdrop-filter: blur(6px);
-    backdrop-filter: blur(6px);
+    background: var(--ls-light);
+    -webkit-backdrop-filter: blur(14px) saturate(1.4);
+    backdrop-filter: blur(14px) saturate(1.4);
     border-bottom: 1px solid rgba(var(--ls-navy-rgb), .08);
     font-family: var(--ls-sans);
+    transition: background-color .35s ease, border-color .35s ease, box-shadow .35s ease;
 }
 .admin-bar .ls-header { top: 32px; }
 @media (max-width: 782px) { .admin-bar .ls-header { top: 0; } }
+/* Scrolled: frosted glass in the page colour, so the content shows softly through. */
+.ls-header.is-scrolled:not(.is-open) {
+    background-color: rgba(247, 243, 234, .7);
+    -webkit-backdrop-filter: blur(18px) saturate(1.6);
+    backdrop-filter: blur(18px) saturate(1.6);
+    border-bottom-color: rgba(255, 255, 255, .5);
+    box-shadow: 0 10px 30px -18px rgba(var(--ls-navy-rgb), .45);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .ls-header.is-scrolled:not(.is-open) { background-color: var(--ls-light); }
+}
+.ls-header.is-scrolled .ls-navbar { padding-top: 9px; padding-bottom: 9px; }
+
+/* Transparent header over a photo hero (home slider, or an inner page whose
+   banner has a photo). It turns back into the solid bar once the page scrolls
+   or the mobile menu opens (ls.js toggles .is-scrolled and .is-open). */
+.ls-header::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 -24px;
+    z-index: -1;
+    background: linear-gradient(180deg, rgba(var(--ls-navy-rgb), .6) 0%, rgba(var(--ls-navy-rgb), .25) 60%, rgba(var(--ls-navy-rgb), 0) 100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .35s ease;
+}
+body:has(.ls-page > :is(.ls-hero, .ls-page-hero.has-image):first-child) .ls-header {
+    position: fixed;
+    left: 0;
+    right: 0;
+}
+body:has(.ls-page > :is(.ls-hero, .ls-page-hero.has-image):first-child) .ls-header:not(.is-scrolled, .is-open) {
+    background-color: transparent;
+    border-bottom-color: transparent;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+}
+body:has(.ls-page > :is(.ls-hero, .ls-page-hero.has-image):first-child) .ls-header:not(.is-scrolled, .is-open)::before { opacity: 1; }
+body:has(.ls-page > :is(.ls-hero, .ls-page-hero.has-image):first-child) .ls-header:not(.is-scrolled, .is-open) .ls-menu > li > a {
+    color: var(--ls-white) !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, .25);
+}
+body:has(.ls-page > :is(.ls-hero, .ls-page-hero.has-image):first-child) .ls-header:not(.is-scrolled, .is-open) .ls-menu > li > a:hover,
+body:has(.ls-page > :is(.ls-hero, .ls-page-hero.has-image):first-child) .ls-header:not(.is-scrolled, .is-open) .ls-menu > :is(.current-menu-item, .current-menu-ancestor) > a { color: var(--ls-accent) !important; }
+body:has(.ls-page > :is(.ls-hero, .ls-page-hero.has-image):first-child) .ls-header:not(.is-scrolled, .is-open) .ls-logo { color: var(--ls-white) !important; }
+body:has(.ls-page > :is(.ls-hero, .ls-page-hero.has-image):first-child) .ls-header:not(.is-scrolled, .is-open) .ls-logo img { filter: drop-shadow(0 2px 10px rgba(0, 0, 0, .35)); }
+body:has(.ls-page > :is(.ls-hero, .ls-page-hero.has-image):first-child) .ls-header:not(.is-scrolled, .is-open) .ls-burger span { background: var(--ls-white); }
+body:has(.ls-page > :is(.ls-hero, .ls-page-hero.has-image):first-child) .ls-header:not(.is-scrolled, .is-open) .ls-nav-cta {
+    --ls-btn-glow: rgba(0, 0, 0, .3);
+    background: rgba(255, 255, 255, .14);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .45);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+}
+body:has(.ls-page > :is(.ls-hero, .ls-page-hero.has-image):first-child) .ls-header:not(.is-scrolled, .is-open) .ls-nav-cta:hover {
+    background: var(--ls-white);
+    color: var(--ls-navy) !important;
+    box-shadow: 0 12px 24px -10px var(--ls-btn-glow);
+}
+/* Make room for the header now floating over the photo. */
+body:has(.ls-page > .ls-page-hero.has-image:first-child) .ls-page-hero.has-image { padding-top: calc(110px + var(--ls-header-h, 90px)); }
+body:has(.ls-page > .ls-page-hero.has-image:first-child) .ls-page-hero-tall.has-image { padding-top: calc(150px + var(--ls-header-h, 90px)); }
 
 /* Logo left, menu centred, button right: the two 1fr columns stay equal, so
    the menu sits in the true centre whatever the logo and button widths. */
@@ -174,6 +238,7 @@ html:has(body.ls-redesign) { scroll-behavior: smooth; }
     max-width: var(--ls-wrap);
     margin: 0 auto;
     padding: 14px var(--ls-gutter);
+    transition: padding .35s ease;
 }
 
 .ls-logo {
@@ -252,16 +317,30 @@ html:has(body.ls-redesign) { scroll-behavior: smooth; }
 .ls-nav-cta {
     grid-column: 3;
     justify-self: end;
-    padding: 10px 20px;
-    border-radius: var(--ls-radius);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px 10px 22px;
+    border-radius: 999px;
     background: var(--ls-blue);
     color: var(--ls-white) !important;
     font-size: .95rem;
     font-weight: 600;
     text-decoration: none !important;
-    transition: background-color .2s;
 }
 .ls-nav-cta:hover { background: var(--ls-navy); }
+/* Arrow after the label; it slides right on hover. Drawn with a mask so it takes the text colour. */
+.ls-nav-cta::after {
+    content: "";
+    flex: none;
+    width: 16px;
+    height: 16px;
+    background: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center / contain no-repeat;
+    transition: transform .25s cubic-bezier(.2, .7, .3, 1);
+}
+.ls-nav-cta:hover::after { transform: translateX(4px); }
 
 .ls-burger {
     grid-column: 3;
@@ -348,17 +427,23 @@ html:has(body.ls-redesign) { scroll-behavior: smooth; }
 
 /* Hero slider -------------------------------------------------------------- */
 
+/* The slides share one grid cell, so the hero is as tall as its longest
+   slide: text never runs up under the header on short screens. */
 .ls-hero {
     position: relative;
+    display: grid;
     overflow: hidden;
-    height: min(88vh, 720px);
-    min-height: 560px;
     background: var(--ls-navy);
     color: var(--ls-white);
 }
 .ls-slide {
-    position: absolute;
-    inset: 0;
+    position: relative;
+    grid-area: 1 / 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: max(min(88vh, 720px), 560px);
+    padding: calc(var(--ls-header-h) + 36px) 0 96px;
     opacity: 0;
     visibility: hidden;
     transition: opacity 1s ease, visibility 1s;
@@ -381,17 +466,22 @@ html:has(body.ls-redesign) { scroll-behavior: smooth; }
 @keyframes ls-zoom { from { transform: scale(1.06); } to { transform: scale(1); } }
 
 .ls-hero-inner {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 96px;
+    position: relative;
     z-index: 2;
+    width: 100%;
     max-width: var(--ls-wrap);
     margin: 0 auto;
     padding: 0 var(--ls-gutter);
 }
 .ls-hero-eyebrow {
-    margin-bottom: 14px;
+    display: inline-block;
+    margin-bottom: 16px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .14);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .28);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
     font-size: .85rem;
     font-weight: 600;
     letter-spacing: .3px;
@@ -464,10 +554,182 @@ html:has(body.ls-redesign) { scroll-behavior: smooth; }
 
 @media (max-width: 700px) {
     .ls-arrows { display: none; }
-    .ls-hero { height: auto; min-height: 620px; }
-    .ls-hero-inner { bottom: 72px; }
+    .ls-slide { min-height: 620px; padding-bottom: 72px; }
     .ls-hero-controls { bottom: 28px; }
     .ls-actions .ls-btn { flex: 1 1 100%; }
+}
+
+/* Popular destinations: own section after the hero ---------------------- */
+
+.ls-hero-dest { padding: 80px 0; background: var(--ls-white); }
+.ls-hero-dest .ls-section-head { margin-bottom: 0; }
+/* Heading on the left, slider arrows on the right. */
+.ls-hdest-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 32px; margin-bottom: 40px; }
+.ls-hdest-nav { display: flex; gap: 10px; }
+.ls-hdest-nav[hidden] { display: none; }
+.ls-hdest-nav button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    padding: 0;
+    border: 1.5px solid rgba(var(--ls-navy-rgb), .18);
+    border-radius: 50%;
+    background: var(--ls-white);
+    color: var(--ls-navy);
+    cursor: pointer;
+    transition: background-color .25s, border-color .25s, color .25s, transform .25s, opacity .25s;
+}
+.ls-hdest-nav button svg { width: 18px; height: 18px; }
+.ls-hdest-nav button:hover:not(:disabled) { background: var(--ls-accent); border-color: var(--ls-accent); color: var(--ls-white); transform: translateY(-2px); }
+.ls-hdest-nav button:disabled { opacity: .35; cursor: default; }
+.ls-hdest-nav button:focus-visible { outline: 2px solid var(--ls-accent); outline-offset: 3px; }
+
+/* Slider track: native scrolling with snap, so swipe and trackpad work; the
+   extra top/bottom padding keeps the hover lift and shadow from being clipped. */
+.ls-hdest-row {
+    --ls-hdest-gap: 20px;
+    --ls-hdest-per: 4;
+    display: flex;
+    gap: var(--ls-hdest-gap);
+    margin: -14px 0 -40px;
+    padding: 14px 0 40px;
+    list-style: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+}
+.ls-hdest-row::-webkit-scrollbar { display: none; }
+.ls-hdest {
+    flex: 0 0 calc((100% - (var(--ls-hdest-per) - 1) * var(--ls-hdest-gap)) / var(--ls-hdest-per));
+    scroll-snap-align: start;
+}
+/* Cards rise in one by one when the band scrolls into view (ls.js sets data-reveal, then .is-in). */
+.ls-hero-dest[data-reveal] .ls-hdest { opacity: 0; }
+.ls-hero-dest.is-in .ls-hdest {
+    animation: ls-hdest-in .9s cubic-bezier(.2, .7, .3, 1) both;
+    animation-delay: calc(var(--i, 0) * .12s);
+}
+@keyframes ls-hdest-in {
+    from { opacity: 0; transform: translateY(40px) scale(.96); }
+    to { opacity: 1; transform: none; }
+}
+.ls-hdest-link {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 330px;
+    padding: 14px;
+    overflow: hidden;
+    border-radius: var(--ls-radius-btn);
+    background: linear-gradient(135deg, var(--ls-blue), var(--ls-primary));
+    box-shadow: 0 18px 36px -22px rgba(var(--ls-navy-rgb), .5);
+    color: var(--ls-white) !important;
+    text-decoration: none !important;
+    isolation: isolate;
+    transition: transform .45s cubic-bezier(.2, .7, .3, 1), box-shadow .45s ease;
+}
+.ls-hdest-img {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100% !important;
+    object-fit: cover;
+    transition: transform .9s cubic-bezier(.2, .7, .3, 1);
+}
+.ls-hdest-link::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(0deg, rgba(var(--ls-navy-rgb), .9) 0%, rgba(var(--ls-navy-rgb), .25) 55%, rgba(var(--ls-navy-rgb), .05) 100%);
+    transition: opacity .45s ease;
+}
+.ls-hdest-link::after {
+    /* Thin glass edge. */
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .18);
+    pointer-events: none;
+}
+.ls-hdest-tag {
+    align-self: flex-start;
+    padding: 5px 11px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .16);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .3);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    font-size: .72rem;
+    font-weight: 600;
+    letter-spacing: .3px;
+}
+.ls-hdest-body { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-top: auto; padding: 0 4px 4px; }
+.ls-hdest-text { display: flex; flex-direction: column; min-width: 0; }
+.ls-hdest-name {
+    font-family: var(--ls-serif);
+    font-size: 1.4rem;
+    line-height: 1.15;
+    text-shadow: 0 1px 12px rgba(0, 0, 0, .3);
+}
+.ls-hdest-cta {
+    max-height: 0;
+    overflow: hidden;
+    font-size: .8rem;
+    font-weight: 600;
+    color: var(--ls-accent);
+    opacity: 0;
+    transform: translateY(6px);
+    transition: max-height .4s ease, opacity .35s ease, transform .4s ease;
+}
+.ls-hdest-arrow {
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .16);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .35);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    transition: background-color .35s ease, color .35s ease, transform .45s cubic-bezier(.2, .7, .3, 1);
+}
+.ls-hdest-arrow svg { width: 18px; height: 18px; }
+@media (hover: hover) {
+    .ls-hdest-link:hover { transform: translateY(-8px); box-shadow: 0 30px 50px -24px rgba(var(--ls-navy-rgb), .55); }
+    .ls-hdest-link:hover .ls-hdest-img { transform: scale(1.08); }
+    .ls-hdest-link:hover .ls-hdest-cta { max-height: 24px; margin-top: 4px; opacity: 1; transform: none; }
+    .ls-hdest-link:hover .ls-hdest-arrow { background: var(--ls-accent); box-shadow: none; color: var(--ls-navy); transform: rotate(45deg); }
+}
+.ls-hdest-link:focus-visible { outline: 2px solid var(--ls-accent); outline-offset: 4px; }
+
+@media (max-width: 1080px) {
+    .ls-hdest-row { --ls-hdest-per: 3; }
+    .ls-hdest-link { height: 300px; }
+    .ls-hdest-name { font-size: 1.2rem; }
+}
+/* Phones: about one and a half cards, running to the screen edge. */
+@media (max-width: 760px) {
+    .ls-hdest-row { --ls-hdest-gap: 14px; margin-right: calc(-1 * var(--ls-gutter)); padding-right: var(--ls-gutter); scroll-padding-left: 0; }
+    .ls-hdest { flex-basis: min(72vw, 280px); }
+    .ls-hdest-link { height: 270px; }
+    .ls-hdest-cta { max-height: 24px; margin-top: 4px; opacity: 1; transform: none; }
+    .ls-hdest-head { margin-bottom: 28px; }
+    .ls-hdest-nav button { width: 40px; height: 40px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .ls-hero-dest[data-reveal] .ls-hdest, .ls-hero-dest.is-in .ls-hdest { opacity: 1; animation: none; }
+    .ls-hdest-link, .ls-hdest-img, .ls-hdest-arrow { transition: none; }
+    .ls-hdest-row { scroll-behavior: auto; }
 }
 
 /* Trust strip -------------------------------------------------------------- */
@@ -549,8 +811,25 @@ html:has(body.ls-redesign) { scroll-behavior: smooth; }
 .ls-page .ls-why-list h3 { margin: 0 0 4px; font-family: var(--ls-sans); font-size: 1.02rem; font-weight: 600; line-height: 1.4; }
 .ls-page .ls-why-list p { font-size: .92rem; color: var(--ls-muted); }
 
-.ls-why-photo { position: relative; margin: 0; overflow: hidden; aspect-ratio: 4 / 5; max-height: 600px; background: var(--ls-light); }
-.ls-why-photo-img { display: block; width: 100%; height: 100% !important; object-fit: cover; }
+/* Photo collage: three rounded photos overlapping on a 12 x 12 grid. */
+.ls-why-collage {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: repeat(12, 1fr);
+    aspect-ratio: 1 / 1.08;
+    width: 100%;
+    max-width: 560px;
+    margin-left: auto;
+}
+.ls-why-photo { position: relative; margin: 0; overflow: hidden; border-radius: 22px; background: var(--ls-light); }
+.ls-why-photo-img { display: block; width: 100%; height: 100% !important; object-fit: cover; transition: transform .6s ease; }
+.ls-why-photo:hover .ls-why-photo-img { transform: scale(1.04); }
+.ls-why-photo-1 { grid-column: 1 / 8; grid-row: 1 / 8; z-index: 1; }
+.ls-why-photo-2 { grid-column: 5 / 13; grid-row: 3 / 11; z-index: 2; border: 6px solid var(--ls-white); box-shadow: 0 24px 48px -24px rgba(var(--ls-navy-rgb), .45); }
+.ls-why-photo-3 { grid-column: 2 / 8; grid-row: 8 / 13; z-index: 3; border: 6px solid var(--ls-white); box-shadow: 0 24px 48px -24px rgba(var(--ls-navy-rgb), .45); }
+/* One or two photos only: let them fill the space instead of leaving gaps. */
+.ls-why-collage:has(> :only-child) .ls-why-photo-1 { grid-column: 1 / 13; grid-row: 1 / 13; }
+.ls-why-collage:not(:has(.ls-why-photo-3)) .ls-why-photo-2 { grid-row: 4 / 13; }
 .ls-why-photo figcaption {
     position: absolute;
     left: 0;
@@ -562,11 +841,35 @@ html:has(body.ls-redesign) { scroll-behavior: smooth; }
     background: linear-gradient(0deg, rgba(var(--ls-navy-rgb), .8) 0%, rgba(var(--ls-navy-rgb), 0) 100%);
 }
 
-@media (max-width: 900px) { .ls-why-grid { grid-template-columns: 1fr; gap: 40px; } }
+@media (max-width: 900px) {
+    .ls-why-grid { grid-template-columns: 1fr; gap: 40px; }
+    .ls-why-collage { margin: 0 auto; }
+}
+.ls-why-photo-3 figcaption { padding: 36px 16px 14px; font-size: .8rem; }
 
 /* Partner strip ------------------------------------------------------------ */
 
 .ls-b2b { background: var(--ls-primary); color: var(--ls-navy); }
+/* Optional background photo: a green fade keeps the text side readable. */
+.ls-b2b.has-image { position: relative; overflow: hidden; }
+.ls-b2b-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100% !important;
+    object-fit: cover;
+}
+.ls-b2b.has-image::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(90deg, rgba(124, 179, 66, .97) 0%, rgba(124, 179, 66, .9) 40%, rgba(124, 179, 66, .45) 75%, rgba(124, 179, 66, .2) 100%);
+}
+.ls-b2b.has-image .ls-b2b-inner { position: relative; z-index: 2; }
+@media (max-width: 760px) {
+    .ls-b2b.has-image::before { background: rgba(124, 179, 66, .9); }
+}
 .ls-b2b-inner { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 32px; }
 .ls-page .ls-b2b h2 { max-width: 20ch; font-size: clamp(1.6rem, 3vw, 2.2rem); color: var(--ls-navy); }
 .ls-page .ls-b2b p { margin-top: 10px; color: var(--ls-navy); }
@@ -634,6 +937,123 @@ html:has(body.ls-redesign) { scroll-behavior: smooth; }
 
 .ls-page [hidden] { display: none !important; }
 .ls-white { background: var(--ls-white); }
+
+/* Home: popular blogs ------------------------------------------------------ */
+
+.ls-blog-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px 32px;
+    margin-bottom: 44px;
+}
+.ls-blog-all,
+.ls-blog-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: .92rem;
+    font-weight: 600;
+    color: var(--ls-blue) !important;
+    text-decoration: none !important;
+    white-space: nowrap;
+}
+.ls-blog-all::after,
+.ls-blog-more::after {
+    content: "→";
+    transition: transform .25s cubic-bezier(.2, .7, .3, 1);
+}
+.ls-blog-all:hover::after,
+.ls-blog-feature-link:hover .ls-blog-more::after,
+.ls-blog-item:hover .ls-blog-more::after { transform: translateX(4px); }
+
+.ls-blog-layout {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    grid-auto-rows: 1fr;
+    gap: 28px 40px;
+}
+.ls-blog-feature { grid-row: span 2; }
+.ls-blog-feature:only-child { grid-column: 1 / -1; grid-row: auto; }
+.ls-blog-feature:only-child .ls-blog-feature-link { min-height: 420px; }
+.ls-blog-feature:nth-last-child(2) { grid-row: auto; }
+
+.ls-blog-img { display: block; width: 100%; height: 100% !important; object-fit: cover; transition: transform .7s cubic-bezier(.2, .7, .3, 1); }
+
+.ls-blog-feature-link {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    height: 100%;
+    min-height: 460px;
+    overflow: hidden;
+    border-radius: 20px;
+    background: var(--ls-navy);
+    color: var(--ls-white) !important;
+    text-decoration: none !important;
+    isolation: isolate;
+}
+.ls-blog-feature-link .ls-blog-img { position: absolute; inset: 0; z-index: -2; }
+.ls-blog-feature-link::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(0deg, rgba(var(--ls-navy-rgb), .92) 0%, rgba(var(--ls-navy-rgb), .45) 45%, rgba(var(--ls-navy-rgb), 0) 75%);
+}
+.ls-blog-feature-link:hover .ls-blog-img { transform: scale(1.05); }
+.ls-blog-feature-body { padding: 34px; }
+.ls-page .ls-blog-feature h3 {
+    max-width: 24ch;
+    margin: 10px 0 18px;
+    font-size: clamp(1.45rem, 2.4vw, 2rem);
+    line-height: 1.2;
+    color: var(--ls-white);
+}
+.ls-blog-feature .ls-blog-meta { color: rgba(255, 255, 255, .8); }
+.ls-blog-feature .ls-blog-more { color: var(--ls-white) !important; }
+
+.ls-blog-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    font-size: .8rem;
+    font-weight: 500;
+    letter-spacing: .2px;
+    color: var(--ls-muted);
+}
+
+.ls-blog-item { display: grid; grid-template-columns: 200px 1fr; gap: 24px; align-items: center; }
+.ls-blog-thumb { display: block; height: 100%; min-height: 180px; overflow: hidden; border-radius: 16px; background: var(--ls-light); }
+.ls-blog-item:hover .ls-blog-img { transform: scale(1.06); }
+.ls-blog-item-body { display: flex; flex-direction: column; gap: 10px; }
+.ls-page .ls-blog-item h3 { margin: 0; font-size: 1.2rem; line-height: 1.3; }
+.ls-blog-item h3 a { color: var(--ls-ink) !important; text-decoration: none !important; transition: color .2s; }
+.ls-blog-item h3 a:hover { color: var(--ls-blue) !important; }
+.ls-blog-excerpt {
+    display: -webkit-box;
+    margin: 0;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    font-size: .92rem;
+    color: var(--ls-muted);
+}
+
+@media (max-width: 900px) {
+    .ls-blog-layout { grid-template-columns: 1fr; grid-auto-rows: auto; }
+    .ls-blog-feature { grid-row: auto; }
+    .ls-blog-feature-link { min-height: 380px; }
+}
+@media (max-width: 560px) {
+    .ls-blog-item { grid-template-columns: 1fr; gap: 14px; }
+    .ls-blog-thumb { aspect-ratio: 16 / 10; min-height: 0; }
+    .ls-blog-feature-body { padding: 24px; }
+}
 
 /* Page hero ---------------------------------------------------------------- */
 
@@ -743,6 +1163,10 @@ html:has(body.ls-redesign) { scroll-behavior: smooth; }
 @media (max-width: 960px) {
     .ls-grid-3, .ls-grid-4 { grid-template-columns: repeat(2, 1fr); }
 }
+/* Itinerary cards: 2 per row on tablets up to iPad Pro portrait (1024px). */
+@media (min-width: 641px) and (max-width: 1024px) {
+    .ls-grid-tours { grid-template-columns: repeat(2, 1fr); }
+}
 @media (max-width: 760px) {
     .ls-grid-2 { grid-template-columns: 1fr; }
 }
@@ -813,13 +1237,12 @@ html:has(body.ls-redesign) { scroll-behavior: smooth; }
     display: inline-block;
     padding: 9px 16px;
     border: 1.5px solid var(--ls-blue);
-    border-radius: var(--ls-radius);
+    border-radius: var(--ls-radius-btn);
     background: var(--ls-blue);
     color: var(--ls-white) !important;
     font-size: .85rem;
     font-weight: 600;
     text-decoration: none;
-    transition: background-color .2s, border-color .2s, color .2s;
 }
 .ls-btn-sm:hover { background: var(--ls-primary); border-color: var(--ls-primary); }
 .ls-text-link { margin-top: auto; font-size: .9rem; font-weight: 600; color: var(--ls-blue) !important; text-decoration: none; }
@@ -1257,14 +1680,13 @@ a.ls-inspo-card:hover img { transform: scale(1.05); }
     min-height: 0;
     padding: 15px 30px;
     border: 0;
-    border-radius: var(--ls-radius);
+    border-radius: var(--ls-radius-btn);
     background: var(--ls-primary);
     color: var(--ls-white);
     font-family: var(--ls-sans);
     font-size: .98rem;
     font-weight: 700;
     cursor: pointer;
-    transition: background-color .2s;
 }
 :is(.ls-form, .wpcf7) .wpcf7-submit:hover { background: var(--ls-primary-hover); }
 :is(.ls-form, .wpcf7) .wpcf7-submit.ls-btn-accent { background: var(--ls-accent); }
@@ -1338,6 +1760,56 @@ a.ls-inspo-card:hover img { transform: scale(1.05); }
 /* Articles, legal pages, blog ---------------------------------------------- */
 
 .ls-article { max-width: 760px; margin: 0 auto; padding: 56px 0 80px; }
+/* Article page: text on the left (in line with the banner title), recent posts on the right. */
+.ls-article-layout .ls-article { max-width: none; margin: 0; padding: 0; }
+.ls-article-layout { padding-bottom: 80px; }
+.ls-article-side { position: sticky; top: calc(var(--ls-header-h) + 24px); }
+.ls-recent {
+    padding: 28px 26px;
+    background: var(--ls-white);
+    border: 1px solid var(--ls-light-2);
+}
+.ls-page .ls-recent-title {
+    position: relative;
+    margin: 0 0 22px;
+    padding-bottom: 14px;
+    font-size: 1.45rem;
+    color: var(--ls-ink);
+    border-bottom: 2px solid var(--ls-light-2);
+}
+.ls-recent-title::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 44px;
+    height: 2px;
+    background: var(--ls-blue);
+}
+.ls-recent-list { display: flex; flex-direction: column; gap: 20px; margin: 0; padding: 0; list-style: none; }
+.ls-recent-item { display: flex; align-items: center; gap: 16px; text-decoration: none !important; }
+.ls-recent-thumb { flex: none; width: 84px; height: 84px; overflow: hidden; border-radius: 10px; background: var(--ls-light); }
+.ls-recent-thumb img { display: block; width: 100%; height: 100% !important; object-fit: cover; transition: transform .5s ease; }
+.ls-recent-item:hover .ls-recent-thumb img { transform: scale(1.08); }
+.ls-recent-body { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.ls-recent-name {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    font-size: .98rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--ls-ink);
+    transition: color .2s;
+}
+.ls-recent-item:hover .ls-recent-name { color: var(--ls-blue); }
+.ls-recent-date { display: inline-flex; align-items: center; gap: 6px; font-size: .82rem; color: var(--ls-muted); }
+.ls-recent-date svg { width: 15px; height: 15px; }
+@media (max-width: 960px) {
+    .ls-article-side { position: static; }
+}
 .ls-article h2, .ls-article h3, .ls-article h4 { margin: 36px 0 12px; color: var(--ls-ink); line-height: 1.2; }
 .ls-article h2 { font-family: var(--ls-serif); font-weight: 400; font-size: 1.7rem; }
 .ls-article h3 { font-family: var(--ls-serif); font-weight: 400; font-size: 1.3rem; }
@@ -1720,8 +2192,9 @@ a.ls-inspo-card:hover img { transform: scale(1.05); }
     .ls-slide, .ls-exp-card, .ls-exp-visual img, .ls-dots button { transition: none; }
     .ls-slide.is-active .ls-slide-img { animation: none; }
     .ls-page-hero-img, .ls-page-hero-inner > * { animation: none; }
-    .ls-btn, .ls-btn-sm, .ls-nav-cta { transition: background-color .2s, border-color .2s, color .2s; }
-    .ls-btn:hover, .ls-btn-sm:hover, .ls-nav-cta:hover, .ls-btn:active, .ls-btn-sm:active, .ls-nav-cta:active { transform: none; }
-    .ls-btn::after, .ls-btn-sm::after, .ls-nav-cta::after { display: none; }
+    .ls-btn, .ls-btn-sm, .ls-nav-cta, :is(.ls-form, .wpcf7) .wpcf7-submit { transition: background-color .2s, border-color .2s, color .2s; }
+    .ls-btn:hover, .ls-btn-sm:hover, .ls-nav-cta:hover, .ls-btn:active, .ls-btn-sm:active, .ls-nav-cta:active,
+    :is(.ls-form, .wpcf7) .wpcf7-submit:hover, :is(.ls-form, .wpcf7) .wpcf7-submit:active { transform: none; }
+    .ls-header, .ls-header::before, .ls-navbar { transition: none; }
     html:has(body.ls-redesign) { scroll-behavior: auto; }
 }

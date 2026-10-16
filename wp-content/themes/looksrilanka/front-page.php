@@ -10,10 +10,12 @@ get_header();
     <?php
     get_template_part( 'template-parts/home/hero' );
     get_template_part( 'template-parts/home/trust' );
+    get_template_part( 'template-parts/home/hero-destinations' );
     get_template_part( 'template-parts/home/ways' );
     get_template_part( 'template-parts/home/why' );
     get_template_part( 'template-parts/home/partner' );
     get_template_part( 'template-parts/home/testimonials' );
+    get_template_part( 'template-parts/home/blog' );
     get_template_part( 'template-parts/home/cta' );
     ?>
 </main>

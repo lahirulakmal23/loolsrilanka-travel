@@ -7,7 +7,7 @@ $days   = (int) ls_get( 'days' );
 $route  = ls_route( $id );
 $pace   = ls_get( 'it_pace' );
 $price  = ls_get( 'price' );
-$image  = ls_post_image( $id, 'large', array( 'sizes' => '(max-width: 860px) 100vw, 560px', 'alt' => '' ) );
+$image  = ls_post_image( $id, 'large', array( 'sizes' => '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 380px', 'alt' => '' ) );
 ?>
 <article class="ls-card ls-itin-card">
     <a class="ls-card-visual" href="<?php the_permalink(); ?>" tabindex="-1" aria-hidden="true">

@@ -21,7 +21,7 @@ while ( have_posts() ) :
             'class'  => 'ls-page-hero-tall',
         ) );
         ?>
-        <div class="ls-wrap">
+        <div class="ls-wrap ls-side-layout ls-article-layout">
             <article class="ls-article ls-prose">
                 <?php the_content(); ?>
 
@@ -35,24 +35,55 @@ while ( have_posts() ) :
 
                 <a class="ls-text-link ls-back-link" href="<?php echo esc_url( $list_url ); ?>">&larr; <?php echo esc_html( sprintf( __( 'Back to %s', 'looksrilanka' ), $list_name ) ); ?></a>
             </article>
+
+            <?php
+            $recent = get_posts( array(
+                'post_type'   => 'news',
+                'numberposts' => 4,
+                'exclude'     => array( get_the_ID() ),
+            ) );
+            if ( $recent ) :
+                ?>
+                <aside class="ls-side ls-article-side">
+                    <div class="ls-recent">
+                        <h2 class="ls-recent-title"><?php echo esc_html( ls_option( 'nw_recent_heading' ) ?: __( 'Recent Posts', 'looksrilanka' ) ); ?></h2>
+                        <ul class="ls-recent-list">
+                            <?php foreach ( $recent as $item ) : ?>
+                                <li>
+                                    <a class="ls-recent-item" href="<?php echo esc_url( get_permalink( $item ) ); ?>">
+                                        <span class="ls-recent-thumb"><?php echo ls_post_image( $item->ID, 'thumbnail', array( 'alt' => '', 'sizes' => '84px' ) ); ?></span>
+                                        <span class="ls-recent-body">
+                                            <span class="ls-recent-name"><?php echo esc_html( get_the_title( $item ) ); ?></span>
+                                            <time class="ls-recent-date" datetime="<?php echo esc_attr( get_the_date( 'c', $item ) ); ?>">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>
+                                                <?php echo esc_html( get_the_date( '', $item ) ); ?>
+                                            </time>
+                                        </span>
+                                    </a>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                </aside>
+            <?php endif; ?>
         </div>
 
         <?php
-        $more = new WP_Query( array(
+        $related = new WP_Query( array(
             'post_type'      => 'news',
             'posts_per_page' => 3,
             'post__not_in'   => array( get_the_ID() ),
             'no_found_rows'  => true,
         ) );
-        if ( $more->have_posts() ) :
+        if ( $related->have_posts() ) :
             ?>
             <section class="ls-section ls-related">
                 <div class="ls-wrap">
                     <h2 class="ls-block-title"><?php echo esc_html( ls_option( 'nw_more_heading' ) ?: __( 'More articles', 'looksrilanka' ) ); ?></h2>
                     <div class="ls-grid ls-grid-3">
                         <?php
-                        while ( $more->have_posts() ) {
-                            $more->the_post();
+                        while ( $related->have_posts() ) {
+                            $related->the_post();
                             get_template_part( 'template-parts/card-post' );
                         }
                         wp_reset_postdata();

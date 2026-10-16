@@ -122,6 +122,9 @@ function ls_seed_content() {
         ls_seed_field( 'hp_hero_btn_1', ls_seed_link( '/tour/', 'Browse Itineraries' ), $front );
         ls_seed_field( 'hp_hero_btn_2', ls_seed_link( '/tailor-made-2/', 'Talk to a Trip Designer' ), $front );
         ls_seed_field( 'hp_hero_interval', 6, $front );
+        ls_seed_field( 'hp_hdest_show', 1, $front );
+        ls_seed_field( 'hp_hdest_kicker', 'Popular destinations', $front );
+        ls_seed_field( 'hp_hdest_heading', 'Where travellers love to go', $front );
 
         ls_seed_field( 'hp_trust', ls_seed_rows( 'hp_trust', array(
             array( 'text' => 'Tripadvisor Certificate of Excellence' ),
@@ -129,6 +132,7 @@ function ls_seed_content() {
             array( 'text' => '10K+ Clients Worldwide' ),
             array( 'text' => 'Licensed Chauffeur Guides' ),
         ) ), $front );
+
 
         ls_seed_field( 'hp_ways_kicker', 'Where to begin', $front );
         ls_seed_field( 'hp_ways_heading', 'Three ways to explore the island', $front );
@@ -166,16 +170,24 @@ function ls_seed_content() {
             array( 'icon' => 'sliders', 'title' => '100% customisable', 'text' => 'Tell us your travel needs and we will tailor the trip to them for an unforgettable experience.' ),
         ) ), $front );
         ls_seed_field( 'hp_why_image', ls_seed_attachment( '2025/02/Clients-at-Sigiriya.jpg' ), $front );
+        ls_seed_field( 'hp_why_image_2', ls_seed_attachment( '2024/12/Ella-Cover-scaled.jpg' ), $front );
+        ls_seed_field( 'hp_why_image_3', ls_seed_attachment( '2024/12/Leopard-Sri-Lanka-scaled.jpg' ), $front );
         ls_seed_field( 'hp_why_caption', 'A classic route: Sigiriya, Kandy, Ella and Galle', $front );
 
         ls_seed_field( 'hp_b2b_show', 1, $front );
         ls_seed_field( 'hp_b2b_heading', 'Selling Sri Lanka to your clients? Let us run the ground.', $front );
         ls_seed_field( 'hp_b2b_text', 'We partner with international travel agents: tailored itineraries, competitive rates and one operations contact for every group you send.', $front );
         ls_seed_field( 'hp_b2b_btn', ls_seed_link( '/contact-us/', 'Become a Partner Agent' ), $front );
+        ls_seed_field( 'hp_b2b_image', ls_seed_attachment( '2025/02/Front-Nuwaraeliya.jpg' ), $front );
 
         ls_seed_field( 'hp_testi_kicker', 'In their words', $front );
         ls_seed_field( 'hp_testi_heading', 'Trusted by travellers from around the world', $front );
         ls_seed_field( 'hp_testimonials', ls_seed_rows( 'hp_testimonials', ls_seed_existing_reviews( $front ) ), $front );
+
+        ls_seed_field( 'hp_blog_show', 1, $front );
+        ls_seed_field( 'hp_blog_kicker', 'From the blog', $front );
+        ls_seed_field( 'hp_blog_heading', 'Stories and travel tips from Sri Lanka', $front );
+        ls_seed_field( 'hp_blog_link', ls_seed_link( '/blog/', 'View all articles' ), $front );
 
         ls_seed_field( 'hp_cta_heading', 'Ready to see the island properly?', $front );
         ls_seed_field( 'hp_cta_text', 'Tell us your dates and interests — we\'ll send a draft itinerary within one business day.', $front );

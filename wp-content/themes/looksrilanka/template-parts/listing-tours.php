@@ -35,7 +35,7 @@ if ( $term ) {
         ?>
 
         <?php if ( have_posts() ) : ?>
-            <div class="ls-grid ls-grid-2">
+            <div class="ls-grid ls-grid-3 ls-grid-tours">
                 <?php
                 while ( have_posts() ) {
                     the_post();

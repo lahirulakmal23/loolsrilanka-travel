@@ -7,8 +7,10 @@ if ( ! ls_get( 'hp_b2b_show' ) || ! $heading ) {
 
 $text     = ls_get( 'hp_b2b_text' );
 $partners = array_filter( array_map( 'trim', explode( "\n", (string) ls_get( 'hp_b2b_partners' ) ) ) );
+$photo    = ls_image( ls_get( 'hp_b2b_image' ), 'full', array( 'class' => 'ls-b2b-img', 'alt' => '', 'sizes' => '100vw' ), false );
 ?>
-<section class="ls-section ls-b2b">
+<section class="ls-section ls-b2b<?php echo $photo ? ' has-image' : ''; ?>">
+    <?php echo $photo; ?>
     <div class="ls-wrap ls-b2b-inner">
         <div>
             <h2><?php echo esc_html( $heading ); ?></h2>

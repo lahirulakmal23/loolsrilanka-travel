@@ -73,7 +73,7 @@ function ls_register_field_groups() {
                 'instructions' => 'The highlighted button at the end of the menu (e.g. "Plan My Trip").',
             ) ),
             ls_f( 'message', 'ls_logo_note', 'Logo', array(
-                'message' => 'The header and footer logos are set under Theme Settings → Header / Footer. If no logo is uploaded, the site name is shown as text.',
+                'message' => 'The header and footer logos are the "Header logo" and "Footer logo" fields in the "Settings" box further down this page. If no logo is uploaded, the site name is shown as text.',
             ) ),
 
             ls_tab( 'Contact & Social' ),
@@ -170,6 +170,19 @@ function ls_register_field_groups() {
             ls_f( 'link', 'hp_hero_btn_2', 'Second button', array( 'wrapper' => array( 'width' => 50 ) ) ),
             ls_f( 'number', 'hp_hero_interval', 'Seconds per slide', array( 'default_value' => 6, 'min' => 3, 'max' => 20 ) ),
 
+            // Popular destinations (own section after the hero)
+            ls_tab( 'Popular destinations' ),
+            ls_f( 'true_false', 'hp_hdest_show', 'Show destination cards', array( 'ui' => 1, 'default_value' => 1, 'instructions' => 'A slider of destination cards in its own section after the hero.' ) ),
+            ls_f( 'text', 'hp_hdest_kicker', 'Small label', array( 'wrapper' => array( 'width' => 35 ) ) ),
+            ls_f( 'text', 'hp_hdest_heading', 'Heading', array( 'wrapper' => array( 'width' => 65 ) ) ),
+            ls_f( 'relationship', 'hp_hdest_items', 'Destinations', array(
+                'instructions'  => 'Pick the destinations for the slider (up to 12) and drag them into order. Leave empty to show 8 automatically.',
+                'post_type'     => array( 'destination' ),
+                'filters'       => array( 'search' ),
+                'return_format' => 'id',
+                'max'           => 12,
+            ) ),
+
             // Trust strip
             ls_tab( 'Trust strip' ),
             ls_f( 'repeater', 'hp_trust', 'Trust points', array(
@@ -213,13 +226,23 @@ function ls_register_field_groups() {
                     ls_f( 'textarea', 'text', 'Text', array( 'rows' => 2, 'new_lines' => '' ) ),
                 ) ),
             ) ),
-            ls_f( 'image', 'hp_why_image', 'Side image', array(
-                'instructions' => 'Portrait photo works best (about 4:5). Leave empty to use a fallback photo.',
+            ls_f( 'message', 'hp_why_photos_note', 'Photo collage', array( 'message' => 'Three overlapping photos beside the reasons. Empty ones use a fallback photo.' ) ),
+            ls_f( 'image', 'hp_why_image', 'Photo 1 (top left)', array(
                 'return_format' => 'id',
                 'preview_size'  => 'medium',
-                'wrapper'       => array( 'width' => 50 ),
+                'wrapper'       => array( 'width' => 33 ),
             ) ),
-            ls_f( 'text', 'hp_why_caption', 'Side image caption', array( 'wrapper' => array( 'width' => 50 ) ) ),
+            ls_f( 'image', 'hp_why_image_2', 'Photo 2 (large, right)', array(
+                'return_format' => 'id',
+                'preview_size'  => 'medium',
+                'wrapper'       => array( 'width' => 33 ),
+            ) ),
+            ls_f( 'image', 'hp_why_image_3', 'Photo 3 (bottom)', array(
+                'return_format' => 'id',
+                'preview_size'  => 'medium',
+                'wrapper'       => array( 'width' => 34 ),
+            ) ),
+            ls_f( 'text', 'hp_why_caption', 'Caption', array( 'instructions' => 'Optional. Shown on photo 3.' ) ),
 
             // Partner strip
             ls_tab( 'Partner strip' ),
@@ -228,6 +251,7 @@ function ls_register_field_groups() {
             ls_f( 'textarea', 'hp_b2b_text', 'Text', array( 'rows' => 2, 'new_lines' => '' ) ),
             ls_f( 'textarea', 'hp_b2b_partners', 'Partner names', array( 'rows' => 3, 'new_lines' => '', 'instructions' => 'One per line. Leave empty to hide.' ) ),
             ls_f( 'link', 'hp_b2b_btn', 'Button' ),
+            ls_f( 'image', 'hp_b2b_image', 'Background photo', array( 'return_format' => 'id', 'preview_size' => 'medium', 'instructions' => 'Optional. Shown behind the green band with a green fade on the left so the text stays readable. Use a landscape photo at least 1600px wide. Leave empty for plain green.' ) ),
 
             // Testimonials
             ls_tab( 'Testimonials' ),
@@ -245,6 +269,20 @@ function ls_register_field_groups() {
                     ls_f( 'image', 'photo', 'Photo', array( 'return_format' => 'id', 'preview_size' => 'thumbnail', 'instructions' => 'Optional. Initials are shown when empty.', 'wrapper' => array( 'width' => 50 ) ) ),
                 ) ),
             ) ),
+
+            // Popular blogs
+            ls_tab( 'Popular blogs' ),
+            ls_f( 'true_false', 'hp_blog_show', 'Show this section', array( 'ui' => 1, 'default_value' => 1 ) ),
+            ls_f( 'text', 'hp_blog_kicker', 'Small label', array( 'wrapper' => array( 'width' => 35 ) ) ),
+            ls_f( 'text', 'hp_blog_heading', 'Heading', array( 'wrapper' => array( 'width' => 65 ) ) ),
+            ls_f( 'relationship', 'hp_blog_items', 'Articles', array(
+                'instructions'  => 'Pick up to 3 News articles and drag them into order. The first one is shown large. Leave empty to show the 3 newest.',
+                'post_type'     => array( 'news' ),
+                'filters'       => array( 'search' ),
+                'return_format' => 'id',
+                'max'           => 3,
+            ) ),
+            ls_f( 'link', 'hp_blog_link', '"View all" link', array( 'instructions' => 'Shown beside the heading, e.g. "View all articles" to the Blog page. Leave empty to hide.' ) ),
 
             // CTA band
             ls_tab( 'Call to action' ),

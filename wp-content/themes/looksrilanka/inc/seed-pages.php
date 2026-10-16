@@ -103,6 +103,7 @@ function ls_seed_inner_pages() {
     ls_seed_field( 'nw_list_heading', 'From the blog', $o );
     ls_seed_field( 'nw_list_text', 'Travel news, tips and stories from our team on the ground in Sri Lanka.', $o );
     ls_seed_field( 'nw_more_heading', 'More articles', $o );
+    ls_seed_field( 'nw_recent_heading', 'Recent Posts', $o );
     ls_seed_field( 'nw_cta_heading', 'Ready to see Sri Lanka for yourself?', $o );
     ls_seed_field( 'nw_cta_text', 'Browse our itineraries or tell us what you\'d like to see.', $o );
     ls_seed_field( 'nw_cta_btn', ls_seed_link( '/tour/', 'Browse Itineraries' ), $o );
