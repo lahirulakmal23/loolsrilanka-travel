@@ -6,7 +6,7 @@
  * Content is edited through ACF fields (inc/acf-fields*.php).
  */
 
-define( 'LS_VERSION', '3.0.1' );
+define( 'LS_VERSION', '3.0.2' );
 
 require get_template_directory() . '/inc/helpers.php';
 require get_template_directory() . '/inc/acf-fields.php';

@@ -1183,6 +1183,9 @@ body:has(.ls-page > .ls-page-hero.has-image:first-child) .ls-page-hero-tall.has-
     transition: box-shadow .25s, transform .25s;
 }
 .ls-card:hover { box-shadow: 0 14px 30px rgba(var(--ls-navy-rgb), .1); transform: translateY(-3px); }
+/* Same "md" rounding as the Popular destinations cards: itineraries, destinations,
+   "Where to begin" and testimonials. */
+.ls-itin-card, .ls-dest-card, .ls-exp-card, .ls-testi { border-radius: var(--ls-radius-btn); }
 .ls-card-visual {
     position: relative;
     display: block;
