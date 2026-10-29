@@ -161,10 +161,11 @@ h6 {
 /* ======= Buttons, Controls ======= */
 /* Button */
 .btn {
-  padding: 0.625rem 1rem;
+  padding: 0.625rem 1.25rem;
   font-size: var(--bs-body-font-size);
   font-weight: 400;
   text-decoration: none;
+  border-radius: 9999px;
 }
 .btn.btn-uppercase {
   text-transform: uppercase;

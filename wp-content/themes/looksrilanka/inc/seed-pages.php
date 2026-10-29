@@ -70,7 +70,7 @@ function ls_seed_inner_pages() {
     ls_seed_field( 'dt_combo_heading', 'Combine two or three day tours into a mini-itinerary', $o );
     ls_seed_field( 'dt_combo_text', 'Tell us your base city and free days — we\'ll stitch together the best day trips around your schedule.', $o );
     ls_seed_field( 'dt_combo_btn', ls_seed_link( '/contact-us/', 'Ask About Combos' ), $o );
-    ls_seed_field( 'dt_view_btn', 'View Tour', $o );
+    ls_seed_field( 'dt_view_btn', 'View Tour Details', $o );
     ls_seed_field( 'dt_overview_label', 'Overview', $o );
     ls_seed_field( 'dt_highlights_heading', 'Highlights', $o );
     ls_seed_field( 'dt_schedule_heading', 'Hour-by-hour schedule', $o );

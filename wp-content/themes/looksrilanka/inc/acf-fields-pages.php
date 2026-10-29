@@ -333,7 +333,7 @@ function ls_register_page_field_groups() {
 
                 ls_tab( 'Day tour detail' ),
                 ls_repeater( 'dt_trust', 'Trust points (booking card)', array( ls_f( 'text', 'text', 'Text' ) ), array( 'button_label' => 'Add point' ) ),
-                ls_f( 'text', 'dt_view_btn', 'Button on "other tours" cards', array( 'default_value' => 'View Tour', 'wrapper' => array( 'width' => 50 ) ) ),
+                ls_f( 'text', 'dt_view_btn', 'Button on "other tours" cards', array( 'default_value' => 'View Tour Details', 'wrapper' => array( 'width' => 50 ) ) ),
                 ls_f( 'text', 'dt_overview_label', '"Overview" label', array( 'default_value' => 'Overview', 'wrapper' => array( 'width' => 50 ) ) ),
                 ls_f( 'text', 'dt_highlights_heading', 'Highlights heading', array( 'default_value' => 'Highlights', 'wrapper' => array( 'width' => 50 ) ) ),
                 ls_f( 'text', 'dt_schedule_heading', 'Schedule heading', array( 'default_value' => 'Hour-by-hour schedule', 'wrapper' => array( 'width' => 50 ) ) ),

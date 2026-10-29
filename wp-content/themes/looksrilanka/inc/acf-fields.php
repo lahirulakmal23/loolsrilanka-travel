@@ -253,6 +253,15 @@ function ls_register_field_groups() {
             ls_f( 'link', 'hp_b2b_btn', 'Button' ),
             ls_f( 'image', 'hp_b2b_image', 'Background photo', array( 'return_format' => 'id', 'preview_size' => 'medium', 'instructions' => 'Optional. Shown behind the green band with a green fade on the left so the text stays readable. Use a landscape photo at least 1600px wide. Leave empty for plain green.' ) ),
 
+            // Photo gallery
+            ls_tab( 'Photo gallery' ),
+            ls_f( 'true_false', 'hp_gallery_show', 'Show this section', array( 'ui' => 1, 'default_value' => 1 ) ),
+            ls_f( 'text', 'hp_gallery_kicker', 'Small label', array( 'wrapper' => array( 'width' => 35 ), 'default_value' => 'Visual Journey' ) ),
+            ls_f( 'text', 'hp_gallery_heading', 'Heading', array( 'wrapper' => array( 'width' => 65 ), 'default_value' => 'Glimpses of Paradise' ) ),
+            ls_f( 'textarea', 'hp_gallery_intro', 'Intro text', array( 'rows' => 2, 'new_lines' => '', 'default_value' => 'From mist-veiled mountain peaks and sacred ancient temples to golden coastlines and untamed safari wildlife.' ) ),
+            ls_f( 'link', 'hp_gallery_link', '"View all" link', array( 'instructions' => 'Link to the full gallery page. Defaults to /gallery/.' ) ),
+            ls_f( 'gallery', 'hp_gallery_photos', 'Curated photos (optional)', array( 'instructions' => 'Pick 6–8 photos specifically for this homepage mosaic. Leave empty to automatically display photos from the Gallery page.', 'return_format' => 'id', 'preview_size' => 'thumbnail' ) ),
+
             // Testimonials
             ls_tab( 'Testimonials' ),
             ls_f( 'text', 'hp_testi_kicker', 'Small label', array( 'wrapper' => array( 'width' => 35 ) ) ),

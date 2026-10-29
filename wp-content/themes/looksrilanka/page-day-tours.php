@@ -58,7 +58,7 @@ $photo   = $is_page && has_post_thumbnail( get_queried_object_id() ) ? get_post_
                     <?php
                     while ( $tours->have_posts() ) {
                         $tours->the_post();
-                        get_template_part( 'template-parts/card-day-tour', null, array( 'book' => (bool) $form ) );
+                        get_template_part( 'template-parts/card-day-tour' );
                     }
                     wp_reset_postdata();
                     ?>

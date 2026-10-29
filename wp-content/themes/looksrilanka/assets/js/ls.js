@@ -180,7 +180,7 @@
         });
     });
 
-    // Destinations: client-side region filter
+    // Client-side filter (Destinations, Day Tours, Tour Itineraries)
     document.querySelectorAll('[data-ls-filter]').forEach(function (bar) {
         var grid = document.querySelector(bar.getAttribute('data-ls-filter'));
         if (!grid) return;
@@ -192,11 +192,18 @@
                 b.classList.toggle('is-active', b === btn);
                 b.setAttribute('aria-pressed', String(b === btn));
             });
+            var visibleCount = 0;
             grid.querySelectorAll('[data-region]').forEach(function (card) {
-                // A card can list several space-separated regions / categories.
+                // A card can list several space-separated regions / categories / duration tags.
                 var own = ' ' + card.getAttribute('data-region') + ' ';
-                card.hidden = region !== 'all' && own.indexOf(' ' + region + ' ') === -1;
+                var show = region === 'all' || own.indexOf(' ' + region + ' ') !== -1;
+                card.hidden = !show;
+                if (show) visibleCount++;
             });
+            var emptyMsg = grid.parentElement.querySelector('.ls-empty-filter');
+            if (emptyMsg) {
+                emptyMsg.hidden = (visibleCount > 0);
+            }
         });
     });
 
@@ -351,7 +358,7 @@
         var reveal = [
             '.ls-section-head',
             '.ls-exp-grid', '.ls-testi-grid', '.ls-grid', '.ls-stats-grid',
-            '.ls-gl-grid', '.ls-blog-layout',
+            '.ls-gl-grid', '.ls-hg-grid', '.ls-blog-layout',
             '.ls-b2b > .ls-wrap', '.ls-cta-band > .ls-wrap', '.ls-cta-green > .ls-wrap'
         ];
 

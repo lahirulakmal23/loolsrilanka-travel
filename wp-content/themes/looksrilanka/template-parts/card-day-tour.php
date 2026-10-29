@@ -38,7 +38,7 @@ $cats     = $terms && ! is_wp_error( $terms ) ? wp_list_pluck( $terms, 'slug' ) 
             <?php if ( $args['book'] ) : ?>
                 <a class="ls-btn-sm" href="#book" data-ls-book="<?php echo esc_attr( wp_strip_all_tags( get_the_title() ) ); ?>"><?php echo esc_html( ls_option( 'dt_book_btn' ) ?: 'Book' ); ?></a>
             <?php else : ?>
-                <a class="ls-btn-sm" href="<?php the_permalink(); ?>"><?php echo esc_html( ls_option( 'dt_view_btn' ) ?: 'View Tour' ); ?></a>
+                <a class="ls-btn-sm" href="<?php the_permalink(); ?>"><?php echo esc_html( ls_option( 'dt_view_btn' ) ?: 'View Tour Details' ); ?></a>
             <?php endif; ?>
         </div>
     </div>

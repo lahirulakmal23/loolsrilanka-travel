@@ -6,13 +6,14 @@
  * Content is edited through ACF fields (inc/acf-fields*.php).
  */
 
-define( 'LS_VERSION', '3.0.2' );
+define( 'LS_VERSION', '3.0.4' );
 
 require get_template_directory() . '/inc/helpers.php';
 require get_template_directory() . '/inc/acf-fields.php';
 require get_template_directory() . '/inc/acf-fields-pages.php';
 require get_template_directory() . '/inc/seed.php';
 require get_template_directory() . '/inc/seed-pages.php';
+require get_template_directory() . '/inc/performance.php';
 
 
 // Theme setup
@@ -49,18 +50,22 @@ add_action( 'template_redirect', function () {
     }
 } );
 
-// News (registered by Custom Post Type UI): enable the Excerpt box, which the blog cards use as their summary.
+// News (registered by Custom Post Type UI): enable Excerpt, categories, and tags.
 add_action( 'init', function () {
     add_post_type_support( 'news', 'excerpt' );
+    register_taxonomy_for_object_type( 'category', 'news' );
+    register_taxonomy_for_object_type( 'post_tag', 'news' );
 }, 20 );
 
 
 /**
- * Show every destination on one page so the region filter covers them all.
+ * Show every destination and tour on one page so the filters cover them all.
  */
 add_action( 'pre_get_posts', function ( $query ) {
-    if ( ! is_admin() && $query->is_main_query() && $query->is_post_type_archive( 'destination' ) ) {
-        $query->set( 'posts_per_page', -1 );
+    if ( ! is_admin() && $query->is_main_query() ) {
+        if ( $query->is_post_type_archive( 'destination' ) || $query->is_post_type_archive( 'tour' ) || $query->is_tax( 'tour-category' ) ) {
+            $query->set( 'posts_per_page', -1 );
+        }
     }
 } );
 
@@ -83,7 +88,7 @@ function ls_enqueue_assets() {
 
     // Photo lightbox on pages with galleries. Loaded before ls.js, which starts it.
     $script_deps = array( 'aos' );
-    if ( is_singular( array( 'tour', 'day-tour', 'destination', 'escapades' ) ) || is_page_template( 'page-gallery.php' ) ) {
+    if ( is_singular( array( 'tour', 'day-tour', 'destination', 'escapades' ) ) || is_page_template( 'page-gallery.php' ) || is_front_page() ) {
         wp_enqueue_style( 'glightbox', $uri . '/assets/css/vendors/glightbox.min.css', array(), null );
         wp_enqueue_script( 'glightbox', $uri . '/assets/js/vendors/glightbox.min.js', array(), null, true );
         $script_deps[] = 'glightbox';

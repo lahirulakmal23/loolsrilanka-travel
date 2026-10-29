@@ -54,11 +54,8 @@ while ( have_posts() ) :
             <?php foreach ( $photos as $i => $photo ) : ?>
                 <a class="glightbox" href="<?php echo esc_url( $photo['url'] ); ?>" data-gallery="day-tour"<?php echo $photo['caption'] ? ' data-title="' . esc_attr( $photo['caption'] ) . '"' : ''; ?>>
                     <?php
-                    $attr = array( 'alt' => $photo['caption'] ?: wp_strip_all_tags( get_the_title() ), 'sizes' => 0 === $i ? '(max-width: 760px) 100vw, 600px' : '(max-width: 760px) 50vw, 300px' );
-                    if ( 0 === $i ) {
-                        $attr['loading']       = 'eager';
-                        $attr['fetchpriority'] = 'high';
-                    }
+                    // The hero photo above is the main image now, so the mosaic loads lazily.
+                    $attr = array( 'alt' => $photo['caption'] ?: wp_strip_all_tags( get_the_title() ), 'sizes' => 0 === $i ? '(max-width: 760px) 100vw, 600px' : '(max-width: 760px) 50vw, 300px', 'loading' => 'lazy' );
                     echo $photo['id'] ? wp_get_attachment_image( $photo['id'], 0 === $i ? 'large' : 'medium_large', false, $attr ) : ls_image( $photo['url'], 'large', $attr );
                     ?>
                 </a>
@@ -66,12 +63,16 @@ while ( have_posts() ) :
         </div>
         <?php
     endif;
-    $hero_after = ob_get_clean();
+    $mosaic = ob_get_clean();
+
+    // Hero background: the first photo (featured image, else gallery / fallback).
+    $hero_image = $photos ? ( $photos[0]['id'] ?: $photos[0]['url'] ) : '';
     ?>
     <main id="primary" class="ls-page ls-detail ls-day-tour">
         <?php
         get_template_part( 'template-parts/page-hero', null, array(
             'heading' => get_the_title(),
+            'image'   => $hero_image,
             'crumbs'  => array_filter( array(
                 'Home'           => home_url( '/' ),
                 'Day Tours'      => $list_url ?: null,
@@ -79,9 +80,12 @@ while ( have_posts() ) :
             ), function ( $url ) { return null !== $url; } ),
             'badges'  => $badges,
             'class'   => 'ls-dt-hero',
-            'after'   => $hero_after,
         ) );
         ?>
+
+        <?php if ( $mosaic ) : ?>
+            <div class="ls-wrap ls-dt-gallery"><?php echo $mosaic; // Pre-escaped markup built above. ?></div>
+        <?php endif; ?>
 
         <div class="ls-wrap ls-side-layout">
             <div class="ls-main-col">
