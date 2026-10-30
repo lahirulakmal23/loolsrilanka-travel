@@ -26,7 +26,7 @@ function ls_seed_inner_pages() {
     if ( $fallbacks ) {
         ls_seed_field( 'ls_fallback_images', array_values( $fallbacks ), $o );
     }
-
+    
     ls_seed_field( 'it_list_heading', 'Multi-day itineraries across Sri Lanka', $o );
     ls_seed_field( 'it_list_text', (string) get_field( 'tour_page_content', $o ), $o );
     ls_seed_field( 'it_list_all', 'All Itineraries', $o );

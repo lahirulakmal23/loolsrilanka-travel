@@ -52,7 +52,7 @@ $filter_attr = implode( ' ', array_unique( $filter_tags ) );
     <div class="ls-card-body">
         <h2 class="ls-card-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
         <?php if ( $route ) : ?>
-            <div class="ls-route"><?php echo esc_html( $route ); ?></div>
+            <div class="ls-route" title="<?php echo esc_attr( $route ); ?>"><?php echo esc_html( $route ); ?></div>
         <?php endif; ?>
         <div class="ls-meta">
             <?php if ( $days ) : ?><span><?php echo esc_html( ls_days_label( $days ) ); ?></span><?php endif; ?>
