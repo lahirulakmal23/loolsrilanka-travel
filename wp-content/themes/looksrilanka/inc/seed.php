@@ -180,8 +180,18 @@ function ls_seed_content() {
         ls_seed_field( 'hp_b2b_btn', ls_seed_link( '/contact-us/', 'Become a Partner Agent' ), $front );
         ls_seed_field( 'hp_b2b_image', ls_seed_attachment( '2025/02/Front-Nuwaraeliya.jpg' ), $front );
 
+        ls_seed_field( 'hp_exp_show', 1, $front );
+        ls_seed_field( 'hp_exp_kicker', 'Unforgettable Moments', $front );
+        ls_seed_field( 'hp_exp_heading', 'Curated Sri Lankan Experiences', $front );
+        ls_seed_field( 'hp_exp_intro', 'From surfing tropical breaks and wildlife safaris to sacred ancient temples and tea country treks — discover activities that make your trip extraordinary.', $front );
+        ls_seed_field( 'hp_exp_link', ls_seed_link( '/experiences/', 'View all experiences' ), $front );
+
         ls_seed_field( 'hp_testi_kicker', 'In their words', $front );
-        ls_seed_field( 'hp_testi_heading', 'Trusted by travellers from around the world', $front );
+        ls_seed_field( 'hp_testi_heading', 'What Our Travellers Say', $front );
+        ls_seed_field( 'hp_testi_intro', 'Real stories from real people who\'ve experienced the beauty, culture, and adventure of Sri Lanka with us.', $front );
+        ls_seed_field( 'hp_testi_rating', '5.0', $front );
+        ls_seed_field( 'hp_testi_count', 'Based on 21 reviews', $front );
+        ls_seed_field( 'hp_testi_tripadvisor_url', 'https://www.tripadvisor.com/', $front );
         ls_seed_field( 'hp_testimonials', ls_seed_rows( 'hp_testimonials', ls_seed_existing_reviews( $front ) ), $front );
 
         ls_seed_field( 'hp_blog_show', 1, $front );
@@ -207,8 +217,36 @@ function ls_seed_existing_reviews( $front ) {
     $rows = array();
     $old  = get_field( 'review', $front );
 
-    if ( ! is_array( $old ) ) {
-        return $rows;
+    if ( ! is_array( $old ) || empty( $old ) ) {
+        return array(
+            array(
+                'quote'    => 'We cycled Sri Lanka under capable leadership. A fantastic guide who took an interest in all members of our group. We felt safe and well looked after at all times. Exceptional experience from start to finish!',
+                'name'     => 'Catherine Shetty',
+                'location' => 'New Zealand',
+                'trip'     => '14-day Island Exploration',
+                'date'     => 'Oct 2026',
+                'rating'   => 5,
+                'photo'    => 0,
+            ),
+            array(
+                'quote'    => 'I was lucky enough to enjoy a wonderful travel and cycling adventure through the beautiful Sri Lanka with the amazing team. The leaders were fun and deeply knowledgeable about the places, history, and nature.',
+                'name'     => 'Louise M.',
+                'location' => 'Australia',
+                'trip'     => '10-day Classic Journey',
+                'date'     => 'Oct 2026',
+                'rating'   => 5,
+                'photo'    => 0,
+            ),
+            array(
+                'quote'    => 'I had the pleasure of Look Sri Lanka guiding our group across Sri Lanka. First rate guidance and a real pleasure to be around. Endlessly patient, professional and always ready to adjust the day to what we wanted.',
+                'name'     => 'Phillip H.',
+                'location' => 'England',
+                'trip'     => 'Custom Private Tour',
+                'date'     => 'Oct 2026',
+                'rating'   => 5,
+                'photo'    => 0,
+            ),
+        );
     }
 
     foreach ( $old as $review ) {

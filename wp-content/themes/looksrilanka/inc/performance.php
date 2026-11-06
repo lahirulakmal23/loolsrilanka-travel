@@ -117,3 +117,90 @@ add_filter( 'wp_resource_hints', function ( $urls, $relation ) {
     }
     return $urls;
 }, 10, 2 );
+
+/* 4. Smaller WebP copies, generated offline or when media is uploaded -------- */
+
+/** Create a sidecar without changing the original file or attachment metadata. */
+function ls_generate_webp_copy( $file ) {
+    if ( ! is_file( $file ) || ! preg_match( '/\.(?:jpe?g|png)$/i', $file ) || filesize( $file ) < 12288 ) {
+        return false;
+    }
+    $target = $file . '.webp';
+    if ( is_file( $target ) && filemtime( $target ) >= filemtime( $file ) ) {
+        return $target;
+    }
+    $dimensions = wp_getimagesize( $file );
+    // Huge camera originals stay untouched; optimize their display-size copies.
+    if ( ! $dimensions || max( $dimensions[0], $dimensions[1] ) > 2560 ) {
+        return false;
+    }
+    $editor = wp_get_image_editor( $file );
+    if ( is_wp_error( $editor ) || is_wp_error( $editor->set_quality( 80 ) ) ) {
+        return false;
+    }
+    $saved = $editor->save( $target, 'image/webp' );
+    if ( is_wp_error( $saved ) ) {
+        return false;
+    }
+    if ( filesize( $saved['path'] ) >= filesize( $file ) ) {
+        wp_delete_file( $saved['path'] );
+        return false;
+    }
+    return $saved['path'];
+}
+
+/** Use only existing, smaller copies. No conversion runs during page requests. */
+function ls_webp_image_url( $url ) {
+    static $urls = array();
+    if ( isset( $urls[ $url ] ) ) {
+        return $urls[ $url ];
+    }
+    $urls[ $url ] = $url;
+    $uploads = wp_get_upload_dir();
+    $base = $uploads['baseurl'] . '/';
+    if ( 0 !== strpos( $url, $base ) || ! preg_match( '/\.(?:jpe?g|png)$/i', $url ) ) {
+        return $url;
+    }
+    $relative = rawurldecode( substr( $url, strlen( $base ) ) );
+    if ( false !== strpos( $relative, '..' ) || false !== strpos( $relative, '\\' ) ) {
+        return $url;
+    }
+    $file = trailingslashit( $uploads['basedir'] ) . $relative;
+    $webp = $file . '.webp';
+    if ( is_file( $file ) && is_file( $webp ) && filemtime( $webp ) >= filemtime( $file ) && filesize( $webp ) < filesize( $file ) ) {
+        $urls[ $url ] = $url . '.webp';
+    }
+    return $urls[ $url ];
+}
+
+add_filter( 'wp_get_attachment_image_attributes', function ( $attr ) {
+    if ( ! is_admin() && ! is_feed() && ! empty( $attr['src'] ) ) {
+        $attr['src'] = ls_webp_image_url( $attr['src'] );
+    }
+    return $attr;
+}, 30 );
+
+add_filter( 'wp_calculate_image_srcset', function ( $sources ) {
+    if ( ! is_admin() && ! is_feed() ) {
+        foreach ( $sources as &$source ) {
+            $source['url'] = ls_webp_image_url( $source['url'] );
+        }
+        unset( $source );
+    }
+    return $sources;
+} );
+
+// Keep future uploads optimized without requiring another bulk run.
+add_filter( 'wp_generate_attachment_metadata', function ( $metadata, $attachment_id ) {
+    if ( ! wp_image_editor_supports( array( 'mime_type' => 'image/webp' ) ) ) {
+        return $metadata;
+    }
+    $file = get_attached_file( $attachment_id );
+    if ( $file ) {
+        ls_generate_webp_copy( $file );
+        foreach ( $metadata['sizes'] ?? array() as $size ) {
+            ls_generate_webp_copy( dirname( $file ) . '/' . $size['file'] );
+        }
+    }
+    return $metadata;
+}, 20, 2 );

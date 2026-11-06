@@ -22,7 +22,7 @@
         <div class="ls-navbar">
             <a class="ls-logo" href="<?php echo esc_url( home_url( '/' ) ); ?>">
                 <?php if ( $logo ) : ?>
-                    <?php echo ls_image( $logo, 'medium', array( 'alt' => get_bloginfo( 'name' ), 'loading' => 'eager' ), false ); ?>
+                    <?php echo ls_image( $logo, 'medium', array( 'alt' => get_bloginfo( 'name' ), 'loading' => 'eager', 'sizes' => '(max-width: 700px) 190px, 215px' ), false ); ?>
                 <?php else : ?>
                     <?php bloginfo( 'name' ); ?>
                 <?php endif; ?>
@@ -56,7 +56,7 @@
                 'depth'          => 2,
                 'fallback_cb'    => false,
             ) );
-            echo ls_link( $cta, 'ls-btn ls-btn-primary' );
+            echo ls_link( $cta, 'ls-btn ls-nav-cta' );
             ?>
         </div>
     </header>

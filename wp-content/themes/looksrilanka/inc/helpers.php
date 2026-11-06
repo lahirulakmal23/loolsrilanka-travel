@@ -79,7 +79,19 @@ function ls_image( $image, $size = 'large', $attr = array(), $fallback = true ) 
         return wp_get_attachment_image( (int) $image, $size, false, $attr );
     }
 
-    $attr = wp_parse_args( $attr, array( 'alt' => '', 'loading' => 'lazy' ) );
+    // ACF URL fields can still use the Media Library's responsive thumbnails.
+    $uploads = wp_get_upload_dir();
+    if ( 0 === strpos( (string) $image, $uploads['baseurl'] . '/' ) ) {
+        static $attachment_ids = array();
+        if ( ! isset( $attachment_ids[ $image ] ) ) {
+            $attachment_ids[ $image ] = attachment_url_to_postid( $image );
+        }
+        if ( $attachment_ids[ $image ] ) {
+            return wp_get_attachment_image( $attachment_ids[ $image ], $size, false, $attr );
+        }
+    }
+
+    $attr = wp_parse_args( $attr, array( 'alt' => '', 'loading' => 'lazy', 'decoding' => 'async' ) );
     $html = '<img src="' . esc_url( $image ) . '"';
     foreach ( $attr as $key => $value ) {
         $html .= ' ' . esc_attr( $key ) . '="' . esc_attr( $value ) . '"';
@@ -531,7 +543,7 @@ function ls_parse_faq_html( $html ) {
  */
 function ls_fallback_script() {
     $urls = array_values( array_filter( array_map( function ( $id ) {
-        return wp_get_attachment_image_url( $id, 'large' );
+        return ls_webp_image_url( wp_get_attachment_image_url( $id, 'large' ) );
     }, ls_fallback_ids() ) ) );
     ?>
     <script>
@@ -558,3 +570,54 @@ function ls_fallback_script() {
     <?php
 }
 add_action( 'wp_head', 'ls_fallback_script', 1 );
+
+/** Add responsive sources to rich text from ACF, just as WordPress does for posts. */
+function ls_rich_content( $html ) {
+    $tags = new WP_HTML_Tag_Processor( wpautop( wp_kses_post( $html ) ) );
+    $uploads = wp_get_upload_dir();
+    $upload_path = wp_parse_url( $uploads['baseurl'], PHP_URL_PATH ) . '/';
+    $hosts = array( wp_parse_url( $uploads['baseurl'], PHP_URL_HOST ), 'looksrilankatours.com', 'www.looksrilankatours.com' );
+    while ( $tags->next_tag( 'IMG' ) ) {
+        $src = $tags->get_attribute( 'src' );
+        if ( ! is_string( $src ) ) {
+            continue;
+        }
+        $parts = wp_parse_url( $src );
+        // Normalize migrated images only when the exact upload exists locally.
+        if ( in_array( $parts['host'] ?? '', $hosts, true ) && 0 === strpos( $parts['path'] ?? '', $upload_path ) ) {
+            $relative = substr( $parts['path'], strlen( $upload_path ) );
+            if ( false === strpos( rawurldecode( $relative ), '..' ) ) {
+                $id = 0;
+                if ( is_file( trailingslashit( $uploads['basedir'] ) . rawurldecode( $relative ) ) ) {
+                    $src = trailingslashit( $uploads['baseurl'] ) . $relative;
+                    $id = attachment_url_to_postid( $src );
+                } else {
+                    // Missing migrated photos use the existing local fallback pool
+                    // immediately, rather than waiting for a failed remote request.
+                    $id = ls_fallback_id( $src );
+                    if ( $id ) {
+                        $src = wp_get_attachment_image_url( $id, 'large' );
+                    }
+                }
+                $tags->set_attribute( 'src', $src );
+                if ( $id ) {
+                    $class = (string) $tags->get_attribute( 'class' );
+                    $tags->set_attribute( 'class', trim( preg_replace( '/\bwp-image-\d+\b/', '', $class ) ) );
+                    $tags->add_class( 'wp-image-' . $id );
+                    $srcset = wp_get_attachment_image_srcset( $id, 'large' );
+                    if ( $srcset ) {
+                        $width = absint( $tags->get_attribute( 'width' ) ) ?: 1024;
+                        $tags->set_attribute( 'srcset', $srcset );
+                        $tags->set_attribute( 'sizes', 'auto, (max-width: ' . $width . 'px) 100vw, ' . $width . 'px' );
+                    }
+                    $tags->set_attribute( 'src', ls_webp_image_url( $src ) );
+                }
+            }
+        }
+        if ( null === $tags->get_attribute( 'loading' ) ) {
+            $tags->set_attribute( 'loading', 'lazy' );
+        }
+        $tags->set_attribute( 'decoding', 'async' );
+    }
+    return wp_filter_content_tags( $tags->get_updated_html(), 'the_content' );
+}

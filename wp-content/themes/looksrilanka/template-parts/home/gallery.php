@@ -115,7 +115,7 @@ if ( empty( $photos ) ) {
                         <?php echo wp_get_attachment_image( $photo['id'], $size, false, array(
                             'class'   => 'ls-hg-img',
                             'alt'     => $caption,
-                            'loading' => $is_hero ? 'eager' : 'lazy',
+                            'loading' => 'lazy',
                         ) ); ?>
                     <?php else : ?>
                         <?php echo ls_image( $photo['url'], $size, array(

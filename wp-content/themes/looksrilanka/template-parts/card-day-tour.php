@@ -12,6 +12,25 @@ $price    = ls_get( 'price' );
 $note     = ls_get( 'dt_price_note' );
 $terms    = get_the_terms( $id, 'day-tour-category' );
 $cats     = $terms && ! is_wp_error( $terms ) ? wp_list_pluck( $terms, 'slug' ) : array();
+
+// Keyword tags so the Day Tours filter works even before categories are assigned.
+$haystack = strtolower( get_the_title( $id ) . ' ' . ls_get( 'dt_summary' ) . ' ' . ls_get( 'destinations' ) );
+$keywords = array(
+    'cultural'  => array( 'cultur', 'temple', 'heritage', 'ancient', 'sigiriya', 'polonnaruwa', 'anuradhapura', 'kandy', 'dambulla', 'fort', 'city' ),
+    'wildlife'  => array( 'wild', 'safari', 'yala', 'udawalawe', 'minneriya', 'wilpattu', 'elephant', 'whale', 'leopard', 'bird' ),
+    'nature'    => array( 'nature', 'tea', 'waterfall', 'rainforest', 'sinharaja', 'hill', 'ella', 'nuwara', 'garden', 'horton' ),
+    'adventure' => array( 'adventure', 'hike', 'hiking', 'trek', 'rafting', 'climb', 'kitulgala', 'surf', 'cycling', 'zip' ),
+    'beach'     => array( 'beach', 'galle', 'bentota', 'mirissa', 'unawatuna', 'coast', 'snorkel', 'trincomalee', 'arugam' ),
+);
+foreach ( $keywords as $slug => $words ) {
+    foreach ( $words as $word ) {
+        if ( preg_match( '/\b' . preg_quote( $word, '/' ) . '/', $haystack ) ) {
+            $cats[] = $slug;
+            break;
+        }
+    }
+}
+$cats = array_unique( $cats );
 ?>
 <article class="ls-card ls-dt-card" data-region="<?php echo esc_attr( implode( ' ', $cats ) ); ?>">
     <a class="ls-card-visual" href="<?php the_permalink(); ?>" tabindex="-1" aria-hidden="true">

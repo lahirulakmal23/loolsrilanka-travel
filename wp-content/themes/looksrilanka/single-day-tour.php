@@ -97,7 +97,7 @@ while ( have_posts() ) :
                             <h2 class="ls-block-title"><?php echo esc_html( $heading ); ?></h2>
                         <?php endif; ?>
                         <?php if ( $desc = ls_get( 'description' ) ) : ?>
-                            <div class="ls-prose"><?php echo wpautop( esc_html( $desc ) ); ?></div>
+                            <div class="ls-prose"><?php echo ls_rich_content( $desc ); ?></div>
                         <?php endif; ?>
                         <?php if ( $highlights ) : ?>
                             <h3 class="ls-mini-title"><?php echo esc_html( ls_option( 'dt_highlights_heading' ) ?: 'Highlights' ); ?></h3>
@@ -126,7 +126,7 @@ while ( have_posts() ) :
                 <?php elseif ( wp_strip_all_tags( $itinerary ) ) : ?>
                     <section class="ls-block">
                         <h2 class="ls-block-title"><?php echo esc_html( ls_option( 'dt_itinerary_heading' ) ?: 'The day' ); ?></h2>
-                        <div class="ls-prose ls-prose-card"><?php echo wpautop( wp_kses_post( $itinerary ) ); ?></div>
+                        <div class="ls-prose ls-prose-card"><?php echo ls_rich_content( $itinerary ); ?></div>
                     </section>
                 <?php endif; ?>
 
@@ -137,7 +137,7 @@ while ( have_posts() ) :
                         <h2 class="ls-block-title"><?php echo esc_html( ls_option( 'dt_meeting_heading' ) ?: 'Meeting point & pickup' ); ?></h2>
                         <div class="ls-dt-meeting<?php echo $meeting && $map ? ' has-both' : ''; ?>">
                             <?php if ( $meeting ) : ?>
-                                <div class="ls-dt-meeting-info ls-prose"><?php echo wpautop( wp_kses_post( $meeting ) ); ?></div>
+                                <div class="ls-dt-meeting-info ls-prose"><?php echo ls_rich_content( $meeting ); ?></div>
                             <?php endif; ?>
                             <?php if ( $map ) : ?>
                                 <div class="ls-map-embed"><?php echo ls_kses_embed( $map ); ?></div>

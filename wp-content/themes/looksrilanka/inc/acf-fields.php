@@ -83,6 +83,15 @@ function ls_register_field_groups() {
             ls_f( 'text', 'ls_whatsapp_message', 'WhatsApp pre-filled message', array(
                 'instructions' => 'Optional text that appears in the chat when a visitor taps the button.',
             ) ),
+            ls_f( 'repeater', 'ls_whatsapp_faqs', 'WhatsApp FAQs', array(
+                'instructions' => 'Add, reorder or remove questions shown when visitors click the floating WhatsApp icon. The selected question becomes their WhatsApp message. Leave empty to open WhatsApp directly.',
+                'layout' => 'block',
+                'button_label' => 'Add question',
+                'sub_fields' => ls_sub( 'ls_whatsapp_faqs', array(
+                    ls_f( 'text', 'question', 'Question', array( 'required' => 1 ) ),
+                    ls_f( 'textarea', 'answer', 'Answer (optional)', array( 'rows' => 3, 'instructions' => 'Shown in the chatbox when this question is selected. Leave empty to continue the conversation in WhatsApp.' ) ),
+                ) ),
+            ) ),
             ls_f( 'repeater', 'ls_social', 'Social links', array(
                 'layout'       => 'table',
                 'button_label' => 'Add social link',
@@ -122,6 +131,7 @@ function ls_register_field_groups() {
             ) ),
 
             ls_tab( 'Footer' ),
+            ls_f( 'image', 'ls_footer_background', 'Footer background artwork', array( 'return_format' => 'id', 'preview_size' => 'medium', 'instructions' => 'Decorative artwork shown beneath the footer text. Defaults to the Welcome to Sri Lanka image from the Media Library.' ) ),
             ls_f( 'textarea', 'ls_footer_about', 'Footer description', array( 'rows' => 3, 'new_lines' => '' ) ),
             ls_f( 'text', 'ls_footer_explore_title', 'Column 2 heading', array( 'default_value' => 'Explore', 'instructions' => 'Links come from Appearance → Menus → "Footer: Explore column".' ) ),
             ls_f( 'text', 'ls_footer_company_title', 'Column 3 heading', array( 'default_value' => 'Company', 'instructions' => 'Links come from Appearance → Menus → "Footer: Company column".' ) ),
@@ -253,27 +263,39 @@ function ls_register_field_groups() {
             ls_f( 'link', 'hp_b2b_btn', 'Button' ),
             ls_f( 'image', 'hp_b2b_image', 'Background photo', array( 'return_format' => 'id', 'preview_size' => 'medium', 'instructions' => 'Optional. Shown behind the green band with a green fade on the left so the text stays readable. Use a landscape photo at least 1600px wide. Leave empty for plain green.' ) ),
 
-            // Photo gallery
-            ls_tab( 'Photo gallery' ),
-            ls_f( 'true_false', 'hp_gallery_show', 'Show this section', array( 'ui' => 1, 'default_value' => 1 ) ),
-            ls_f( 'text', 'hp_gallery_kicker', 'Small label', array( 'wrapper' => array( 'width' => 35 ), 'default_value' => 'Visual Journey' ) ),
-            ls_f( 'text', 'hp_gallery_heading', 'Heading', array( 'wrapper' => array( 'width' => 65 ), 'default_value' => 'Glimpses of Paradise' ) ),
-            ls_f( 'textarea', 'hp_gallery_intro', 'Intro text', array( 'rows' => 2, 'new_lines' => '', 'default_value' => 'From mist-veiled mountain peaks and sacred ancient temples to golden coastlines and untamed safari wildlife.' ) ),
-            ls_f( 'link', 'hp_gallery_link', '"View all" link', array( 'instructions' => 'Link to the full gallery page. Defaults to /gallery/.' ) ),
-            ls_f( 'gallery', 'hp_gallery_photos', 'Curated photos (optional)', array( 'instructions' => 'Pick 6–8 photos specifically for this homepage mosaic. Leave empty to automatically display photos from the Gallery page.', 'return_format' => 'id', 'preview_size' => 'thumbnail' ) ),
+            // Experiences
+            ls_tab( 'Experiences' ),
+            ls_f( 'true_false', 'hp_exp_show', 'Show this section', array( 'ui' => 1, 'default_value' => 1 ) ),
+            ls_f( 'text', 'hp_exp_kicker', 'Small label', array( 'wrapper' => array( 'width' => 35 ), 'default_value' => 'Unforgettable Moments' ) ),
+            ls_f( 'text', 'hp_exp_heading', 'Heading', array( 'wrapper' => array( 'width' => 65 ), 'default_value' => 'Curated Sri Lankan Experiences' ) ),
+            ls_f( 'textarea', 'hp_exp_intro', 'Intro text', array( 'rows' => 2, 'new_lines' => '', 'default_value' => 'From surfing tropical breaks and wildlife safaris to sacred ancient temples and tea country treks — discover activities that make your trip extraordinary.' ) ),
+            ls_f( 'relationship', 'hp_exp_items', 'Curated experiences', array(
+                'instructions'  => 'Pick up to 6 experiences (Escapades) and drag them into order. Leave empty to automatically show the latest.',
+                'post_type'     => array( 'escapades' ),
+                'filters'       => array( 'search' ),
+                'return_format' => 'id',
+                'max'           => 6,
+            ) ),
+            ls_f( 'link', 'hp_exp_link', '"View all" link', array( 'instructions' => 'Link to the full experiences page. Defaults to /experiences/.' ) ),
 
             // Testimonials
             ls_tab( 'Testimonials' ),
             ls_f( 'text', 'hp_testi_kicker', 'Small label', array( 'wrapper' => array( 'width' => 35 ) ) ),
             ls_f( 'text', 'hp_testi_heading', 'Heading', array( 'wrapper' => array( 'width' => 65 ) ) ),
+            ls_f( 'textarea', 'hp_testi_intro', 'Intro text', array( 'rows' => 2, 'new_lines' => '', 'instructions' => 'Short introductory text shown under the heading.' ) ),
+            ls_f( 'text', 'hp_testi_rating', 'Rating score (optional)', array( 'instructions' => 'e.g. "5.0". Leave empty to calculate automatically from reviews.', 'wrapper' => array( 'width' => 33 ) ) ),
+            ls_f( 'text', 'hp_testi_count', 'Review count text (optional)', array( 'instructions' => 'e.g. "Based on 21 reviews". Leave empty to calculate automatically.', 'wrapper' => array( 'width' => 33 ) ) ),
+            ls_f( 'url', 'hp_testi_tripadvisor_url', 'TripAdvisor URL', array( 'instructions' => 'Link to your TripAdvisor reviews profile. Optional.', 'wrapper' => array( 'width' => 34 ) ) ),
             ls_f( 'repeater', 'hp_testimonials', 'Reviews', array(
                 'layout'       => 'block',
                 'collapsed'    => 'field_ls_hp_testimonials__name',
                 'button_label' => 'Add review',
                 'sub_fields'   => ls_sub( 'hp_testimonials', array(
                     ls_f( 'textarea', 'quote', 'Review', array( 'rows' => 3, 'new_lines' => '' ) ),
-                    ls_f( 'text', 'name', 'Name & country', array( 'instructions' => 'e.g. "Hannah R., United Kingdom"', 'wrapper' => array( 'width' => 50 ) ) ),
+                    ls_f( 'text', 'name', 'Name', array( 'instructions' => 'e.g. "Catherine Shetty"', 'wrapper' => array( 'width' => 50 ) ) ),
+                    ls_f( 'text', 'location', 'Country / City', array( 'instructions' => 'e.g. "New Zealand". Optional.', 'wrapper' => array( 'width' => 50 ) ) ),
                     ls_f( 'text', 'trip', 'Trip / detail', array( 'instructions' => 'e.g. "10-day Cultural Triangle & Coast". Optional.', 'wrapper' => array( 'width' => 50 ) ) ),
+                    ls_f( 'text', 'date', 'Date', array( 'instructions' => 'e.g. "Oct 2026". Optional.', 'wrapper' => array( 'width' => 50 ) ) ),
                     ls_f( 'number', 'rating', 'Stars', array( 'default_value' => 5, 'min' => 1, 'max' => 5, 'wrapper' => array( 'width' => 50 ) ) ),
                     ls_f( 'image', 'photo', 'Photo', array( 'return_format' => 'id', 'preview_size' => 'thumbnail', 'instructions' => 'Optional. Initials are shown when empty.', 'wrapper' => array( 'width' => 50 ) ) ),
                 ) ),

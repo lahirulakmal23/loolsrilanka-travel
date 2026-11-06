@@ -15,14 +15,15 @@ $tours = new WP_Query( array(
     'orderby'        => array( 'menu_order' => 'ASC', 'date' => 'DESC' ),
 ) );
 
-// Filter buttons: day tour categories that have at least one tour.
-$filters = array();
-foreach ( $tours->posts as $tour ) {
-    $terms = get_the_terms( $tour, 'day-tour-category' );
-    foreach ( $terms && ! is_wp_error( $terms ) ? $terms : array() as $term ) {
-        $filters[ $term->slug ] = $term->name;
-    }
-}
+// Filter buttons (same layout as the itineraries page). Slugs match the
+// "Day Tour Categories" in WP Admin; card-day-tour.php also tags by keyword.
+$filters = array(
+    'cultural'  => __( 'Cultural', 'looksrilanka' ),
+    'wildlife'  => __( 'Wildlife', 'looksrilanka' ),
+    'nature'    => __( 'Nature', 'looksrilanka' ),
+    'adventure' => __( 'Adventure', 'looksrilanka' ),
+    'beach'     => __( 'Beach', 'looksrilanka' ),
+);
 
 $form  = ls_form( ls_option( 'dt_book_form' ) ?: ls_option( 'ls_tour_form' ) );
 $steps = array_filter( wp_list_pluck( ls_option( 'dt_steps' ) ?: array(), 'text' ) );
@@ -44,14 +45,12 @@ $photo   = $is_page && has_post_thumbnail( get_queried_object_id() ) ? get_post_
         ?>
 
         <div class="ls-wrap">
-            <?php if ( count( $filters ) > 1 ) : ?>
-                <div class="ls-filters" data-ls-filter="#ls-dt-grid" role="group" aria-label="<?php esc_attr_e( 'Filter day tours', 'looksrilanka' ); ?>">
-                    <button type="button" class="is-active" data-region="all" aria-pressed="true"><?php echo esc_html( ls_option( 'dt_list_all' ) ?: 'All Tours' ); ?></button>
-                    <?php foreach ( $filters as $slug => $label ) : ?>
-                        <button type="button" data-region="<?php echo esc_attr( $slug ); ?>" aria-pressed="false"><?php echo esc_html( $label ); ?></button>
-                    <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
+            <div class="ls-filters" data-ls-filter="#ls-dt-grid" role="group" aria-label="<?php esc_attr_e( 'Filter day tours', 'looksrilanka' ); ?>">
+                <button type="button" class="is-active" data-region="all" aria-pressed="true"><?php echo esc_html( ls_option( 'dt_list_all' ) ?: 'All Tours' ); ?></button>
+                <?php foreach ( $filters as $slug => $label ) : ?>
+                    <button type="button" data-region="<?php echo esc_attr( $slug ); ?>" aria-pressed="false"><?php echo esc_html( $label ); ?></button>
+                <?php endforeach; ?>
+            </div>
 
             <?php if ( $tours->have_posts() ) : ?>
                 <div class="ls-grid ls-grid-3" id="ls-dt-grid">
@@ -63,6 +62,7 @@ $photo   = $is_page && has_post_thumbnail( get_queried_object_id() ) ? get_post_
                     wp_reset_postdata();
                     ?>
                 </div>
+                <p class="ls-empty ls-empty-filter" hidden><?php esc_html_e( 'No day tours match this filter yet.', 'looksrilanka' ); ?></p>
             <?php else : ?>
                 <p class="ls-empty"><?php esc_html_e( 'No day tours found.', 'looksrilanka' ); ?></p>
             <?php endif; ?>
@@ -71,7 +71,7 @@ $photo   = $is_page && has_post_thumbnail( get_queried_object_id() ) ? get_post_
         <?php if ( $form ) : ?>
             <section class="ls-dt-booking" id="book">
                 <div class="ls-wrap ls-side-layout">
-                    <div>
+                    <div class="ls-dt-form-card">
                         <?php if ( $h = ls_option( 'dt_book_heading' ) ) : ?><h2 class="ls-block-title"><?php echo esc_html( $h ); ?></h2><?php endif; ?>
                         <?php if ( $t = ls_option( 'dt_book_text' ) ) : ?><p class="ls-sub"><?php echo esc_html( $t ); ?></p><?php endif; ?>
                         <p class="ls-dt-selected" hidden><?php echo esc_html( ls_option( 'dt_selected_label' ) ?: 'Selected tour:' ); ?> <strong></strong></p>

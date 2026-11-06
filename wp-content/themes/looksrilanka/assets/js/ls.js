@@ -2,6 +2,149 @@
 (function () {
     'use strict';
 
+
+    // A non-modal chatbox beside the launcher keeps the page usable and clear.
+    var waDialog = document.getElementById('ls-wa-dialog');
+    var waLauncher = document.querySelector('.ls-wa');
+    var waTrigger = null;
+    if (waDialog && typeof waDialog.show === 'function') {
+        var waQuestion = document.getElementById('ls-wa-question');
+        var waMessages = waDialog.querySelector('.ls-wa-chat-messages');
+        var waReturnFocus = false;
+        var waFrame = false;
+        function appendWaMessage(text, isQuestion) {
+            var bubble = document.createElement('div');
+            bubble.className = 'ls-wa-chat-bubble' + (isQuestion ? ' ls-wa-chat-user' : ' ls-wa-chat-reply');
+            bubble.textContent = text;
+            waMessages.appendChild(bubble);
+        }
+        function positionWaChat() {
+            if (!waDialog.open || !waLauncher) return;
+            var icon = waLauncher.getBoundingClientRect();
+            var bottom = Math.max(12, window.innerHeight - icon.top + 12);
+            waDialog.style.bottom = bottom + 'px';
+            waDialog.style.right = Math.max(12, window.innerWidth - icon.right) + 'px';
+            waDialog.style.maxHeight = Math.max(120, window.innerHeight - bottom - 12) + 'px';
+        }
+        function scheduleWaPosition() {
+            if (!waDialog.open || waFrame) return;
+            waFrame = true;
+            window.requestAnimationFrame(function () {
+                positionWaChat();
+                waFrame = false;
+            });
+        }
+        function closeWaChat(returnFocus) {
+            waReturnFocus = returnFocus;
+            waDialog.close();
+        }
+        document.querySelectorAll('a[href]').forEach(function (link) {
+            var url = new URL(link.href, window.location.href);
+            if (['wa.me', 'api.whatsapp.com', 'web.whatsapp.com'].indexOf(url.hostname) === -1) return;
+            link.setAttribute('aria-haspopup', 'dialog');
+            link.setAttribute('aria-controls', 'ls-wa-dialog');
+            link.setAttribute('aria-expanded', 'false');
+            link.addEventListener('click', function (event) {
+                event.preventDefault();
+                if (waDialog.open && link === waLauncher) {
+                    closeWaChat(true);
+                    return;
+                }
+                waTrigger = link;
+                if (!waDialog.open) waDialog.show();
+                link.setAttribute('aria-expanded', 'true');
+                if (waLauncher) waLauncher.setAttribute('aria-expanded', 'true');
+                positionWaChat();
+            });
+        });
+        waDialog.querySelector('.ls-wa-close').addEventListener('click', function () {
+            closeWaChat(true);
+        });
+        waDialog.querySelectorAll('[data-ls-wa-question]').forEach(function (button) {
+            button.addEventListener('click', function () {
+                waDialog.querySelectorAll('[data-ls-wa-question]').forEach(function (item) {
+                    item.setAttribute('aria-pressed', String(item === button));
+                });
+                waQuestion.value = button.getAttribute('data-ls-wa-question');
+                appendWaMessage(waQuestion.value, true);
+                var answer = button.getAttribute('data-ls-wa-answer-text');
+                if (answer) appendWaMessage(answer, false);
+                waMessages.scrollTop = waMessages.scrollHeight;
+            });
+        });
+        var waMoreQuestions = waDialog.querySelector('[data-ls-wa-more]');
+        if (waMoreQuestions) {
+            waMoreQuestions.addEventListener('click', function () {
+                var expanded = waMoreQuestions.getAttribute('aria-expanded') !== 'true';
+                waDialog.querySelectorAll('[data-ls-wa-question]').forEach(function (button, index) {
+                    button.hidden = !expanded && index >= 4;
+                });
+                waMoreQuestions.setAttribute('aria-expanded', String(expanded));
+                waMoreQuestions.textContent = waMoreQuestions.getAttribute(expanded ? 'data-label-fewer' : 'data-label-more');
+                if (!expanded) waDialog.querySelector('.ls-wa-question-list').scrollTop = 0;
+                scheduleWaPosition();
+            });
+        }
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape' && waDialog.open) closeWaChat(true);
+        });
+        document.addEventListener('click', function (event) {
+            if (!waDialog.open || waDialog.contains(event.target)) return;
+            if (event.target.closest('a[aria-controls="ls-wa-dialog"]')) return;
+            closeWaChat(false);
+        });
+        waDialog.addEventListener('close', function () {
+            document.querySelectorAll('a[aria-controls="ls-wa-dialog"]').forEach(function (link) {
+                link.setAttribute('aria-expanded', 'false');
+            });
+            if (waReturnFocus && waTrigger) waTrigger.focus();
+            waReturnFocus = false;
+        });
+        window.addEventListener('resize', scheduleWaPosition);
+        window.addEventListener('scroll', scheduleWaPosition, { passive: true });
+        if ('ResizeObserver' in window && waLauncher) {
+            var waPositionObserver = new ResizeObserver(scheduleWaPosition);
+            waPositionObserver.observe(waLauncher);
+            waPositionObserver.observe(document.body);
+        }
+    }
+
+    // Itinerary enquiry bar appears after the hero leaves the header.
+    var tourBar = document.querySelector('[data-ls-tour-scrollbar]');
+    var tourHero = document.querySelector('.single-tour .ls-page-hero');
+    if (tourBar && tourHero) {
+        var tourFrame = false;
+        var updateTourBar = function () {
+            var siteHeader = document.querySelector('.ls-header');
+            var adminBar = document.getElementById('wpadminbar');
+            var top = Math.max(0, siteHeader ? siteHeader.getBoundingClientRect().bottom : 0,
+                adminBar ? adminBar.getBoundingClientRect().bottom : 0);
+            var visible = tourHero.getBoundingClientRect().bottom <= top;
+            tourBar.hidden = !visible;
+            if (visible) {
+                document.documentElement.style.setProperty('--ls-tour-bar-height', tourBar.getBoundingClientRect().height + 'px');
+            }
+            tourBar.style.top = 'auto';
+            document.documentElement.style.setProperty('--ls-tour-bar-bottom', top + 'px');
+            tourFrame = false;
+        };
+        var scheduleTourBar = function () {
+            if (!tourFrame) {
+                tourFrame = true;
+                window.requestAnimationFrame(updateTourBar);
+            }
+        };
+        window.addEventListener('scroll', scheduleTourBar, { passive: true });
+        window.addEventListener('resize', scheduleTourBar);
+        if ('ResizeObserver' in window) {
+            var tourSizeObserver = new ResizeObserver(scheduleTourBar);
+            tourSizeObserver.observe(tourBar);
+            var tourHeader = document.querySelector('.ls-header');
+            if (tourHeader) tourSizeObserver.observe(tourHeader);
+        }
+        updateTourBar();
+    }
+
     // Mobile menu
     var burger = document.querySelector('.ls-burger');
     var menu = document.getElementById('ls-mobile-menu');
@@ -21,6 +164,19 @@
             if (e.key === 'Escape' && !menu.hidden) {
                 burger.click();
                 burger.focus();
+            }
+        });
+    }
+
+    // A menu opened on mobile must not keep the desktop header in its open state.
+    if (burger && menu) {
+        var desktopMenu = window.matchMedia('(min-width: 1081px)');
+        desktopMenu.addEventListener('change', function (event) {
+            if (event.matches && !menu.hidden) {
+                menu.hidden = true;
+                burger.setAttribute('aria-expanded', 'false');
+                burger.setAttribute('aria-label', 'Open menu');
+                if (header) header.classList.remove('is-open');
             }
         });
     }
@@ -51,26 +207,34 @@
     // The arrows stay hidden when every card already fits.
     document.querySelectorAll('[data-ls-carousel]').forEach(function (carousel) {
         var track = carousel.querySelector('[data-ls-track]');
+        if (!track) return;
+        var prev = carousel.querySelector('[data-ls-step="-1"]');
+        var next = carousel.querySelector('[data-ls-step="1"]');
+        if (!prev || !next) return;
         var nav = carousel.querySelector('.ls-hdest-nav');
-        if (!track || !nav) return;
-        var prev = nav.querySelector('[data-ls-step="-1"]');
-        var next = nav.querySelector('[data-ls-step="1"]');
 
         var step = function () {
             var card = track.firstElementChild;
-            var gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+            var gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap) || 0;
             return card ? card.getBoundingClientRect().width + gap : track.clientWidth;
         };
         var update = function () {
             var max = track.scrollWidth - track.clientWidth;
-            nav.hidden = max < 4;
+            if (nav) {
+                nav.hidden = max < 4;
+            } else {
+                prev.hidden = max < 4;
+                next.hidden = max < 4;
+            }
             prev.disabled = track.scrollLeft <= 2;
             next.disabled = track.scrollLeft >= max - 2;
         };
 
-        nav.addEventListener('click', function (e) {
+        carousel.addEventListener('click', function (e) {
             var btn = e.target.closest('[data-ls-step]');
-            if (btn) track.scrollBy({ left: step() * parseInt(btn.getAttribute('data-ls-step'), 10), behavior: 'smooth' });
+            if (btn && !btn.disabled) {
+                track.scrollBy({ left: step() * parseInt(btn.getAttribute('data-ls-step'), 10), behavior: 'smooth' });
+            }
         });
         track.addEventListener('scroll', update, { passive: true });
         window.addEventListener('resize', update);
@@ -99,7 +263,23 @@
             return;
         }
 
+        // Hidden slides are inert until needed, rather than competing with the hero.
+        function prepareSlide(n) {
+            var slide = slides[(n + slides.length) % slides.length];
+            var template = slide.querySelector('.ls-slide-photo');
+            if (template) {
+                var image = template.content.querySelector('img');
+                if (image) image.loading = 'eager';
+                template.replaceWith(template.content.cloneNode(true));
+            }
+        }
+
+        function prepareNext() {
+            if (!reduced && !document.hidden) prepareSlide(current + 1);
+        }
+
         function show(n) {
+            prepareSlide(n);
             slides[current].classList.remove('is-active');
             slides[current].setAttribute('aria-hidden', 'true');
             dots[current] && dots[current].classList.remove('is-active');
@@ -109,6 +289,7 @@
             slides[current].classList.add('is-active');
             slides[current].removeAttribute('aria-hidden');
             dots[current] && dots[current].classList.add('is-active');
+            window.setTimeout(prepareNext, 1000);
         }
 
         function stop() {
@@ -134,6 +315,16 @@
                 start();
             }
         });
+
+        // Warm just the next slide after the first image finishes downloading.
+        var firstImage = slides[0].querySelector('img');
+        if (firstImage && !firstImage.complete) {
+            firstImage.addEventListener('load', function () {
+                window.setTimeout(prepareNext, 1000);
+            }, { once: true });
+        } else {
+            window.setTimeout(prepareNext, 1000);
+        }
 
         // Swipe on touch devices
         var startX = null;
@@ -180,31 +371,91 @@
         });
     });
 
-    // Client-side filter (Destinations, Day Tours, Tour Itineraries)
+    // Filter the complete set before splitting itinerary cards into pages.
     document.querySelectorAll('[data-ls-filter]').forEach(function (bar) {
         var grid = document.querySelector(bar.getAttribute('data-ls-filter'));
         if (!grid) return;
-        bar.addEventListener('click', function (e) {
-            var btn = e.target.closest('button[data-region]');
-            if (!btn) return;
-            var region = btn.getAttribute('data-region');
-            bar.querySelectorAll('button').forEach(function (b) {
-                b.classList.toggle('is-active', b === btn);
-                b.setAttribute('aria-pressed', String(b === btn));
+        var cards = Array.prototype.slice.call(grid.querySelectorAll('[data-region]'));
+        var pager = document.getElementById(grid.id + '-pages');
+        var perPage = parseInt(grid.getAttribute('data-per-page'), 10) || 0;
+        var page = 1;
+        var region = 'all';
+        var emptyMsg = grid.parentElement.querySelector('.ls-empty-filter');
+
+        function render() {
+            var matches = cards.filter(function (card) {
+                return region === 'all' || (' ' + card.getAttribute('data-region') + ' ').indexOf(' ' + region + ' ') !== -1;
             });
-            var visibleCount = 0;
-            grid.querySelectorAll('[data-region]').forEach(function (card) {
-                // A card can list several space-separated regions / categories / duration tags.
-                var own = ' ' + card.getAttribute('data-region') + ' ';
-                var show = region === 'all' || own.indexOf(' ' + region + ' ') !== -1;
-                card.hidden = !show;
-                if (show) visibleCount++;
-            });
-            var emptyMsg = grid.parentElement.querySelector('.ls-empty-filter');
-            if (emptyMsg) {
-                emptyMsg.hidden = (visibleCount > 0);
+            var pages = perPage ? Math.ceil(matches.length / perPage) : 1;
+            page = Math.max(1, Math.min(page, pages || 1));
+            cards.forEach(function (card) { card.hidden = true; });
+            var visible = perPage ? matches.slice((page - 1) * perPage, page * perPage) : matches;
+            visible.forEach(function (card) { card.hidden = false; });
+            if (emptyMsg) emptyMsg.hidden = matches.length > 0;
+            if (!pager || !perPage) return;
+            pager.hidden = pages <= 1;
+            var links = pager.querySelector('.nav-links');
+            links.replaceChildren();
+            if (pages <= 1) return;
+            function button(text, target, label, disabled, current, direction) {
+                var item = document.createElement('button');
+                item.type = 'button';
+                item.className = 'page-numbers' + (current ? ' current' : '');
+                if (direction) {
+                    var icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                    icon.setAttribute('viewBox', '0 0 24 24');
+                    icon.setAttribute('width', '18');
+                    icon.setAttribute('height', '18');
+                    icon.setAttribute('aria-hidden', 'true');
+                    icon.setAttribute('focusable', 'false');
+                    var arrow = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                    arrow.setAttribute('d', direction === 'previous' ? 'M14 7l-5 5 5 5' : 'M10 7l5 5-5 5');
+                    arrow.setAttribute('fill', 'none');
+                    arrow.setAttribute('stroke', 'currentColor');
+                    arrow.setAttribute('stroke-width', '2');
+                    arrow.setAttribute('stroke-linecap', 'round');
+                    arrow.setAttribute('stroke-linejoin', 'round');
+                    icon.appendChild(arrow);
+                    item.appendChild(icon);
+                } else {
+                    item.textContent = text;
+                }
+                item.setAttribute('aria-label', label);
+                item.setAttribute('aria-controls', grid.id);
+                item.setAttribute('data-page', String(target));
+                if (current) item.setAttribute('aria-current', 'page');
+                item.disabled = disabled;
+                links.appendChild(item);
             }
+            button('', page - 1, pager.getAttribute('data-previous'), page === 1, false, 'previous');
+            for (var number = 1; number <= pages; number++) {
+                button(String(number), number, pager.getAttribute('data-page-label') + ' ' + number, false, number === page);
+            }
+            button('', page + 1, pager.getAttribute('data-next'), page === pages, false, 'next');
+        }
+        bar.addEventListener('click', function (event) {
+            var btn = event.target.closest('button[data-region]');
+            if (!btn) return;
+            region = btn.getAttribute('data-region');
+            page = 1;
+            bar.querySelectorAll('button').forEach(function (item) {
+                item.classList.toggle('is-active', item === btn);
+                item.setAttribute('aria-pressed', String(item === btn));
+            });
+            render();
         });
+        if (pager && perPage) {
+            pager.addEventListener('click', function (event) {
+                var btn = event.target.closest('button[data-page]');
+                if (!btn || btn.disabled) return;
+                page = parseInt(btn.getAttribute('data-page'), 10);
+                render();
+                var current = pager.querySelector('[aria-current="page"]');
+                if (current) current.focus({ preventScroll: true });
+                grid.scrollIntoView({ block: 'start', behavior: 'instant' });
+            });
+        }
+        render();
     });
 
     // Gallery page: category filter, search and paging. The lightbox only

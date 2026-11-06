@@ -6,7 +6,7 @@
  * Content is edited through ACF fields (inc/acf-fields*.php).
  */
 
-define( 'LS_VERSION', '3.0.6' );
+define( 'LS_VERSION', '3.0.10' );
 
 require get_template_directory() . '/inc/helpers.php';
 require get_template_directory() . '/inc/acf-fields.php';
@@ -94,8 +94,8 @@ function ls_enqueue_assets() {
         $script_deps[] = 'glightbox';
     }
 
-    wp_enqueue_style( 'ls-style', $uri . '/assets/css/ls.css', array( 'aos' ), LS_VERSION );
-    wp_enqueue_script( 'ls-script', $uri . '/assets/js/ls.js', $script_deps, LS_VERSION, true );
+    wp_enqueue_style( 'ls-style', $uri . '/assets/css/ls.css', array( 'aos' ), (string) filemtime( get_template_directory() . '/assets/css/ls.css' ) );
+    wp_enqueue_script( 'ls-script', $uri . '/assets/js/ls.js', $script_deps, (string) filemtime( get_template_directory() . '/assets/js/ls.js' ), true );
 }
 add_action( 'wp_enqueue_scripts', 'ls_enqueue_assets' );
 

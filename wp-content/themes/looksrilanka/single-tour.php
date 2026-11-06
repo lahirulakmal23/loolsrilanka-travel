@@ -8,6 +8,14 @@ while ( have_posts() ) :
     the_post();
     $id          = get_the_ID();
     $days        = (int) ls_get( 'days' );
+    $bar_destinations = trim( (string) ls_get( 'destinations' ) );
+    if ( is_numeric( $bar_destinations ) ) {
+        $bar_destinations = sprintf( '%02d', (int) $bar_destinations );
+    }
+    $bar_meta = array_filter( array(
+        __( 'Duration', 'looksrilanka' ) => ls_days_label( $days ),
+        __( 'Destinations', 'looksrilanka' ) => $bar_destinations,
+    ) );
     $route       = ls_route( $id );
     $itinerary   = ls_get( 'itinerary' ) ?: array();
     $highlights  = array_filter( wp_list_pluck( ls_get( 'highlights' ) ?: array(), 'highlight' ) );
@@ -53,7 +61,7 @@ while ( have_posts() ) :
                     <section class="ls-prose-block">
                         <div class="ls-kicker"><?php esc_html_e( 'Overview', 'looksrilanka' ); ?></div>
                         <?php if ( $desc = ls_get( 'description' ) ) : ?>
-                            <div class="ls-prose"><?php echo wpautop( esc_html( $desc ) ); ?></div>
+                            <div class="ls-prose"><?php echo ls_rich_content( $desc ); ?></div>
                         <?php endif; ?>
                         <?php if ( $highlights ) : ?>
                             <h3 class="ls-mini-title"><?php esc_html_e( 'Highlights', 'looksrilanka' ); ?></h3>
@@ -102,7 +110,7 @@ while ( have_posts() ) :
                                         <span class="ls-day-label"><?php echo esc_html( wp_strip_all_tags( $day['day'] ) ); ?></span>
                                         <h3><?php echo esc_html( wp_strip_all_tags( $day['title_copy'] ) ); ?></h3>
                                         <?php if ( $text ) : ?>
-                                            <div class="ls-prose"><?php echo wpautop( wp_kses_post( $text ) ); ?></div>
+                                            <div class="ls-prose"><?php echo ls_rich_content( $text ); ?></div>
                                         <?php endif; ?>
                                         <?php if ( ! empty( $day['tip'] ) ) : ?>
                                             <p class="ls-day-tip"><?php echo esc_html( $day['tip'] ); ?></p>
@@ -143,6 +151,23 @@ while ( have_posts() ) :
             'button'  => ls_option( 'it_single_cta_btn' ),
         ) );
         ?>
+        <div class="ls-tour-scrollbar" data-ls-tour-scrollbar hidden>
+            <div class="ls-wrap ls-tour-scrollbar-inner">
+                <span class="ls-tour-scrollbar-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m3 20 6-14 4 8 3-5 5 11H3Z"/><path d="m7 11 2 2 2-2"/></svg></span>
+                <span class="ls-tour-scrollbar-title"><?php the_title(); ?></span>
+                <?php if ( $bar_meta ) : ?>
+                    <dl class="ls-tour-scrollbar-meta">
+                        <?php foreach ( $bar_meta as $label => $value ) : ?>
+                            <div>
+                                <dt><?php echo esc_html( $label ); ?></dt>
+                                <dd><?php echo esc_html( $value ); ?></dd>
+                            </div>
+                        <?php endforeach; ?>
+                    </dl>
+                <?php endif; ?>
+                <a class="ls-btn ls-btn-primary" href="#book"><?php esc_html_e( 'Request a price', 'looksrilanka' ); ?> <span aria-hidden="true">&rarr;</span></a>
+            </div>
+        </div>
     </main>
     <?php
 endwhile;

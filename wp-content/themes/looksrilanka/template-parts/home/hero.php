@@ -2,6 +2,11 @@
 $slides   = ls_get( 'hp_slides' );
 $btn_1    = ls_get( 'hp_hero_btn_1' );
 $btn_2    = ls_get( 'hp_hero_btn_2' );
+// Use the shared WhatsApp FAQ flow for the trip designer button.
+if ( ! empty( $btn_2 ) && ( $designer_whatsapp = ls_whatsapp_url() ) ) {
+    $btn_2['url'] = $designer_whatsapp;
+}
+
 $interval = max( 3, (int) ( ls_get( 'hp_hero_interval' ) ?: 6 ) );
 
 if ( empty( $slides ) ) {
@@ -12,6 +17,7 @@ $multiple = count( $slides ) > 1;
 <section class="ls-hero" data-ls-slider data-interval="<?php echo esc_attr( $interval * 1000 ); ?>" aria-roledescription="carousel" aria-label="<?php esc_attr_e( 'Highlights', 'looksrilanka' ); ?>">
     <?php foreach ( $slides as $i => $slide ) : ?>
         <div class="ls-slide<?php echo 0 === $i ? ' is-active' : ''; ?>" role="group" aria-roledescription="slide" aria-label="<?php echo esc_attr( ( $i + 1 ) . ' / ' . count( $slides ) ); ?>"<?php echo 0 === $i ? '' : ' aria-hidden="true"'; ?>>
+            <?php if ( 0 !== $i ) : ?><template class="ls-slide-photo" ><?php endif; ?>
             <?php
             echo ls_image( $slide['image'], 'full', array(
                 'class'         => 'ls-slide-img',
@@ -21,6 +27,7 @@ $multiple = count( $slides ) > 1;
                 'sizes'         => '100vw',
             ) );
             ?>
+            <?php if ( 0 !== $i ) : ?></template><?php endif; ?>
             <div class="ls-hero-inner">
                 <?php if ( $slide['eyebrow'] ) : ?>
                     <div class="ls-hero-eyebrow"><?php echo esc_html( $slide['eyebrow'] ); ?></div>

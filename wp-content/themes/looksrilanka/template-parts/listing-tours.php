@@ -36,7 +36,7 @@ if ( $term ) {
         </div>
 
         <?php if ( have_posts() ) : ?>
-            <div class="ls-grid ls-grid-3 ls-grid-tours" id="ls-tour-grid">
+            <div class="ls-grid ls-grid-3 ls-grid-tours" id="ls-tour-grid" data-per-page="9">
                 <?php
                 while ( have_posts() ) {
                     the_post();
@@ -45,15 +45,9 @@ if ( $term ) {
                 ?>
             </div>
             <p class="ls-empty ls-empty-filter" hidden><?php esc_html_e( 'No itineraries match this filter.', 'looksrilanka' ); ?></p>
-            <?php
-            the_posts_pagination( array(
-                'mid_size'           => 1,
-                'prev_text'          => '&lsaquo;<span class="screen-reader-text"> ' . __( 'Previous', 'looksrilanka' ) . '</span>',
-                'next_text'          => '<span class="screen-reader-text">' . __( 'Next', 'looksrilanka' ) . ' </span>&rsaquo;',
-                'class'              => 'ls-pagination',
-                'screen_reader_text' => __( 'More tours', 'looksrilanka' ),
-            ) );
-            ?>
+            <nav class="ls-pagination" id="ls-tour-grid-pages" aria-label="<?php esc_attr_e( 'Itinerary pages', 'looksrilanka' ); ?>" data-previous="<?php esc_attr_e( 'Previous page', 'looksrilanka' ); ?>" data-next="<?php esc_attr_e( 'Next page', 'looksrilanka' ); ?>" data-page-label="<?php esc_attr_e( 'Page', 'looksrilanka' ); ?>" hidden>
+                <div class="nav-links"></div>
+            </nav>
         <?php else : ?>
             <p class="ls-empty"><?php esc_html_e( 'No tours found in this category yet.', 'looksrilanka' ); ?> <a href="<?php echo esc_url( $archive ); ?>"><?php esc_html_e( 'See all tours', 'looksrilanka' ); ?></a></p>
         <?php endif; ?>
